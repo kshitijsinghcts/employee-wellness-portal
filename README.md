@@ -1,69 +1,52 @@
+# Employee Wellness Portal
 
-##  Concept Overview
+This README serves as a conceptual model of the project for reference.
 
-  
+## Concept Overview
 
 An **Employee Wellness Portal** will include:
 
-  
+-   Health tracking (physical, emotional)
 
-- Health tracking (physical, emotional)
+-   Wellness resources (articles, videos, AI-generated tips)
 
-- Wellness resources (articles, videos, AI-generated tips)
+-   Surveys and feedback
 
-- Surveys and feedback
+-   Goal setting and progress tracking
 
-- Goal setting and progress tracking
+-   Admin dashboard for HR
 
-- Admin dashboard for HR
+-   Authentication and role-based access
 
-- Authentication and role-based access
-
-- GenAI-powered suggestions and chat (optional)
-
-  
+-   GenAI-powered suggestions and chat (optional)
 
 ---
 
-  
+## Backend: Spring Boot + MySQL
 
-##  Backend: Spring Boot + MySQL
-
-  
-
-###  Models (Entities)
-
-  
+### Models (Entities)
 
 Define JPA entities for:
 
-  
+-   `Employee`: ID, name, email, designation
 
--  `Employee`: ID, name, email, designation
+-   `WellnessMetric`: employeeId, date, mood, sleepHours, activityLevel
 
--  `WellnessMetric`: employeeId, date, mood, sleepHours, activityLevel
+-   `Goal`: employeeId, goalType, title, targetDate, status
 
--  `Goal`: employeeId, goalType, title, targetDate, status
+-   `Survey`: surveyId, title, questions
 
--  `Survey`: surveyId, title, questions
+-   `SurveyResponse`: employeeId, surveyId, answers
 
--  `SurveyResponse`: employeeId, surveyId, answers
+-   `Resource`: title, type (video/article), content, tags (optional)
 
--  `Resource`: title, type (video/article), content, tags (optional)
+-   `Admin`: for HR/admin access
 
--  `Admin`: for HR/admin access
+-   `AuthUser`: for login credentials and roles
 
--  `AuthUser`: for login credentials and roles
-
-  
-
-###  Repositories
-
-  
+### Repositories
 
 Use Spring Data JPA:
-
-  
 
 ```java
 
@@ -73,172 +56,118 @@ public  interface  WellnessMetricRepository  extends  JpaRepository<WellnessMetr
 
 ```
 
-  
-
-###  Services
-
-  
+### Services
 
 Business logic:
 
-  
+-   `WellnessService`: CRUD for metrics, goals
 
--  `WellnessService`: CRUD for metrics, goals
+-   `SurveyService`: create surveys, collect responses
 
--  `SurveyService`: create surveys, collect responses
+-   `ResourceService`: manage wellness content
 
--  `ResourceService`: manage wellness content
+-   `GenAIService`: interface with Gemini API
 
--  `GenAIService`: interface with Gemini API
+-   `AuthService`: login, registration, JWT token handling
 
--  `AuthService`: login, registration, JWT token handling
-
-  
-
-###  REST APIs
-
-  
+### REST APIs
 
 Organize by feature:
 
-  
+-   `/api/auth`: login, register, refresh token
 
--  `/api/auth`: login, register, refresh token
+-   `/api/employees`: get/update employee info
 
--  `/api/employees`: get/update employee info
+-   `/api/wellness`: submit/view metrics
 
--  `/api/wellness`: submit/view metrics
+-   `/api/goals`: create/update/view goals
 
--  `/api/goals`: create/update/view goals
+-   `/api/surveys`: get surveys, submit responses
 
--  `/api/surveys`: get surveys, submit responses
+-   `/api/resources`: fetch wellness content
 
--  `/api/resources`: fetch wellness content
-
--  `/api/genai`: get AI-generated tips, summaries
-
-  
+-   `/api/genai`: get AI-generated tips, summaries
 
 ---
 
-  
+## Frontend: AngularJS
 
-##  Frontend: AngularJS
+### Pages/Views
 
-  
+-   **Login/Register**
 
-###  Pages/Views
+-   **Dashboard** (personalized wellness overview)
 
-  
+-   **Track Wellness** (form for daily metrics)
 
--  **Login/Register**
+-   **Goals** (set/view progress)
 
--  **Dashboard** (personalized wellness overview)
+-   **Surveys** (take surveys, view results)
 
--  **Track Wellness** (form for daily metrics)
+-   **Resources** (browse articles/videos)
 
--  **Goals** (set/view progress)
+-   **Admin Panel** (HR tools, analytics)
 
--  **Surveys** (take surveys, view results)
+-   **AI Assistant** (Gemini-powered chat)
 
--  **Resources** (browse articles/videos)
+### Components
 
--  **Admin Panel** (HR tools, analytics)
+-   `navbar`, `footer`, `card`, `modal`, `form-group`, etc.
 
--  **AI Assistant** (Gemini-powered chat)
+-   `wellness-form`, `goal-tracker`, `survey-viewer`, `resource-browser`, `ai-widget`
 
-  
+### Auth Integration
 
-###  Components
+-   JWT-based auth interceptor
 
-  
+-   Role-based routing guards
 
--  `navbar`, `footer`, `card`, `modal`, `form-group`, etc.
+-   Secure token storage (localStorage/sessionStorage)
 
--  `wellness-form`, `goal-tracker`, `survey-viewer`, `resource-browser`, `ai-widget`
-
-  
-
-###  Auth Integration
-
-  
-
-- JWT-based auth interceptor
-
-- Role-based routing guards
-
-- Secure token storage (localStorage/sessionStorage)
-
-  
-
-###  Gemini GenAI Integration (optional)
-
-  
+### Gemini GenAI Integration (optional)
 
 We can use Gemini to:
 
-  
+-   Generate personalized wellness tips
 
-- Generate personalized wellness tips
+-   Summarize articles
 
-- Summarize articles
+-   Chatbot for wellness Q&A
 
-- Chatbot for wellness Q&A
-
-- Suggest goals based on user data
-
-  
+-   Suggest goals based on user data
 
 We’ll call Gemini via a backend proxy (Spring Boot) to keep API keys secure. Alternatively, we can always use a simple client side API to call the Gemini chat if necessary.
 
-  
+---
+
+## Authentication & Authorization
+
+### Backend
+
+-   Spring Security with JWT
+
+-   Role-based access (`ROLE_EMPLOYEE`, `ROLE_ADMIN`)
+
+-   Password hashing (maybe BCrypt?)
+
+### Frontend
+
+-   Login form → token → store in browser
+
+-   AuthGuard for protected routes
+
+-   Logout and token refresh logic
 
 ---
 
-  
+## Other Optional Enhancements
 
-##  Authentication & Authorization
+-   Charts for wellness trends (Chart.js or D3.js)
 
-  
+-   Calendar integration for goal deadlines (Google Calendar is easier, we can look into Outlook)
 
-###  Backend
+-   Email notifications (Spring Mail)
 
-  
+-   Mobile responsiveness (shadCN or Angular Material)
 
-- Spring Security with JWT
-
-- Role-based access (`ROLE_EMPLOYEE`, `ROLE_ADMIN`)
-
-- Password hashing (maybe BCrypt?)
-
-  
-
-###  Frontend
-
-  
-
-- Login form → token → store in browser
-
-- AuthGuard for protected routes
-
-- Logout and token refresh logic
-
-  
-
----
-
-  
-
-##  Other Optional Enhancements
-
-  
-
-- Charts for wellness trends (Chart.js or D3.js)
-
-- Calendar integration for goal deadlines (Google Calendar is easier, we can look into Outlook)
-
-- Email notifications (Spring Mail)
-
-- Mobile responsiveness (shadCN or Angular Material)
-
-- AI feedback loop: Gemini suggests goals → user accepts → tracked
+-   AI feedback loop: Gemini suggests goals → user accepts → tracked
