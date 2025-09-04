@@ -1,0 +1,16 @@
+# .gitignore
+
+### backend
+/backend/target/
+/backend/pom.xml.tag
+/backend/pom.xml.bak
+/backend/pom.xml.versionsBackup
+/backend/release.properties
+/backend/dependency-reduced-pom.xml
+/backend/build/
+
+### frontend
+/frontend/dist/
+/frontend/node_modules/
+/frontend/npm-debug.log*
+/frontend/.angular/cache/
