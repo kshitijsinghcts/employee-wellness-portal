@@ -36,15 +36,17 @@ Define JPA entities for:
 
 -   `Goal`: employeeId, goalType, title, targetDate, status
 
--   `Survey`: surveyId, title, questions
+-   `Survey`: surveyId, surveyTitle, questions
 
--   `SurveyResponse`: employeeId, surveyId, answers
+-   `SurveyResponse`: employeeId, surveyId, answers(mapped to separate table containing question and answer as fields)
 
--   `Resource`: title, type (video/article), content, tags (optional)
+-   `Resource`: title, type (video/article), content, tags (optional), category
 
 -   `Admin`: for HR/admin access
 
 -   `AuthUser`: for login credentials and roles
+
+-   `Rewards` : for award of medals and ranks based on user-logged scores from wellnessmetric model
 
 ### Repositories
 
@@ -61,8 +63,15 @@ public  interface  WellnessMetricRepository  extends  JpaRepository<WellnessMetr
 ### Services
 
 Business logic:
+AdminService: 
+A package with exclusive access to admins to promote access control
+ `AccountCreationService`: account creation and can only be accessed by the admin
 
--   `WellnessService`: CRUD for metrics, goals
+ `SurveyResponseService`: Access user responses to the survey
+
+Generic Services:
+
+    `WellnessService`: CRUD for metrics, goals, and rewards. Reward assignment based on calculated scores.
 
 -   `SurveyService`: create surveys, collect responses
 
@@ -70,19 +79,25 @@ Business logic:
 
 -   `GenAIService`: interface with Gemini API
 
--   `AuthService`: login, registration, JWT token handling
+-   `AuthService`: login, registration(request to admin. Admin adds from AuthUserRepository. This is optional at the current stage.), JWT token handling
+
+   
 
 ### REST APIs
 
 Organize by feature:
 
--   `/api/auth`: login, register, refresh token
+-   `/api/auth/login`: login
+    `/api/auth/register`: register, refresh token
 
+    # Will be updated along the cycle based on incrementally built code base
 -   `/api/employees`: get/update employee info
 
 -   `/api/wellness`: submit/view metrics
 
 -   `/api/goals`: create/update/view goals
+
+    `/api/employeeRewards`: assign new rewards with milestones
 
 -   `/api/surveys`: get surveys, submit responses
 
@@ -90,6 +105,15 @@ Organize by feature:
 
 -   `/api/genai`: get AI-generated tips, summaries
 
+Utilities:
+util package:
+    ` JWTUtil` : configuring JWT Tokens for login and register functionality
+
+Frontend dependencies:
+    - User can login using employee id irrespective of his/her role. Same is reflected in each page.
+    - Each survey, corresponding response and user's wellness metric has its own id
+    - Admin has control over creating surveys and seeing responses. His/her functionality to add new users is optional and will be added in the future editions. 
+    - Analytics of employees in admin panel and their logic will be communicated in future commits.
 ---
 
 ## Frontend: AngularJS
