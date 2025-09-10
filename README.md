@@ -1,5 +1,7 @@
 # Employee Wellness Portal
 
+FRONT END FOR DEV REFERENCE: [Credentials: admin@company.com, admin access](https://speck-twice-43718343.figma.site/)
+
 This README serves as a conceptual model of the project for reference.
 
 ## Concept Overview

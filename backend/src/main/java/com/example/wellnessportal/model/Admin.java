@@ -4,22 +4,22 @@ import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Admin {
 
-    //Employee ID as Primary Key for the admin
+    // Employee ID as Primary Key for the admin
     @Id
     private Long employeeId;
-    //List of Employees falling under the current HR
+    // List of Employees falling under the current HR
+    @OneToMany
     private List<Employee> employees;
-    //Attributes for Authentication
+    // Attributes for Authentication
     private String username;
     private String email;
     private String password;
 
-    
     public Long getEmployeeId() {
         return employeeId;
     }

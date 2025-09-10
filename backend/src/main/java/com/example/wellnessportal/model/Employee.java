@@ -1,32 +1,33 @@
 package com.example.wellnessportal.model;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import java.util.List;
 
 @Entity
 public class Employee {
-
     @Id
     private Long employeeId;
-    private String password; 
+    private String password;
     private String name;
     private String email;
-    //Attribute For Role-Based Authorization
     private String role;
-
-    //Attributes For Performance Measurement API
     private int scores;
-    
+
+    @ElementCollection(targetClass = Rewards.class)
+    private List<Rewards> rewards;
+
+    public Employee() {
+    }
 
     public Employee(Long employeeId,
-                    String password, 
-                    String name, 
-                    String email, 
-                    String role, 
-                    int scores, 
-                    List<Rewards> rewards) {
+            String password,
+            String name,
+            String email,
+            String role,
+            int scores,
+            List<Rewards> rewards) {
         this.employeeId = employeeId;
         this.password = password;
         this.name = name;
@@ -35,8 +36,6 @@ public class Employee {
         this.scores = scores;
         this.rewards = rewards;
     }
-    @OneToMany
-    private List<Rewards> rewards;
 
     // Getters and setters
     public Long getEmployeeId() {
@@ -46,6 +45,7 @@ public class Employee {
     public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
+
     public String getPassword() {
         return password;
     }
