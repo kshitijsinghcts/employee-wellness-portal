@@ -8,10 +8,11 @@
 /backend/release.properties
 /backend/dependency-reduced-pom.xml
 /backend/build/
+/backend/src/main/resources/application.properties
 
 ### frontend
 /frontend/dist/
 /frontend/node_modules/
 /frontend/npm-debug.log*
 /frontend/.angular/cache/
-backend/src/main/resources/application.properties
+
