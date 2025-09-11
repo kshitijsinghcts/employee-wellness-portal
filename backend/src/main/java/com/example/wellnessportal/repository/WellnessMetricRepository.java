@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface WellnessMetricRepository extends JpaRepository<WellnessMetric, Long> {
 
-    @Query("SELECT r FROM Rewards r WHERE r.rewardId = :#{#rewards.rewardId}")
-    Rewards findByRewardId(@Param("rewards") Rewards rewards);
+       @Query("SELECT r FROM Rewards r WHERE r.rewardId = :#{#rewards.rewardId}")
+     Rewards findByRewardId(@Param("rewards") Rewards rewards);
 
    
 
