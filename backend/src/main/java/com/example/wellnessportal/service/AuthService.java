@@ -25,20 +25,19 @@ public class AuthService {
       @Autowired
       private AuthUserRepository authUserRepository;
 
-      public String validateEmployee(Long employeeId, 
-                               String password) 
+      public String validateEmployee(AuthUser inputAuthUser) 
       {
-    AuthUser authUser = authUserRepository.findUserByEmployeeId(employeeId);
-    if (authUser == null) 
-    {
-        return "Contact Admin to create your account";
-    }
-    if (!authUser.getPassword().equals(password)) 
+
+    long employeeId = inputAuthUser.getEmployeeId();
+    AuthUser authUser = authUserRepository.findById(employeeId).orElse(null);
+
+    if (!inputAuthUser.getPassword().equals(authUser.getPassword())|| authUser == null) 
     {
         return "Invalid credentials";
     }
 
-    String role = authUser.getRole();
+
+    String role = inputAuthUser.getRole();
     if ("ADMIN".equals(role))
      {
         Admin admin = adminRepository.findAdminByEmployeeId(employeeId);
@@ -72,7 +71,7 @@ public String registerEmployee(Employee employee)
         ||
         authUserRepository.existsById(employee.getEmployeeId())) 
     {
-        return "Employee with ID " + employee.getEmployeeId() + " already exists.";
+        return "Employee with ID " + employee.getEmployeeId() + " already exists. Kindly login.";
     }
     employeeRepository.save(employee);
     authUserRepository.save(new AuthUser(employee.getEmployeeId(), 

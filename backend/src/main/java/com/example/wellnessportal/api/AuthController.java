@@ -1,20 +1,26 @@
 package com.example.wellnessportal.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.wellnessportal.service.AuthService;
+import com.example.wellnessportal.model.AuthUser;
+import com.example.wellnessportal.model.Employee;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    
+    @Autowired
+    private AuthService authService;
     @PostMapping("/login")
-    public String login() {
-        // TODO: Implement login logic
-        return "Login endpoint";
+    public String login(@RequestBody AuthUser authUser) {
+        return authService.validateEmployee(authUser);
     }
 
     @PostMapping("/register")
-    public String register() {
-        // TODO: Implement register logic
-        return "Register endpoint";
+    public String register(@RequestBody Employee employee) {
+        return authService.registerEmployee(employee);
     }
 
     @PostMapping("/refresh-token")

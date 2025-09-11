@@ -26,12 +26,14 @@ public class WellnessMetricService {
     @Autowired
     private WellnessMetricRepository wellnessMetricRepository;
 
+    //User logs his health metrics. He should do this periodically for best results
     public WellnessMetric saveWellnessMetric(Long employeeId,
                                              LocalDate date,
                                              String mood,
                                              int sleepHours,
                                              int activityLevel,
-                                             int waterIntake) {
+                                             int waterIntake) 
+                                             {
 
         AuthUser authUser = authUserRepository.findById(employeeId).orElse(null);
         
@@ -91,7 +93,8 @@ public class WellnessMetricService {
         }
 
         // Water intake-based reward
-        if(waterIntake >= 8){
+        if(waterIntake >= 8)
+        {
             rewards.add(Rewards.PLATINUM);
         } 
         else if(waterIntake >= 6)
@@ -102,7 +105,8 @@ public class WellnessMetricService {
         {
             rewards.add(Rewards.SILVER);
         } 
-        else if(waterIntake >= 2){
+        else if(waterIntake >= 2)
+        {
             rewards.add(Rewards.BRONZE);
         }
 
@@ -123,13 +127,14 @@ public class WellnessMetricService {
 
     public List<WellnessMetric> getEmployeeLogs(Long employeeId) 
     {
-        return wellnessMetricRepository.findByEmployeeId(employeeId);
+        return wellnessMetricRepository.findAllByEmployeeId(employeeId);
     }
 
-    public String getOverallWellnessMetricsStatus(Long employeeId,
-                                                  WellnessMetric wellnessMetric)
+       //Getting overall wellness metric status for all metrics of the user
+    public String getOverallWellnessMetricsStatus(Long employeeId)
     {
-         //Getting overall wellness metric status for all metrics of the user
+      
+        WellnessMetric wellnessMetric=wellnessMetricRepository.findByEmployeeId(employeeId);
         if(goalService.validateGoalCompletion(employeeId,
                                               wellnessMetric,
                                               LocalDate.now()))
@@ -139,10 +144,11 @@ public class WellnessMetricService {
     }
 
     //Getting overall wellness metric status individually
-    public String getOverallWellnessMetricsStatus(Long employeeId,
-                                                  WellnessMetric wellnessMetric,  
+    public String getOverallWellnessMetricsStatus(Long employeeId, 
                                                   Goal goal)
     {
+       
+        WellnessMetric wellnessMetric=wellnessMetricRepository.findByEmployeeId(employeeId);
         if(goalService.validateGoalCompletion(employeeId,
                                               wellnessMetric,
                                               goal,
@@ -151,5 +157,31 @@ public class WellnessMetricService {
         else
         return "Behind Schedule";
     }
+
+    public List<String> getLatestWellnessMetrics(Long employeeId)
+    {
+       WellnessMetric wellnessMetric=wellnessMetricRepository.findByEmployeeId(employeeId);
+       List<String> wmList=new ArrayList<>();
+       
+       wmList.add(wellnessMetric.getMood());
+       wmList.add(String.valueOf(wellnessMetric.getDailySteps()));
+       wmList.add(String.valueOf(wellnessMetric.getSleepHours()));
+       wmList.add(String.valueOf(wellnessMetric.getWaterIntake()));
+       
+       return wmList;
+    }
+
+    public int getEmployeeRank(Long employeeId) {
+    List<WellnessMetric> rankedList = wellnessMetricRepository.findEmployeesRankedByHealthScore();
+
+    for (int i = 0; i < rankedList.size(); i++) {
+        if (rankedList.get(i).getEmployeeId().equals(employeeId)) {
+            return i + 1; 
+        }
+    }
+
+    return -1; 
+    }
+
 
 }

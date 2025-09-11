@@ -9,7 +9,8 @@ import com.example.wellnessportal.model.Resource;
 import com.example.wellnessportal.repository.ResourceRepository;
 
 @Service
-public class ResourceService {
+public class ResourceService 
+{
     @Autowired
     private ResourceRepository resourceRepository;
    
@@ -26,58 +27,26 @@ public class ResourceService {
 
     public List<Resource> getResourcesByCategory(String category)
     {
-         List<Resource> resourceList = new java.util.ArrayList<>();
-       for(Resource resource : resourceRepository.findAll())
-       {
-        if(resource.getResourceCategory().equalsIgnoreCase(category))
-        {
-            resourceList.add(resource);
-        }
-       }
-       return resourceList;
+        return resourceRepository.findResourceByResourceCategory(category);
     }
+
 
     public List<Resource> getResourcesByTags(String tags)
     {
-         List<Resource> resourceList = new java.util.ArrayList<>();
-       for(Resource resource : resourceRepository.findAll())
-       {
-        for (String tag : resource.getResourceTags())
-        {
-            if(tag.equalsIgnoreCase(tags))
-            {
-                resourceList.add(resource);
-            }
-        }
-       }
-       return resourceList;
+        return resourceRepository.findResourcesByTag(tags);
     }
+
 
     public List<Resource> getResourcesByTitle(String title)
     {
-         List<Resource> resourceList = new java.util.ArrayList<>();
-       for(Resource resource : resourceRepository.findAll())
-       {
-        if(resource.getTitle().toLowerCase().contains(title.toLowerCase()))
-        {
-            resourceList.add(resource);
-        }
-       }
-       return resourceList;
+        return resourceRepository.findResourcesByTitleContaining(title);
     }
 
     public Resource getResourceById(Long resourceId)
     {
-       
-       for(Resource resource : resourceRepository.findAll())
-       {
-        if(resource.getResourceId().equals(resourceId))
-        {
-            return resource;
-        }
-       }
-       return null;
+        return resourceRepository.findResourceById(resourceId);
     }
+       
 
    //The following operations can only be performed by the admin
    public void addResource(Resource resource)
@@ -91,6 +60,10 @@ public class ResourceService {
     if(resource!=null)
     {
         resourceRepository.delete(resource);
+    }
+    else
+    {
+        throw new IllegalArgumentException("Resource with ID " + resourceId + " not found.");
     }
    }
 

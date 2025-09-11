@@ -107,3 +107,74 @@ public int getWaterIntakeByEmployeeId(Long employeeId);
 public List<Rewards> findRewardsByEmployeeId(Long employeeId);
 public String findLatestMoodByEmployeeId(Long employeeId);
 public int findLatestSleepHoursByEmployeeId(Long employeeId);
+
+ResourceService:
+//          List<Resource> resourceList = new java.util.ArrayList<>();
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         if(resource.getResourceCategory().equalsIgnoreCase(category))
+//         {
+//             resourceList.add(resource);
+//         }
+//        }
+//        return resourceList;
+//     }
+
+//          List<Resource> resourceList = new java.util.ArrayList<>();
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         for (String tag : resource.getResourceTags())
+//         {
+//             if(tag.equalsIgnoreCase(tags))
+//             {
+//                 resourceList.add(resource);
+//             }
+//         }
+//        }
+//        return resourceList;
+//     }
+
+//          List<Resource> resourceList = new java.util.ArrayList<>();
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         if(resource.getTitle().toLowerCase().contains(title.toLowerCase()))
+//         {
+//             resourceList.add(resource);
+//         }
+//        }
+//        return resourceList;
+//     }
+
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         if(resource.getResourceId().equals(resourceId))
+//         {
+//             return resource;
+//         }
+//        }
+//        return null;
+//     }
+
+survey response:
+ for (SurveyResponse response : surveyResponseRepository.findAll()) {
+            if (response.getSurveyId().equals(surveyId) && response.getEmployeeId().equals(employeeId)) 
+            {
+                return response;
+            }
+        }
+        return null;
+
+         List<SurveyResponse> responses = new java.util.ArrayList<>();
+        for (SurveyResponse response : surveyResponseRepository.findAll()) {
+            if (response.getSurveyId().equals(surveyId)) {
+                responses.add(response);
+            }
+        }
+        return responses;
+
+         for (SurveyResponse response : surveyResponseRepository.findAll()) {
+            if (response.getEmployeeId().equals(employeeId)) {
+                return response;
+            }
+        }
+        return null;

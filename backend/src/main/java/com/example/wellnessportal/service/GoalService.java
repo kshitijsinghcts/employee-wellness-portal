@@ -80,9 +80,9 @@ public class GoalService {
         switch(goal.getGoalType())
         {
             case "mood"-> {
-                      return wellnessMetric.getMood().equalsIgnoreCase("Good")
-                      &&
-                        goal.getTargetDate().isBefore(currentDate);
+                    return wellnessMetric.getMood().equalsIgnoreCase("Good")
+                    &&
+                    goal.getTargetDate().isBefore(currentDate);
                           }
                     
             case "dailySteps"->{
@@ -105,6 +105,6 @@ public class GoalService {
       }
         return goal.getStatus() == goal.getTargetScores()
         &&
-        goal.getTargetDate().isBefore(currentDate); // Assuming status 100 means completed
+        goal.getTargetDate().isBefore(currentDate);
     }
 }
