@@ -9,16 +9,14 @@ import org.springframework.data.repository.query.Param;
 import com.example.wellnessportal.model.SurveyResponse;
 
 public interface SurveyResponseRepository extends JpaRepository<SurveyResponse, Long> {
-   
-    @Query("SELECT sr FROM SurveyResponse sr WHERE sr.surveyResponseId = :surveyResponseId")
-    SurveyResponse findSurveyResponseBySurveyResponseId(@Param("surveyResponseId") Long surveyResponseId);
+
+    @Query("SELECT sr FROM SurveyResponse sr WHERE sr.responseId = :responseId")
+    SurveyResponse findSurveyResponseBySurveyResponseId(@Param("responseId") Long responseId);
 
     @Query("SELECT sr FROM SurveyResponse sr WHERE sr.surveyId = :surveyId")
     List<SurveyResponse> findSurveyResponseBySurveyId(@Param("surveyId") Long surveyId);
 
     @Query("SELECT sr FROM SurveyResponse sr WHERE sr.surveyId = :surveyId AND sr.employeeId = :employeeId")
-    SurveyResponse findSurveyResponseBySurveyIdAndEmployeeId(@Param("surveyId") Long surveyId, @Param("employeeId") Long employeeId);
+    SurveyResponse findSurveyResponseBySurveyIdAndEmployeeId(@Param("surveyId") Long surveyId,
+            @Param("employeeId") Long employeeId);
 }
-
-
-

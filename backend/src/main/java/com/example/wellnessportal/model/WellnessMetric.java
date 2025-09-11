@@ -13,7 +13,7 @@ public class WellnessMetric {
 
     private Long employeeId;
 
-    private LocalDate currentDate;
+    private LocalDate recordDate;
 
     private String mood;
 
@@ -22,7 +22,7 @@ public class WellnessMetric {
     private int dailySteps;
 
     private int waterIntake;
-    
+
     @ElementCollection(targetClass = Rewards.class)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "wellness_rewards", joinColumns = @JoinColumn(name = "metric_id"))
@@ -32,19 +32,16 @@ public class WellnessMetric {
     @ElementCollection
     private List<Integer> scores;
 
-    
-
     // Constructors
     public WellnessMetric(Long employeeId,
-                          LocalDate currentDate,
-                          String mood,
-                          int sleepHours,
-                          int dailySteps,
-                          int waterIntake,
-                          List<Rewards> rewards) 
-       {
+            LocalDate recordDate,
+            String mood,
+            int sleepHours,
+            int dailySteps,
+            int waterIntake,
+            List<Rewards> rewards) {
         this.employeeId = employeeId;
-        this.currentDate = currentDate;
+        this.recordDate = recordDate;
         this.mood = mood;
         this.sleepHours = sleepHours;
         this.dailySteps = dailySteps;
@@ -65,12 +62,12 @@ public class WellnessMetric {
         this.employeeId = employeeId;
     }
 
-    public LocalDate getCurrentDate() {
-        return currentDate;
+    public LocalDate getrecordDate() {
+        return recordDate;
     }
 
-    public void setCurrentDate(LocalDate currentDate) {
-        this.currentDate = currentDate;
+    public void setrecordDate(LocalDate recordDate) {
+        this.recordDate = recordDate;
     }
 
     public String getMood() {
@@ -97,14 +94,14 @@ public class WellnessMetric {
         this.dailySteps = dailySteps;
     }
 
-    public int getWaterIntake() 
-    {
+    public int getWaterIntake() {
         return waterIntake;
     }
-    public void setWaterIntake(int waterIntake) 
-    {
+
+    public void setWaterIntake(int waterIntake) {
         this.waterIntake = waterIntake;
     }
+
     public List<Rewards> getRewards() {
         return rewards;
     }

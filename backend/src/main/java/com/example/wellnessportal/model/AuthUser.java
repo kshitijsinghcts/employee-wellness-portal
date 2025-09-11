@@ -3,33 +3,50 @@ package com.example.wellnessportal.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
-
 @Entity
 public class AuthUser {
 
     @Id
-    private Long EmployeeId;
-    // Username can be customized by the employee but employee id is a mandatory field
-    
+    private Long employeeId;
+    // Username can be customized by the employee but employee id is a mandatory
+    // field
+    private String email;
     private String password;
-    //For Role-Based Login
+    // For Role-Based Login
     private String role;
-    
-    public AuthUser(Long employeeId, 
-                     
-                    String password, 
-                    String role) {
-        this.EmployeeId = employeeId;
+
+    public AuthUser() {
+    }
+
+    public AuthUser(Long employeeId, String email, String role) {
+        this.employeeId = employeeId;
+        this.email = email;
+        this.password = "password"; // Default password
+        this.role = role;
+    }
+
+    public AuthUser(Long employeeId, String email, String password, String role) {
+        this.employeeId = employeeId;
+        this.email = email;
         this.password = password;
         this.role = role;
     }
+
     // Getters and setters
     public Long getEmployeeId() {
-        return EmployeeId;
+        return employeeId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setEmployeeId(Long employeeId) {
-        this.EmployeeId = employeeId;
+        this.employeeId = employeeId;
     }
 
     public String getPassword() {

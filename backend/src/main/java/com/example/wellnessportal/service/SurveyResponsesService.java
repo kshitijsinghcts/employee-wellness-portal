@@ -1,6 +1,5 @@
 package com.example.wellnessportal.service;
 
-
 import java.util.Map;
 import java.util.List;
 
@@ -17,13 +16,12 @@ public class SurveyResponsesService {
     private SurveyResponseRepository surveyResponseRepository;
 
     // The following operation can be performed by employee only
-    public SurveyResponse saveSurveyResponse(Long surveyId, 
-                                      Long employeeId, 
-                                      Map<String, String> answers) 
-    {
-        SurveyResponse surveyResponse = new SurveyResponse(surveyId, 
-                                                           employeeId, 
-                                                           answers);
+    public SurveyResponse saveSurveyResponse(Long surveyId,
+            Long employeeId,
+            Map<String, String> answers) {
+        SurveyResponse surveyResponse = new SurveyResponse(surveyId,
+                employeeId,
+                answers);
         return surveyResponseRepository.save(surveyResponse);
     }
 
@@ -34,48 +32,36 @@ public class SurveyResponsesService {
      * 2. View survey response by employee id
      * 3. View all survey responses based on survey id
      */
-    public SurveyResponse getSurveyResponseBySurveyId(Long surveyId, Long employeeId) 
-    {
-       return surveyResponseRepository.findSurveyResponseBySurveyIdAndEmployeeId(surveyId, employeeId);
+    public SurveyResponse getSurveyResponseBySurveyId(Long surveyId, Long employeeId) {
+        return surveyResponseRepository.findSurveyResponseBySurveyIdAndEmployeeId(surveyId, employeeId);
     }
 
-    public List<SurveyResponse> getSurveyResponseBySurveyId(Long surveyId) 
-    {
-       return surveyResponseRepository.findSurveyResponseBySurveyId(surveyId);
+    public List<SurveyResponse> getSurveyResponseBySurveyId(Long surveyId) {
+        return surveyResponseRepository.findSurveyResponseBySurveyId(surveyId);
     }
-    
+
     public SurveyResponse getSurveyResponseByEmployeeId(Long surveyId, Long employeeId) {
-       return surveyResponseRepository.findSurveyResponseBySurveyIdAndEmployeeId(surveyId, employeeId);
+        return surveyResponseRepository.findSurveyResponseBySurveyIdAndEmployeeId(surveyId, employeeId);
     }
-    
+
     // The following operations can be performed by both employee and admin
-    public void deleteSurveyResponse(Long surveyId, Long employeeId) 
-    {
+    public void deleteSurveyResponse(Long surveyId, Long employeeId) {
         SurveyResponse response = getSurveyResponseBySurveyId(surveyId, employeeId);
-        if (response != null) 
-        {
+        if (response != null) {
             surveyResponseRepository.delete(response);
         }
     }
 
-    public void editSurveyResponse(Long surveyId, 
-                                   Long employeeId, 
-                                   Map<String, String> newAnswers) 
-    {
+    public void editSurveyResponse(Long surveyId,
+            Long employeeId,
+            Map<String, String> newAnswers) {
         SurveyResponse response = getSurveyResponseBySurveyId(surveyId, employeeId);
-        if (response != null) 
-        {
+        if (response != null) {
             response.setAnswers(newAnswers);
             surveyResponseRepository.save(response);
-        } 
-        else 
-        {
+        } else {
             throw new IllegalArgumentException("Survey response not found for the given survey ID and employee ID.");
         }
     }
 
-
-
-
-    
 }

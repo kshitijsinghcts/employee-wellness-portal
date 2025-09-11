@@ -54,7 +54,7 @@ answers Map<String,String>
 WellnessMetric:
 metricId long autogen
 employeeId long
-currentDate LocalDate
+recordDate LocalDate
 mood String
 sleepHours int
 dailySteps int
