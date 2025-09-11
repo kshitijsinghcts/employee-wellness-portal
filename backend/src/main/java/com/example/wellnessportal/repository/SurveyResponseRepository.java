@@ -19,8 +19,8 @@ public interface SurveyResponseRepository extends JpaRepository<SurveyResponse, 
     SurveyResponse findSurveyResponseBySurveyIdAndEmployeeId(@Param("surveyId") Long surveyId,
             @Param("employeeId") Long employeeId);
 
-    // @Query("UPDATE SurveyResponse sr SET sr.answers = :updatedAnswers WHERE s.surveyId = :surveyId OR s.surveyTitle = :surveyTitle")
-    // void updateSurveyBySurveyIdOrSurveyTitle(@Param("surveyId") Long surveyId,
-    //                                          @Param("surveyTitle") String surveyTitle,
-    //                                          @Param("updatedAnswers") Map<String, String> answers);
+     @Query("UPDATE SurveyResponse sr SET sr.answers = :newAnswers WHERE sr.surveyId = :surveyId OR sr.employeeId= :employeeId")
+     void updateSurveyBySurveyIdOrSurveyTitle(@Param("surveyId") Long surveyId,
+                                              @Param("employeeId") Long employeeId,
+                                              @Param("newAnswers") Map<String, String> newAnswers);
 }

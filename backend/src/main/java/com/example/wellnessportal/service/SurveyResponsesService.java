@@ -7,6 +7,7 @@ import com.example.wellnessportal.model.SurveyResponse;
 import com.example.wellnessportal.repository.SurveyResponseRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -56,13 +57,17 @@ public class SurveyResponsesService {
             Long employeeId,
             Map<String, String> newAnswers) {
         SurveyResponse response = getSurveyResponseBySurveyId(surveyId, employeeId);
-        if (response != null) {
-            response.setAnswers(newAnswers);
-            surveyResponseRepository.save(response);
-        } else {
-            //Handle in the controller
-            throw new IllegalArgumentException("Survey response not found for the given survey ID and employee ID.");
-        }
-    }
+         surveyResponseRepository.updateSurveyBySurveyIdOrSurveyTitle(surveyId,
+                                              employeeId,
+                                              newAnswers);
+    //     if (response != null) {
+    //         response.setAnswers(newAnswers);
+    //         surveyResponseRepository.save(response);
+    //     } else {
+    //         //Handle in the controller
+    //         throw new IllegalArgumentException("Survey response not found for the given survey ID and employee ID.");
+    //     }
+    // }
+            }
 
 }
