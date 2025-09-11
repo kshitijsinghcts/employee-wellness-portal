@@ -172,7 +172,7 @@ public class WellnessMetricService {
     }
 
     public int getEmployeeRank(Long employeeId) {
-    List<WellnessMetric> rankedList = wellnessMetricRepository.findEmployeesRankedByHealthScore();
+    List<Long> rankedList = wellnessMetricRepository.findEmployeesRankedByHealthScore();
 
     for (int i = 0; i < rankedList.size(); i++) {
         if (rankedList.get(i).getEmployeeId().equals(employeeId)) {
