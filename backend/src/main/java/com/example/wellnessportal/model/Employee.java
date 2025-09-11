@@ -27,7 +27,8 @@ public class Employee {
             String email,
             String role,
             int scores,
-            List<Rewards> rewards) {
+            List<Rewards> rewards) 
+            {
         this.employeeId = employeeId;
         this.password = password;
         this.name = name;

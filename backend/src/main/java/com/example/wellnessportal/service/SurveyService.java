@@ -33,5 +33,10 @@ public class SurveyService {
     }
     return survey;
     }
+
+    Survey getSurveyBySurveyId(Long surveyId)
+    {
+        return surveyRepository.findSurveyBySurveyId(surveyId);
+    }
     
 }

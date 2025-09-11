@@ -49,6 +49,7 @@ public class ResourceService
        
 
    //The following operations can only be performed by the admin
+   // This should be configured in the controller classes
    public void addResource(Resource resource)
    {
     resourceRepository.save(resource);
@@ -63,6 +64,7 @@ public class ResourceService
     }
     else
     {
+        //Handle in controller and display to user and redirect him
         throw new IllegalArgumentException("Resource with ID " + resourceId + " not found.");
     }
    }

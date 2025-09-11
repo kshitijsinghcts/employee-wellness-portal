@@ -60,6 +60,7 @@ public class SurveyResponsesService {
             response.setAnswers(newAnswers);
             surveyResponseRepository.save(response);
         } else {
+            //Handle in the controller
             throw new IllegalArgumentException("Survey response not found for the given survey ID and employee ID.");
         }
     }

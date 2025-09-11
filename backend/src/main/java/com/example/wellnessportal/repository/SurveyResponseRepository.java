@@ -1,6 +1,7 @@
 package com.example.wellnessportal.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,8 +11,6 @@ import com.example.wellnessportal.model.SurveyResponse;
 
 public interface SurveyResponseRepository extends JpaRepository<SurveyResponse, Long> {
 
-    @Query("SELECT sr FROM SurveyResponse sr WHERE sr.responseId = :responseId")
-    SurveyResponse findSurveyResponseBySurveyResponseId(@Param("responseId") Long responseId);
 
     @Query("SELECT sr FROM SurveyResponse sr WHERE sr.surveyId = :surveyId")
     List<SurveyResponse> findSurveyResponseBySurveyId(@Param("surveyId") Long surveyId);
@@ -19,4 +18,9 @@ public interface SurveyResponseRepository extends JpaRepository<SurveyResponse, 
     @Query("SELECT sr FROM SurveyResponse sr WHERE sr.surveyId = :surveyId AND sr.employeeId = :employeeId")
     SurveyResponse findSurveyResponseBySurveyIdAndEmployeeId(@Param("surveyId") Long surveyId,
             @Param("employeeId") Long employeeId);
+
+    // @Query("UPDATE SurveyResponse sr SET sr.answers = :updatedAnswers WHERE s.surveyId = :surveyId OR s.surveyTitle = :surveyTitle")
+    // void updateSurveyBySurveyIdOrSurveyTitle(@Param("surveyId") Long surveyId,
+    //                                          @Param("surveyTitle") String surveyTitle,
+    //                                          @Param("updatedAnswers") Map<String, String> answers);
 }

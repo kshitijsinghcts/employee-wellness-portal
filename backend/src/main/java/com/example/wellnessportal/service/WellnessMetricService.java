@@ -130,6 +130,7 @@ public class WellnessMetricService {
         return wellnessMetricRepository.findAllByEmployeeId(employeeId);
     }
 
+    // The following methods are for letting the user know how he/she is on par with his self-set goals
        //Getting overall wellness metric status for all metrics of the user
     public String getOverallWellnessMetricsStatus(Long employeeId)
     {
@@ -143,7 +144,7 @@ public class WellnessMetricService {
         return "Behind Schedule";
     }
 
-    //Getting overall wellness metric status individually
+    //Getting overall wellness metric status individually for each goal
     public String getOverallWellnessMetricsStatus(Long employeeId, 
                                                   Goal goal)
     {
@@ -158,6 +159,7 @@ public class WellnessMetricService {
         return "Behind Schedule";
     }
 
+    //To display on employee or admin analytics dashboard
     public List<String> getLatestWellnessMetrics(Long employeeId)
     {
        WellnessMetric wellnessMetric=wellnessMetricRepository.findByEmployeeId(employeeId);
@@ -171,6 +173,8 @@ public class WellnessMetricService {
        return wmList;
     }
 
+    // We can use this method to rank the employees based on how they fare among health metrics. We can configure different weight vectors for this.
+    // This can be used for admin to track his/her employee health statistics
     public int getEmployeeRank(Long employeeId) {
     List<Long> rankedList = wellnessMetricRepository.findEmployeesRankedByHealthScore();
 

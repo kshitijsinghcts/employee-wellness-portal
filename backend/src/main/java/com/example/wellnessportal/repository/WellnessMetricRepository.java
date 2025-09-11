@@ -11,18 +11,18 @@ import java.util.List;
 
 public interface WellnessMetricRepository extends JpaRepository<WellnessMetric, Long> {
 
-       @Query("SELECT r FROM Rewards r WHERE r.rewardId = :#{#rewards.rewardId}")
-     Rewards findByRewardId(@Param("rewards") Rewards rewards);
+      //  @Query("SELECT r FROM Rewards r WHERE r.rewardId = :#{#rewards.rewardId}")
+      // Rewards findByRewardId(@Param("rewards") Rewards rewards);
 
    
 
-    @Query("SELECT wm FROM WellnessMetric wm WHERE wm.employeeId = :employeeId ORDER BY wm.date DESC LIMIT 1")
-    WellnessMetric findByEmployeeId(@Param("employeeId") Long employeeId);
+      @Query(value="SELECT wm FROM WellnessMetric wm WHERE wm.employeeId = :employeeId ORDER BY wm.date DESC LIMIT 1", nativeQuery=true)
+       WellnessMetric findByEmployeeId(@Param("employeeId") Long employeeId);
 
        @Query("SELECT wm FROM WellnessMetric wm WHERE wm.employeeId = :employeeId")
         List<WellnessMetric> findAllByEmployeeId(@Param("employeeId") Long employeeId);
 
-        @Query("SELECT employeeId FROM WellnessMetric wm ORDER BY (e.waterIntake * 1.0 + e.dailySteps * 0.01 + e.sleepHours * 1.5) DESC")
+        @Query("SELECT employeeId FROM WellnessMetric wm ORDER BY (wm.waterIntake * 1.0 + wm.dailySteps * 0.01 + wm.sleepHours * 1.5) DESC")
         List<Long> findEmployeesRankedByHealthScore();
 
 

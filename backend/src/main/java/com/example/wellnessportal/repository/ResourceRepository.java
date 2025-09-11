@@ -11,8 +11,7 @@ import com.example.wellnessportal.model.Resource;
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
     // Search by exact title
-    @Query("SELECT r FROM Resource r WHERE LOWER(r.title) = LOWER(:title)")
-    Resource findResourceByTitle(@Param("title") String title);
+  
 
     // Search by partial title match (contains)
     @Query("SELECT r FROM Resource r WHERE LOWER(r.title) LIKE LOWER(CONCAT('%', :title, '%'))")

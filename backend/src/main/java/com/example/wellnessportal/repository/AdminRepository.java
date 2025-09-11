@@ -11,8 +11,8 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
     @Query("SELECT a FROM Admin a WHERE a.employeeId = :employeeId")
     Admin findAdminByEmployeeId(@Param("employeeId") Long employeeId);
 
-    @Query("SELECT a FROM Admin a WHERE a.email = :email")
-    Admin findAdminByEmail(@Param("email") String email);
+    // @Query("SELECT a FROM Admin a WHERE a.email = :email")
+    // Admin findAdminByEmail(@Param("email") String email);
 
 
 }

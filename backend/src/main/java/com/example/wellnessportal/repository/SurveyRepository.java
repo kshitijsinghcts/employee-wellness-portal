@@ -1,5 +1,7 @@
 package com.example.wellnessportal.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,10 +17,7 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
     Survey findSurveyBySurveyTitle(@Param("title") String title);
 
     // Deletion by admin
-    @Query("DELETE FROM Survey s WHERE s.surveyId = :surveyId")
-    Survey deleteSurveyBySurveyId(@Param("surveyId") Long surveyId);
+   
 
-    @Query("UPDATE Survey s SET s.status = 'Updated' WHERE s.surveyId = :surveyId OR s.surveyTitle = :surveyTitle")
-    void updateSurveyBySurveyIdOrSurveyTitle(@Param("surveyId") Long surveyId,
-            @Param("surveyTitle") String surveyTitle);
+  
 }
