@@ -15,13 +15,28 @@ public class Goal {
     //Attributes For Performance Measurement API
     private int targetScores;
     private Rewards targetRewards;
-
+  
+    private String description;
 
     public Goal()
     {
 
     }
 
+     public Goal(Long employeeId, 
+                String goalType,
+                String description,
+                LocalDate targetDate, 
+                int targetScores, 
+                Rewards targetRewards) 
+                {
+        this.employeeId = employeeId;
+        this.goalType = goalType;
+        this.description=description;
+        this.targetDate = targetDate;
+        this.targetScores = targetScores;
+        this.targetRewards = targetRewards;
+    }
     public Goal(Long employeeId, 
                 String goalType,
                 LocalDate targetDate, 
@@ -55,6 +70,15 @@ public class Goal {
         this.goalType = goalType;
     }
 
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    public void setDescription()
+    {
+        this.description=description;
+    }
 
     public LocalDate getTargetDate() 
     {
