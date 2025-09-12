@@ -27,9 +27,10 @@ public class AuthService {
 
         long employeeId = inputAuthUser.getEmployeeId();
         AuthUser authUser = authUserRepository.findById(employeeId).orElse(null);
+        System.out.println(authUser);
 
         if (authUser == null || !inputAuthUser.getPassword().equals(authUser.getPassword())) {
-            return "Invalid credentials";
+            return "Invalid credentials !";
         }
 
         String role = inputAuthUser.getRole();

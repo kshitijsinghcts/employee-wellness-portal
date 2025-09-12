@@ -15,21 +15,15 @@ public class AuthUser {
     // For Role-Based Login
     private String role;
 
-    public AuthUser() {
-    }
-
-    public AuthUser(Long employeeId, String email, String role) {
-        this.employeeId = employeeId;
-        this.email = email;
-        this.password = "password"; // Default password
-        this.role = role;
-    }
-
-    public AuthUser(Long employeeId, String email, String password, String role) {
+    public AuthUser(Long employeeId, String email, String password) {
         this.employeeId = employeeId;
         this.email = email;
         this.password = password;
-        this.role = role;
+        if (email != null && email.endsWith("@portaladmin.com")) {
+            this.role = "ADMIN";
+        } else {
+            this.role = "EMPLOYEE";
+        }
     }
 
     // Getters and setters
@@ -63,5 +57,11 @@ public class AuthUser {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "AuthUser [employeeId=" + employeeId + ", email=" + email + ", password=" + password + ", role=" + role
+                + "]";
     }
 }

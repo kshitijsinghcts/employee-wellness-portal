@@ -24,18 +24,18 @@ public class Employee {
     public Employee(Long employeeId,
             String password,
             String name,
-            String email,
-            String role,
-            int scores,
-            List<Rewards> rewards) 
-            {
+            String email) {
         this.employeeId = employeeId;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.role = role;
-        this.scores = scores;
-        this.rewards = rewards;
+        if (email != null && email.endsWith("@portaladmin.com")) {
+            this.role = "ADMIN";
+        } else {
+            this.role = "EMPLOYEE";
+        }
+        this.scores = 0;
+        this.rewards = List.of();
     }
 
     // Getters and setters
