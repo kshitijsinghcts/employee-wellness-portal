@@ -1,6 +1,7 @@
 package com.example.wellnessportal.service;
 
 import com.example.wellnessportal.model.Employee;
+import com.example.wellnessportal.model.Rewards;
 import com.example.wellnessportal.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,4 +34,22 @@ public class EmployeeService {
                 })
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
+    public void updateRewards(Rewards rewards, 
+                              Long employeeId)
+    {
+    Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
+
+    if (optionalEmployee.isPresent()) {
+        Employee employee = optionalEmployee.get();
+        List<Rewards> currentRewards = employee.getRewards();
+
+        currentRewards.add(rewards); // Add new reward to the list
+        employee.setRewards(currentRewards); // Update the list
+
+        employeeRepository.save(employee); // Persist changes
+    } 
+    }
+
 }
+  
+

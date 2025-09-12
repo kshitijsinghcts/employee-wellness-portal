@@ -60,7 +60,7 @@ public class AuthService {
         }
         employeeRepository.save(employee);
         authUserRepository.save(new AuthUser(employee.getEmployeeId(),
-                employee.getEmail(),
+                employee.getPassword(),
                 "EMPLOYEE"));
         return "Employee registered successfully with ID " + employee.getEmployeeId();
     }

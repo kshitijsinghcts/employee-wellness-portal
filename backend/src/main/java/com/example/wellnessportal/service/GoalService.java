@@ -90,6 +90,6 @@ public class GoalService {
         }
         return goal.getStatus() == goal.getTargetScores()
                 &&
-                goal.getTargetDate().isBefore(recordDate);
+            goal.getTargetDate().isBefore(recordDate);
     }
 }
