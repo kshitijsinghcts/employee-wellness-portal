@@ -20,6 +20,22 @@ public class Admin {
     private String email;
     private String password;
 
+    public Admin()
+    {
+
+    }
+    public Admin(Long employeeId,
+                 String username,
+                 String email,
+                 String password)
+                 {
+                    this.employeeId=employeeId;
+                    this.username=username;
+                    this.email=email;
+                    this.password=password;
+                 }
+
+                 
     public Long getEmployeeId() {
         return employeeId;
     }

@@ -58,11 +58,33 @@ public class AuthService {
                 authUserRepository.existsById(employee.getEmployeeId())) {
             return "Employee with ID " + employee.getEmployeeId() + " already exists. Kindly login.";
         }
+        
         employeeRepository.save(employee);
-        authUserRepository.save(new AuthUser(employee.getEmployeeId(),
-                employee.getEmail(),
-                "EMPLOYEE"));
+        authUserRepository.save(new AuthUser(
+                employee.getEmployeeId(),
+                employee.getName(),
+                employee.getPassword(),
+                "EMPLOYEE")
+                );
         return "Employee registered successfully with ID " + employee.getEmployeeId();
     }
+
+    public String registerAdmin(Admin admin) {
+        if (employeeRepository.existsById(admin.getEmployeeId())
+                ||
+                authUserRepository.existsById(admin.getEmployeeId())) {
+            return "Admin with ID " + admin.getEmployeeId() + " already exists. Kindly login.";
+        }
+        
+        adminRepository.save(admin);
+        authUserRepository.save(new AuthUser(
+                admin.getEmployeeId(),
+                admin.getUsername(),
+                admin.getPassword(),
+                "ADMIN")
+                );
+        return "Admin registered successfully with ID " + admin.getEmployeeId();
+    }
+
 
 }

@@ -20,7 +20,8 @@ public class SurveyResponse {
     @Column(name = "answer")
     private Map<String, String> answers;
 
-   
+    public SurveyResponse(){}
+    
     public SurveyResponse(Long surveyId, 
                           Long employeeId, 
                           Map<String, String> answers) 

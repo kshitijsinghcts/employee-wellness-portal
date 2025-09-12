@@ -56,8 +56,7 @@ public class SurveyResponsesService {
     public void editSurveyResponse(Long surveyId,
             Long employeeId,
             Map<String, String> newAnswers) {
-        SurveyResponse response = getSurveyResponseBySurveyId(surveyId, employeeId);
-         surveyResponseRepository.updateSurveyBySurveyIdOrSurveyTitle(surveyId,
+        surveyResponseRepository.updateSurveyBySurveyIdOrSurveyTitle(surveyId,
                                               employeeId,
                                               newAnswers);
     //     if (response != null) {

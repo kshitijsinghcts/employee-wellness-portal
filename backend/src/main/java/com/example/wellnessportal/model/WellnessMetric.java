@@ -32,7 +32,23 @@ public class WellnessMetric {
     @ElementCollection
     private List<Integer> scores;
 
+    public WellnessMetric(){}
     // Constructors
+    public WellnessMetric(Long employeeId,
+            LocalDate recordDate,
+            String mood,
+            int sleepHours,
+            int dailySteps,
+            int waterIntake) {
+        this.employeeId = employeeId;
+        this.recordDate = recordDate;
+        this.mood = mood;
+        this.sleepHours = sleepHours;
+        this.dailySteps = dailySteps;
+        this.waterIntake = waterIntake;
+       
+    }
+
     public WellnessMetric(Long employeeId,
             LocalDate recordDate,
             String mood,
@@ -46,7 +62,8 @@ public class WellnessMetric {
         this.sleepHours = sleepHours;
         this.dailySteps = dailySteps;
         this.waterIntake = waterIntake;
-        this.rewards = rewards;
+        this.rewards=rewards;
+       
     }
 
     // Getters and Setters

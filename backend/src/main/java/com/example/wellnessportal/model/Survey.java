@@ -15,6 +15,12 @@ public class Survey {
     @ElementCollection
     private List<String> surveyQuestions;
 
+
+    public Survey()
+    {
+
+    }
+    
     public Survey(String surveyTitle,
             List<String> surveyQuestions) {
         this.surveyTitle = surveyTitle;

@@ -34,7 +34,11 @@ public class Resource {
     // Constructors
     public Resource() {}
 
-    public Resource(String title, String type, String content, List<String> resourceTags, String resourceCategory) {
+    public Resource(String title, 
+                    String type, 
+                    String content, 
+                    List<String> resourceTags, 
+                    String resourceCategory) {
         this.title = title;
         this.type = type;
         this.content = content;

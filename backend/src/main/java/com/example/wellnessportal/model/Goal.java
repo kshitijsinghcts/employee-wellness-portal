@@ -16,17 +16,21 @@ public class Goal {
     private int targetScores;
     private Rewards targetRewards;
 
+
+    public Goal()
+    {
+
+    }
+
     public Goal(Long employeeId, 
                 String goalType,
                 LocalDate targetDate, 
-                int status, 
                 int targetScores, 
                 Rewards targetRewards) 
                 {
         this.employeeId = employeeId;
         this.goalType = goalType;
         this.targetDate = targetDate;
-        this.status = status;
         this.targetScores = targetScores;
         this.targetRewards = targetRewards;
     }

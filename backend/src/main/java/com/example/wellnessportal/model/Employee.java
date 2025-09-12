@@ -12,30 +12,25 @@ public class Employee {
     private String password;
     private String name;
     private String email;
-    private String role;
-    private int scores;
+   
 
-    @ElementCollection(targetClass = Rewards.class)
-    private List<Rewards> rewards;
+   
 
-    public Employee() {
+    public Employee()
+     {
     }
 
     public Employee(Long employeeId,
             String password,
             String name,
-            String email,
-            String role,
-            int scores,
-            List<Rewards> rewards) 
+            String email)
+            
             {
         this.employeeId = employeeId;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.role = role;
-        this.scores = scores;
-        this.rewards = rewards;
+      
     }
 
     // Getters and setters
@@ -71,27 +66,7 @@ public class Employee {
         this.email = email;
     }
 
-    public String getRole() {
-        return role;
-    }
+   
 
-    public void setRole(String role) {
-        this.role = role;
+   
     }
-
-    public int getScores() {
-        return scores;
-    }
-
-    public void setScores(int scores) {
-        this.scores = scores;
-    }
-
-    public List<Rewards> getRewards() {
-        return rewards;
-    }
-
-    public void setRewards(List<Rewards> rewards) {
-        this.rewards = rewards;
-    }
-}

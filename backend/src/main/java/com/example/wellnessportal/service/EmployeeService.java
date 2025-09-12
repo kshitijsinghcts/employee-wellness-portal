@@ -26,9 +26,6 @@ public class EmployeeService {
                 .map(employee -> {
                     employee.setName(updatedEmployee.getName());
                     employee.setEmail(updatedEmployee.getEmail());
-                    employee.setRole(updatedEmployee.getRole());
-                    employee.setScores(updatedEmployee.getScores());
-                    employee.setRewards(updatedEmployee.getRewards());
                     return employeeRepository.save(employee);
                 })
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
