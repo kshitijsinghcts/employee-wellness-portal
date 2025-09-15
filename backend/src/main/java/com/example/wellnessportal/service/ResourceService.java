@@ -14,17 +14,18 @@ public class ResourceService
     @Autowired
     private ResourceRepository resourceRepository;
    
-    /** Methods of searching resources:
-     * 1. By Title or keywords in title
-     * 2. By Category
-     * 3. By Tags
-     * 4. By Resource Id
-     */
+    
     public List<Resource> getAllResources()
     {
         return resourceRepository.findAll();
     }
 
+    /** Methods of searching resources:
+     * 1. By Category
+     * 2. By Tags
+     * 3. By Title or keywords in title
+     * 4. By Resource Id
+     */
     public List<Resource> getResourcesByCategory(String category)
     {
         return resourceRepository.findResourceByResourceCategory(category);
@@ -65,6 +66,7 @@ public class ResourceService
     else
     {
         //Handle in controller and display to user and redirect him
+        //Excaption handling can be applied for all in controller itself
         throw new IllegalArgumentException("Resource with ID " + resourceId + " not found.");
     }
    }

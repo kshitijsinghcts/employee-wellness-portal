@@ -32,13 +32,19 @@ public class Resource {
     private String resourceCategory;
 
     // Constructors
-    public Resource() {}
+    public Resource() 
+    {
 
+    }
+
+    // The tags are set by the resource creator in the current edition
+    // Individual resource tag assignment will be made in the following editions
     public Resource(String title, 
-                    String type, 
-                    String content, 
-                    List<String> resourceTags, 
-                    String resourceCategory) {
+        String type, 
+        String content, 
+        List<String> resourceTags, 
+        String resourceCategory) 
+    {
         this.title = title;
         this.type = type;
         this.content = content;
@@ -47,43 +53,54 @@ public class Resource {
     }
 
     // Getters and Setters
-    public Long getResourceId() { 
+    public Long getResourceId() 
+    { 
         return resourceId;
-     }
+    }
 
-    public String getTitle() { 
+    public String getTitle() 
+    { 
         return title; 
     }
-    public void setTitle(String title) { 
+    public void setTitle(String title) 
+    { 
         
         this.title = title; 
     }
 
-    public String getType() { 
+    public String getType() 
+    { 
         return type; 
     }
-    public void setType(String type) {
+    public void setType(String type) 
+    {
          this.type = type;
-         }
+    }
 
-    public String getContent() { 
+    public String getContent() 
+    { 
         return content;
-     }
-    public void setContent(String content) { 
+    }
+    public void setContent(String content) 
+    { 
         this.content = content;
-     }
+    }
 
-    public List<String> getResourceTags() { 
+    public List<String> getResourceTags() 
+    { 
         return resourceTags; 
     }
-    public void setResourceTags(List<String> resourceTags) {
-         this.resourceTags = resourceTags; 
-        }
+    public void setResourceTags(List<String> resourceTags) 
+    {
+        this.resourceTags = resourceTags; 
+    }
 
-    public String getResourceCategory() { 
+    public String getResourceCategory() 
+    { 
         return resourceCategory; 
     }
-    public void setResourceCategory(String resourceCategory) { 
+    public void setResourceCategory(String resourceCategory) 
+    { 
         this.resourceCategory = resourceCategory; 
     }
 }
