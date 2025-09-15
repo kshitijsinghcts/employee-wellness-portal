@@ -18,18 +18,19 @@ public class Goal {
   
     private String description;
 
+    // Constructors of Goal:
     public Goal()
     {
 
     }
 
      public Goal(Long employeeId, 
-                String goalType,
-                String description,
-                LocalDate targetDate, 
-                int targetScores, 
-                Rewards targetRewards) 
-                {
+        String goalType,
+        String description,
+        LocalDate targetDate, 
+        int targetScores, 
+        Rewards targetRewards) 
+    {
         this.employeeId = employeeId;
         this.goalType = goalType;
         this.description=description;
@@ -37,18 +38,21 @@ public class Goal {
         this.targetScores = targetScores;
         this.targetRewards = targetRewards;
     }
+
+    //Useful in Rewards Service where description is not necessary
     public Goal(Long employeeId, 
-                String goalType,
-                LocalDate targetDate, 
-                int targetScores, 
-                Rewards targetRewards) 
-                {
+        String goalType,
+        LocalDate targetDate, 
+        int targetScores, 
+        Rewards targetRewards) 
+    {
         this.employeeId = employeeId;
         this.goalType = goalType;
         this.targetDate = targetDate;
         this.targetScores = targetScores;
         this.targetRewards = targetRewards;
     }
+
     // Getters and setters
     public Long getEmployeeId() 
     {
@@ -75,7 +79,7 @@ public class Goal {
         return this.description;
     }
 
-    public void setDescription()
+    public void setDescription(String description)
     {
         this.description=description;
     }
