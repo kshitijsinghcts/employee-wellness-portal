@@ -27,13 +27,14 @@ public class WellnessMetricService {
     private WellnessMetricRepository wellnessMetricRepository;
 
     //User logs his health metrics. He should do this periodically for best results
+    //Daily steps in goal entity is named activityLevel here due to contextual differences.
     public WellnessMetric saveWellnessMetric(Long employeeId,
                                              LocalDate date,
                                              String mood,
                                              int sleepHours,
-                                             int activityLevel,
+                                             int dailySteps,
                                              int waterIntake) 
-                                             {
+    {
 
         AuthUser authUser = authUserRepository.findById(employeeId).orElse(null);
         
@@ -42,7 +43,17 @@ public class WellnessMetricService {
         }
 
         // Determine rewards based on input values
+        /*  Rewards is of the form: {mood reward,
+                                     sleepHours reward,
+                                     activityLevel reward,
+                                     waterIntake reward
+                                     }
+        */
+    
         List<Rewards> rewards = new ArrayList<>();
+        
+        // Assignement of Rewards For Each Metric based on repective scores
+        // The code size will be optimized in further editions
 
         // Mood-based reward
         if (mood.equalsIgnoreCase("Happy")) {
@@ -75,19 +86,19 @@ public class WellnessMetricService {
         
 
         // Activity-based reward
-        if (activityLevel >= 9000) 
+        if (dailySteps >= 9000) 
         {
             rewards.add(Rewards.PLATINUM);
         } 
-        else if (activityLevel >= 7000) 
+        else if (dailySteps >= 7000) 
         {
             rewards.add(Rewards.GOLD);
         } 
-        else if (activityLevel >= 5000) 
+        else if (dailySteps >= 5000) 
         {
             rewards.add(Rewards.SILVER);
         }
-        else if(activityLevel >= 3000)
+        else if(dailySteps >= 3000)
         {
             rewards.add(Rewards.BRONZE);
         }
@@ -115,7 +126,7 @@ public class WellnessMetricService {
             date,
             mood,
             sleepHours,
-            activityLevel,
+            dailySteps,
             waterIntake,
             rewards
         );
@@ -123,15 +134,19 @@ public class WellnessMetricService {
         return wellnessMetricRepository.save(wellnessMetric);
     }
 
-   
+    
 
+    // List of metrics logged by the employee since his/her account creation
     public List<WellnessMetric> getEmployeeLogs(Long employeeId) 
     {
         return wellnessMetricRepository.findAllByEmployeeId(employeeId);
     }
 
     // The following methods are for letting the user know how he/she is on par with his self-set goals
-       //Getting overall wellness metric status for all metrics of the user
+    // They can also be used for analytics on UI:
+    
+    //Getting overall wellness metric status for all metrics of the user
+    //Useful for dashboard and analytics
     public String getOverallWellnessMetricsStatus(Long employeeId)
     {
       
@@ -145,6 +160,7 @@ public class WellnessMetricService {
     }
 
     //Getting overall wellness metric status individually for each goal
+    //Response to User Request
     public String getOverallWellnessMetricsStatus(Long employeeId, 
                                                   Goal goal)
     {
@@ -162,6 +178,7 @@ public class WellnessMetricService {
     //To display on employee or admin analytics dashboard
     public List<String> getLatestWellnessMetrics(Long employeeId)
     {
+       // This method from repository interface returns the latest row and is limited to one row
        WellnessMetric wellnessMetric=wellnessMetricRepository.findByEmployeeId(employeeId);
        List<String> wmList=new ArrayList<>();
        
@@ -175,7 +192,11 @@ public class WellnessMetricService {
 
     // We can use this method to rank the employees based on how they fare among health metrics. We can configure different weight vectors for this.
     // This can be used for admin to track his/her employee health statistics
+    // The code run time will be optimized in further editions
     public int getEmployeeRank(Long employeeId) {
+    //The employees are ranked by their metrics in this list
+    // The formula used is weighted sum of metrics
+    // The weights can be set by the user, allowing him to prioritize his/her metrics    
     List<Long> rankedList = wellnessMetricRepository.findEmployeesRankedByHealthScore();
 
     for (int i = 0; i < rankedList.size(); i++) {

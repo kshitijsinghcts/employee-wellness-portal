@@ -32,14 +32,20 @@ public class WellnessMetric {
     @ElementCollection
     private List<Integer> scores;
 
-    public WellnessMetric(){}
     // Constructors
+    public WellnessMetric()
+    {
+
+    }
+    
+    //UI-specific
     public WellnessMetric(Long employeeId,
-            LocalDate recordDate,
-            String mood,
-            int sleepHours,
-            int dailySteps,
-            int waterIntake) {
+        LocalDate recordDate,
+        String mood,
+        int sleepHours,
+        int dailySteps,
+        int waterIntake) 
+    {
         this.employeeId = employeeId;
         this.recordDate = recordDate;
         this.mood = mood;
@@ -50,12 +56,13 @@ public class WellnessMetric {
     }
 
     public WellnessMetric(Long employeeId,
-            LocalDate recordDate,
-            String mood,
-            int sleepHours,
-            int dailySteps,
-            int waterIntake,
-            List<Rewards> rewards) {
+        LocalDate recordDate,
+        String mood,
+        int sleepHours,
+        int dailySteps,
+        int waterIntake,
+        List<Rewards> rewards) 
+    {
         this.employeeId = employeeId;
         this.recordDate = recordDate;
         this.mood = mood;
