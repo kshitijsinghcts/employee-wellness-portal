@@ -16,7 +16,6 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
     @Query("SELECT s FROM Survey s WHERE s.surveyTitle = :title")
     Survey findSurveyBySurveyTitle(@Param("title") String title);
 
-    // Deletion by admin
    
 
   

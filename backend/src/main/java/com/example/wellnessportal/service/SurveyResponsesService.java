@@ -18,11 +18,12 @@ public class SurveyResponsesService {
 
     // The following operation can be performed by employee only
     public SurveyResponse saveSurveyResponse(Long surveyId,
-            Long employeeId,
-            Map<String, String> answers) {
+        Long employeeId,
+        Map<String, String> answers) 
+    {
         SurveyResponse surveyResponse = new SurveyResponse(surveyId,
-                employeeId,
-                answers);
+                                                           employeeId,
+                                                           answers);
         return surveyResponseRepository.save(surveyResponse);
     }
 
@@ -33,11 +34,13 @@ public class SurveyResponsesService {
      * 2. View survey response by employee id
      * 3. View all survey responses based on survey id
      */
-    public SurveyResponse getSurveyResponseBySurveyId(Long surveyId, Long employeeId) {
+    public SurveyResponse getSurveyResponseBySurveyId(Long surveyId, Long employeeId) 
+    {
         return surveyResponseRepository.findSurveyResponseBySurveyIdAndEmployeeId(surveyId, employeeId);
     }
 
-    public List<SurveyResponse> getSurveyResponseBySurveyId(Long surveyId) {
+    public List<SurveyResponse> getSurveyResponseBySurveyId(Long surveyId) 
+    {
         return surveyResponseRepository.findSurveyResponseBySurveyId(surveyId);
     }
 
@@ -48,25 +51,21 @@ public class SurveyResponsesService {
     // The following operations can be performed by both employee and admin
     public void deleteSurveyResponse(Long surveyId, Long employeeId) {
         SurveyResponse response = getSurveyResponseBySurveyId(surveyId, employeeId);
-        if (response != null) {
+        
+        if (response != null) 
+        {
             surveyResponseRepository.delete(response);
         }
     }
 
     public void editSurveyResponse(Long surveyId,
             Long employeeId,
-            Map<String, String> newAnswers) {
+            Map<String, String> newAnswers) 
+    {
         surveyResponseRepository.updateSurveyBySurveyIdOrSurveyTitle(surveyId,
                                               employeeId,
                                               newAnswers);
-    //     if (response != null) {
-    //         response.setAnswers(newAnswers);
-    //         surveyResponseRepository.save(response);
-    //     } else {
-    //         //Handle in the controller
-    //         throw new IllegalArgumentException("Survey response not found for the given survey ID and employee ID.");
-    //     }
-    // }
-            }
+
+    }
 
 }

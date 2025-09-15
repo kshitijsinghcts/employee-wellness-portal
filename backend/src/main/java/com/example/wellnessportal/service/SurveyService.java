@@ -15,28 +15,39 @@ public class SurveyService {
     @Autowired
     private SurveyRepository surveyRepository;
 
-    Survey createSurvey(String surveyTitle, List<String> questions) 
+    // Admin Operations on Survey
+    public Survey createSurvey(String surveyTitle, List<String> questions) 
     {
     Survey survey = new Survey(surveyTitle, 
                                questions);
-    survey.setSurveyTitle(surveyTitle);
-    survey.setQuestions(questions); // Set questions entered by admin
+
     return surveyRepository.save(survey);
     }
 
-    Survey deleteSurvey(Long surveyId) 
+    public Survey deleteSurvey(Long surveyId) 
     {
     Survey survey = surveyRepository.findById(surveyId).orElse(null);
+    
     if (survey != null) 
     {
         surveyRepository.delete(survey);
     }
+    
     return survey;
     }
 
-    Survey getSurveyBySurveyId(Long surveyId)
+    /* Search surveys based on:
+     * 1. Survey Id
+     * 2. Survey Title
+     */
+    public Survey getSurveyBySurveyId(Long surveyId)
     {
         return surveyRepository.findSurveyBySurveyId(surveyId);
+    }
+
+    public Survey getSurveyBySurveyTitle(String surveyTitle)
+    {
+        return surveyRepository.findSurveyBySurveyTitle(surveyTitle);
     }
     
 }
