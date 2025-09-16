@@ -30,7 +30,7 @@ public class AuthService {
         System.out.println(authUser);
 
         if (authUser == null || !inputAuthUser.getPassword().equals(authUser.getPassword())) {
-            return "Invalid credentials !";
+            return "Invalid credentials!";
         }
 
         String role = inputAuthUser.getRole();
@@ -62,7 +62,7 @@ public class AuthService {
         employeeRepository.save(employee);
         authUserRepository.save(new AuthUser(employee.getEmployeeId(),
                 employee.getEmail(),
-                "EMPLOYEE"));
+                employee.getPassword()));
         return "Employee registered successfully with ID " + employee.getEmployeeId();
     }
 

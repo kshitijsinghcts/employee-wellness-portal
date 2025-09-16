@@ -2,12 +2,14 @@ package com.example.wellnessportal.api;
 
 import org.springframework.web.bind.annotation.*;
 
+import com.example.wellnessportal.model.Goal;
+
 @RestController
 @RequestMapping("/api/goals")
 public class GoalsController {
+    // accepts {employeeId:..., title:..., description:..., targetDate:...}
     @PostMapping
-    public String createGoal() {
-        // TODO: Implement create goal logic
+    public String createGoal(@RequestBody Goal goal) {
         return "Create goal endpoint";
     }
 

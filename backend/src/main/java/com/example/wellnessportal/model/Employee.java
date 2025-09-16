@@ -94,4 +94,11 @@ public class Employee {
     public void setRewards(List<Rewards> rewards) {
         this.rewards = rewards;
     }
+
+    @Override
+    public String toString() {
+        return "Employee [employeeId=" + employeeId + ", password=" + password + ", name=" + name + ", email=" + email
+                + ", role=" + role + ", scores=" + scores + ", rewards=" + rewards + "]";
+    }
+
 }

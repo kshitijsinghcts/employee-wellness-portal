@@ -29,6 +29,11 @@ public class AuthController {
     // "email":"something"}
     @PostMapping("/register")
     public String register(@RequestBody Employee employee) {
+        if (employee.getEmail() != null && employee.getEmail().endsWith("@portaladmin.com")) {
+            employee.setRole("ADMIN");
+        } else {
+            employee.setRole("EMPLOYEE");
+        }
         return authService.registerEmployee(employee);
     }
 
