@@ -24,6 +24,27 @@ public class Goal {
 
     }
 
+    //For first-time record creation
+    /*
+     * Default values for the fields are:
+     * Employee Id must be provided
+     * goalType is an empty string
+     * description empty string
+     * targetDate is registered date
+     * targetScores is 0
+     * targetRewards is Bronze
+     */
+    public Goal(Long employeeId)
+    {
+        this.employeeId=employeeId;
+        this.goalType = "";
+        this.description="";
+        this.targetDate=LocalDate.now();
+        this.targetScores = 0;
+        this.targetRewards = Rewards.BRONZE;
+
+    }
+
      public Goal(Long employeeId, 
         String goalType,
         String description,

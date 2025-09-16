@@ -37,6 +37,26 @@ public class WellnessMetric {
     {
 
     }
+
+     //For first-time record creation
+    /*
+     * Default values for the fields are:
+     * Employee Id must be provided
+     * recordDate is registered date
+     * mood empty string
+     * sleepHours is 0
+     * dailySteps is 0
+     * waterIntake is 0
+     */
+    public WellnessMetric(Long employeeId)
+    {
+        this.employeeId=employeeId;
+        this.recordDate=LocalDate.now();
+        this.mood="";
+        this.sleepHours=0;
+        this.dailySteps=0;
+        this.waterIntake=0;
+    }
     
     //UI-specific
     public WellnessMetric(Long employeeId,
