@@ -1,13 +1,14 @@
 package com.example.wellnessportal.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 public class Goal {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long goalId;
     private Long employeeId;
     private String goalType;
     private LocalDate targetDate;
@@ -75,6 +76,11 @@ public class Goal {
     }
 
     // Getters and setters
+    public Long getGoalId()
+    {
+        return this.goalId;
+    }
+
     public Long getEmployeeId() 
     {
         return employeeId;
