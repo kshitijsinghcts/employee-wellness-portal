@@ -108,6 +108,11 @@ public class AuthService {
             return "Admin with ID " + admin.getEmployeeId() + " already exists. Kindly login.";
         }
         
+        /* Storing user in 2 databases:
+           1. AuthUser: Contains both employees and admins
+           2. Admin: Contains only admins
+        
+        */ 
         adminRepository.save(admin);
         authUserRepository.save(new AuthUser(
                 admin.getEmployeeId(),
@@ -115,6 +120,21 @@ public class AuthService {
                 admin.getPassword(),
                 "ADMIN")
                 );
+
+        // Creating a record in each table which has employeeId immediately upon registering user
+        /* The tables associated with employee Id as primary/composite key are:
+         * 1. Goal
+         * 2. WellnessMetric
+         * Hence, their objects are created as:
+         * 1. goalRecord
+         * 2. wellnessMetricRecord
+         */
+        Goal goalRecord= new Goal(admin.getEmployeeId());
+        WellnessMetric wellnessMetricRecord=new WellnessMetric(admin.getEmployeeId());
+
+        goalRepository.save(goalRecord);
+        wellnessMetricRepository.save(wellnessMetricRecord);
+
         return "Admin registered successfully with ID " + admin.getEmployeeId();
     }
 
