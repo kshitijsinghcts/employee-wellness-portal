@@ -1,14 +1,21 @@
 package com.example.wellnessportal.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.wellnessportal.model.Goal;
+import com.example.wellnessportal.service.GoalService;
 
 @RestController
 @RequestMapping("/api/goals")
 public class GoalsController {
-    @PostMapping
-    public String createGoal() {
-        // TODO: Implement create goal logic
-        return "Create goal endpoint";
+
+    @Autowired
+    private GoalService goalService;
+
+    @PostMapping("/create")
+    public String createGoal(@RequestBody Goal goal) {
+        return goalService.setGoal(goal);
     }
 
     @PutMapping
