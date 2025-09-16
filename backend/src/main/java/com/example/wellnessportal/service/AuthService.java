@@ -116,7 +116,7 @@ public class AuthService {
         adminRepository.save(admin);
         authUserRepository.save(new AuthUser(
                 admin.getEmployeeId(),
-                admin.getUsername(),
+                admin.getName(),
                 admin.getPassword(),
                 "ADMIN")
                 );

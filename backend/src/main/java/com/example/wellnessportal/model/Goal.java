@@ -6,7 +6,7 @@ import java.time.LocalDate;
 @Entity
 public class Goal {
 
-    @Id
+        @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long goalId;
     private Long employeeId;

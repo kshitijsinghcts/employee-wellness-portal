@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.wellnessportal.service.AuthService;
+import com.example.wellnessportal.model.Admin;
 import com.example.wellnessportal.model.AuthUser;
 import com.example.wellnessportal.model.Employee;
 

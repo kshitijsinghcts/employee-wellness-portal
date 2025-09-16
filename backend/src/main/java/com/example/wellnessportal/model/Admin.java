@@ -13,24 +13,24 @@ public class Admin {
     @Id
     private Long employeeId;
     // List of Employees falling under the current HR
-    @OneToMany
-    private List<Employee> employees;
+  
     // Attributes for Authentication
-    private String username;
+     private String password;
+    private String name;
     private String email;
-    private String password;
+   
 
     public Admin()
     {
 
     }
     public Admin(Long employeeId,
-                 String username,
-                 String email,
-                 String password)
+                 String password,
+                 String name,
+                 String email)
                  {
                     this.employeeId=employeeId;
-                    this.username=username;
+                    this.name=name;
                     this.email=email;
                     this.password=password;
                  }
@@ -44,20 +44,13 @@ public class Admin {
         this.employeeId = employeeId;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
+    public String getName() 
+    {
+        return this.name;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setname(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
