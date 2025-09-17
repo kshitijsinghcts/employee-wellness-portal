@@ -6,26 +6,25 @@ import java.time.LocalDate;
 @Entity
 public class Goal {
 
-        @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long goalId;
     private Long employeeId;
     private String goalType;
     private LocalDate targetDate;
     private int status;
-    //Attributes For Performance Measurement API
+    // Attributes For Performance Measurement API
     private int targetScores;
     private Rewards targetRewards;
-  
+
     private String description;
 
     // Constructors of Goal:
-    public Goal()
-    {
+    public Goal() {
 
     }
 
-    //For first-time record creation
+    // For first-time record creation
     /*
      * Default values for the fields are:
      * Employee Id must be provided
@@ -35,39 +34,49 @@ public class Goal {
      * targetScores is 0
      * targetRewards is Bronze
      */
-    public Goal(Long employeeId)
-    {
-        this.employeeId=employeeId;
+    public Goal(Long employeeId) {
+        this.employeeId = employeeId;
         this.goalType = "";
-        this.description="";
-        this.targetDate=LocalDate.now();
+        this.description = "";
+        this.targetDate = LocalDate.now();
         this.targetScores = 0;
         this.targetRewards = Rewards.BRONZE;
 
     }
 
-     public Goal(Long employeeId, 
-        String goalType,
-        String description,
-        LocalDate targetDate, 
-        int targetScores, 
-        Rewards targetRewards) 
-    {
+    public Goal(Long employeeId,
+            String goalType,
+            String description,
+            LocalDate targetDate,
+            int targetScores,
+            Rewards targetRewards) {
         this.employeeId = employeeId;
         this.goalType = goalType;
-        this.description=description;
+        this.description = description;
         this.targetDate = targetDate;
         this.targetScores = targetScores;
         this.targetRewards = targetRewards;
     }
 
-    //Useful in Rewards Service where description is not necessary
-    public Goal(Long employeeId, 
-        String goalType,
-        LocalDate targetDate, 
-        int targetScores, 
-        Rewards targetRewards) 
-    {
+    // we will use this in controller
+    public Goal(Long employeeId,
+            String goalType,
+            String description,
+            String targetDate) {
+        this.employeeId = employeeId;
+        this.goalType = goalType;
+        this.description = description;
+        this.targetDate = LocalDate.parse(targetDate);
+        this.targetScores = 0;
+        this.targetRewards = Rewards.BRONZE;
+    }
+
+    // Useful in Rewards Service where description is not necessary
+    public Goal(Long employeeId,
+            String goalType,
+            LocalDate targetDate,
+            int targetScores,
+            Rewards targetRewards) {
         this.employeeId = employeeId;
         this.goalType = goalType;
         this.targetDate = targetDate;
@@ -76,73 +85,59 @@ public class Goal {
     }
 
     // Getters and setters
-    public Long getGoalId()
-    {
+    public Long getGoalId() {
         return this.goalId;
     }
 
-    public Long getEmployeeId() 
-    {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) 
-    {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 
-    public String getGoalType() 
-    {
+    public String getGoalType() {
         return goalType;
     }
 
-    public void setGoalType(String goalType) 
-    {
+    public void setGoalType(String goalType) {
         this.goalType = goalType;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return this.description;
     }
 
-    public void setDescription(String description)
-    {
-        this.description=description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public LocalDate getTargetDate() 
-    {
+    public LocalDate getTargetDate() {
         return targetDate;
     }
 
-    public void setTargetDate(LocalDate targetDate) 
-    {
+    public void setTargetDate(LocalDate targetDate) {
         this.targetDate = targetDate;
     }
 
-    public int getStatus() 
-    {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(int status) 
-    {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public int getTargetScores() 
-    {
+    public int getTargetScores() {
         return targetScores;
     }
 
-    public void setTargetScores(int targetScores) 
-    {
+    public void setTargetScores(int targetScores) {
         this.targetScores = targetScores;
     }
 
-    public Rewards getTargetRewards() 
-    {
+    public Rewards getTargetRewards() {
         return targetRewards;
     }
 
