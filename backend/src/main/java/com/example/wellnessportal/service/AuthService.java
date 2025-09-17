@@ -1,5 +1,7 @@
 package com.example.wellnessportal.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,8 @@ import com.example.wellnessportal.repository.WellnessMetricRepository;
 
 
 @Service
-public class AuthService {
+public class AuthService
+{
 
     @Autowired
     private AdminRepository adminRepository;
@@ -92,11 +95,12 @@ public class AuthService {
          * 1. goalRecord
          * 2. wellnessMetricRecord
          */
-        Goal goalRecord= new Goal(employee.getEmployeeId());
-        WellnessMetric wellnessMetricRecord=new WellnessMetric(employee.getEmployeeId());
+        // Goal goalRecord= new Goal(employee.getEmployeeId());
+        // WellnessMetric wellnessMetricRecord=new WellnessMetric(employee.getEmployeeId());
 
-        goalRepository.save(goalRecord);
-        wellnessMetricRepository.save(wellnessMetricRecord);
+        // goalRepository.save(goalRecord);
+        // wellnessMetricRepository.save(wellnessMetricRecord);
+        
         return "Employee registered successfully with ID " + employee.getEmployeeId();
     }
 
@@ -137,6 +141,45 @@ public class AuthService {
 
         return "Admin registered successfully with ID " + admin.getEmployeeId();
     }
+
+
+//     //  JWT Part for encrypting passwords for more security:
+
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 
+//    {
+//     long employeeId;
+
+//     try 
+//     {
+//         employeeId = Long.parseLong(username);
+//     } 
+//     catch (NumberFormatException e) 
+//     {
+//         throw new UsernameNotFoundException("Invalid employee ID format: " + username);
+//     }
+
+//     AuthUser user = authUserRepository.findById(employeeId).orElse(null);
+//     if (user == null) 
+//     {
+//         throw new UsernameNotFoundException("User not found with ID: " + employeeId);
+//     }
+
+//     return new org.springframework.security.core.userdetails.User
+//     (
+//         String.valueOf(user.getEmployeeId()),
+//         user.getPassword(),
+//         new ArrayList<>() // You can add roles/authorities here if needed
+//     );
+// }
+
+//   @Override
+// public void saveUser(AuthUser user) 
+// {
+//     authUserRepository.save(user);
+// }
+
+
 
 
 }
