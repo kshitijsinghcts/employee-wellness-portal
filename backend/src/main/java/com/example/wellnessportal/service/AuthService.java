@@ -142,7 +142,27 @@ public class AuthService
         return "Admin registered successfully with ID " + admin.getEmployeeId();
     }
 
+    // This maps email to employeeId
+    // Exception can be caught in controller stating that email doesnt exist
+    public Long getAdminIdByEmail(String email) throws Exception
+    {
+        Admin admin=adminRepository.findAdminByEmail(email);
+        if(admin!=null)
+        return admin.getEmployeeId();
+        else
+        throw new Exception();
 
+    }
+
+     public Long getEmployeeIdByEmail(String email) throws Exception
+    {
+        Employee employee=employeeRepository.findEmployeeByEmail(email);
+        if(employee!=null)
+        return employee.getEmployeeId();
+        else
+        throw new Exception();
+
+    }
 
 
 }
