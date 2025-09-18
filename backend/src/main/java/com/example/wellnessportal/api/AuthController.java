@@ -15,8 +15,17 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    // accepts {email, password}
     @PostMapping("/login")
     public String login(@RequestBody AuthUser authUser) {
+        try {
+            authUser.setEmployeeId(authService.getEmployeeIdByEmail(authUser.getEmail()));
+            if (authUser.getEmployeeId() == 0L) {
+                return "Invalid credentials. User not found.";
+            }
+        } catch (Exception e) {
+            return "Error during login: " + e.getMessage();
+        }
         return authService.validateEmployee(authUser);
     }
 

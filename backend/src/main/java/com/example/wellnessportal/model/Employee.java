@@ -25,7 +25,6 @@ public class Employee {
             String password,
             String name,
             String email)
-            
             {
         this.employeeId = employeeId;
         this.password = password;
@@ -33,6 +32,22 @@ public class Employee {
         this.email = email;
       
     }
+
+    // Constructor for Login. Fetch other details from repository.
+    public Employee(String email,
+        String password)
+    {
+        this.email = email;
+        this.password = password;
+    }
+
+     public Employee(Long employeeId,
+        String password)
+    {
+        this.employeeId = employeeId;
+        this.password = password;
+    }
+
 
     // Getters and setters
     public Long getEmployeeId() {

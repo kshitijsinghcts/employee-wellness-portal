@@ -17,3 +17,6 @@ public class WellnessController {
         return "View wellness metrics endpoint";
     }
 }
+
+
+
