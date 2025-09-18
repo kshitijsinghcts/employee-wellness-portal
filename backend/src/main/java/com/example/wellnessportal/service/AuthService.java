@@ -41,33 +41,28 @@ public class AuthService {
 
         AuthUser authUser = authUserRepository.findUserByEmail(email);
 
-        if (authUser == null || !inputAuthUser.getPassword().equals(authUser.getPassword())) 
-        {
-            return "Invalid credentials"+authUser.getEmployeeId();
+        if (authUser == null) {
+            return "Invalid credentials. User not found.";
         }
-        Long employeeId=authUser.getEmployeeId();
+        if (!inputAuthUser.getPassword().equals(authUser.getPassword())) {
+            return "Invalid credentials. Incorrect password.";
+        }
+        Long employeeId = authUser.getEmployeeId();
 
         String role = authUser.getRole();
-        if ("ADMIN".equals(role)) 
-        {
+        if ("ADMIN".equals(role)) {
             Admin admin = adminRepository.findAdminByEmployeeId(employeeId);
-            if (admin != null) 
-            {
+            if (admin != null) {
                 // Return dummy token for admin
                 return "dummy-token-for-admin-" + employeeId;
             }
-        } 
-        else if ("EMPLOYEE".equals(role)) 
-        {
+        } else if ("EMPLOYEE".equals(role)) {
             Employee employee = employeeRepository.findEmployeeByEmployeeId(employeeId);
-            if (employee != null) 
-            {
+            if (employee != null) {
                 // Return dummy token for employee
                 return "dummy-token-for-employee-" + employeeId;
             }
-        } 
-        else 
-        {
+        } else {
             return "Create your account";
         }
         return "Invalid credentials. Please try again";
@@ -155,36 +150,28 @@ public class AuthService {
 
     // This maps email to employeeId
     // Exception can be caught in controller stating that email doesnt exist
-    public Long getAdminIdByEmail(String email) throws Exception
-    {
-        Admin admin=adminRepository.findAdminByEmail(email);
-        try
-        {
-        if(admin!=null)
-        return admin.getEmployeeId();
-        
-        else
-        throw new Exception();
-        }
-        catch(Exception e)
-        {
-        return (long)0.0;
+    public Long getAdminIdByEmail(String email) throws Exception {
+        Admin admin = adminRepository.findAdminByEmail(email);
+        try {
+            if (admin != null)
+                return admin.getEmployeeId();
+
+            else
+                throw new Exception();
+        } catch (Exception e) {
+            return (long) 0.0;
         }
 
     }
 
-     public Long getEmployeeIdByEmail(String email) throws Exception
-    {
-        Employee employee=employeeRepository.findEmployeeByEmail(email);
-        try
-        {
-        if(employee!=null)
-        return employee.getEmployeeId();
-        else
-        throw new Exception();
-        }
-        catch(Exception e)
-        {
+    public Long getEmployeeIdByEmail(String email) throws Exception {
+        Employee employee = employeeRepository.findEmployeeByEmail(email);
+        try {
+            if (employee != null)
+                return employee.getEmployeeId();
+            else
+                throw new Exception();
+        } catch (Exception e) {
             return (long) 0.0;
         }
 
