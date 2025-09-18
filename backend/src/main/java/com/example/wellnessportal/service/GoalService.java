@@ -91,11 +91,11 @@ public class GoalService {
             WellnessMetric wellnessMetric,
             LocalDate recordDate) {
         switch (goal.getGoalType()) {
-            // case "mood" -> {
-            //     // return wellnessMetric.getMood().equalsIgnoreCase("Happy")
-            //     //         &&
-            //     //         goal.getTargetDate().isBefore(recordDate);
-            // }
+            case "mood" -> {
+                return wellnessMetric.getMood().equalsIgnoreCase("Happy")
+                        &&
+                        goal.getTargetDate().isBefore(recordDate);
+            }
 
             case "dailySteps" -> {
 
