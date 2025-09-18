@@ -36,6 +36,13 @@ public class Admin {
                  }
 
     // Constructor for Login. Fetch other details from repository.
+    public Admin(String email,
+        String password)
+    {
+        this.email = email;
+        this.password = password;
+    }
+
     public Admin(Long employeeId,
         String password)
     {

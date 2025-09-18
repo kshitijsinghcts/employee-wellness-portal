@@ -15,8 +15,14 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    // accepts {email, password}
     @PostMapping("/login")
     public String login(@RequestBody AuthUser authUser) {
+        try {
+            authUser.setEmployeeId(authService.getEmployeeIdByEmail(authUser.getEmail()));
+        } catch (Exception e) {
+            return (e.getMessage());
+        }
         return authService.validateEmployee(authUser);
     }
 

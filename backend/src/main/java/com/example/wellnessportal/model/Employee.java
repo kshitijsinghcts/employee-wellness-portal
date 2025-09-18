@@ -34,7 +34,14 @@ public class Employee {
     }
 
     // Constructor for Login. Fetch other details from repository.
-    public Employee(Long employeeId,
+    public Employee(String email,
+        String password)
+    {
+        this.email = email;
+        this.password = password;
+    }
+
+     public Employee(Long employeeId,
         String password)
     {
         this.employeeId = employeeId;
