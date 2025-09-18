@@ -16,3 +16,4 @@
 /frontend/npm-debug.log*
 /frontend/.angular/cache/
 
+backend/src/main/resources/application.properties
