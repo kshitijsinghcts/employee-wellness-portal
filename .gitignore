@@ -8,7 +8,7 @@
 /backend/release.properties
 /backend/dependency-reduced-pom.xml
 /backend/build/
-/backend/bin/
+/backend/src/main/resources/application.properties
 
 ### frontend
 /frontend/dist/

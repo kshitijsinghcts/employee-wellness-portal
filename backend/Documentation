@@ -1,0 +1,180 @@
+Models:
+Admin:
+employee Id long
+list of employee objects employees
+username
+email 
+password
+
+Authuser:
+employee Id
+username
+password 
+role
+
+employee:
+employee id
+password
+name
+email
+role
+
+Goal:
+employeeId
+goalType
+title 
+targetDate LocalDate
+status
+targetScores
+targetRewards List<Rewards>
+
+Resource:
+resourceId long autogen
+title String
+type String
+content String
+resourceTags List<String>
+resourceCategory String 
+
+Rewards:
+enum
+
+
+Survey:
+surveyId
+surveyTitle
+surveyQuestions List<String>
+
+SurveyResponse:
+responseId long
+surveyId long
+employeeId long
+answers Map<String,String>
+
+WellnessMetric:
+metricId long autogen
+employeeId long
+recordDate LocalDate
+mood String
+sleepHours int
+dailySteps int
+waterIntake int
+rewards List<Rewards> enum
+
+Repositories:
+Admin:
+findAdminByEmployeeId(long employeeId)
+findAdminByEmail(String email)
+
+AuthUser:
+findUserByEmployeeId(long employeeId)
+findUserByEmail(String email)
+
+Employee:
+findEmployeeByEmployeeId(long employeeId) Employee
+findEmployeeByEmail(String email) Employee
+findRewardsByEmployeeId(long employeeId) List<Rewards>
+findScoresByEmployeeId(long employeeId) int
+
+Goal:
+findGoalsByEmployeeId(long employeeId) List<Goal>
+
+Resource:
+findResourceByTitle(String title) Resource
+findResourceById(long resourceId) Resource
+findResourceByType(String type) Resource
+findResourceByResourceCategory(String category) List<Resource>
+
+Survey:
+   public Survey findSurveyBySurveyId(Long surveyId);
+   public Survey findSurveyBySurveyTitle(String title);
+   //For admin to delete by Survey Id
+   public Survey deleteSurveyBySurveyId(Long surveyId);
+   //For admin to update the survey status 
+   public void updateSurveyBySurveyIdOrSurveyTitle(Long surveyId, String surveyTitle);
+
+SurveyResponse:
+   SurveyResponse findSurveyResponseBySurveyResponseId(Long surveyResponseId);
+   SurveyResponse findSurveyResponseBySurveyIdAndEmployeeId(Long surveyId, Long employeeId);
+
+
+WellnessMetric:
+public Rewards findByRewardId(Rewards rewards);
+public List<WellnessMetric> findByEmployeeId(Long employeeId);
+public int rankByRewards(int scores, Long employeeId);
+public int getDailyStepsByEmployeeId(Long employeeId);
+public int getWaterIntakeByEmployeeId(Long employeeId);
+public List<Rewards> findRewardsByEmployeeId(Long employeeId);
+public String findLatestMoodByEmployeeId(Long employeeId);
+public int findLatestSleepHoursByEmployeeId(Long employeeId);
+
+ResourceService:
+//          List<Resource> resourceList = new java.util.ArrayList<>();
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         if(resource.getResourceCategory().equalsIgnoreCase(category))
+//         {
+//             resourceList.add(resource);
+//         }
+//        }
+//        return resourceList;
+//     }
+
+//          List<Resource> resourceList = new java.util.ArrayList<>();
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         for (String tag : resource.getResourceTags())
+//         {
+//             if(tag.equalsIgnoreCase(tags))
+//             {
+//                 resourceList.add(resource);
+//             }
+//         }
+//        }
+//        return resourceList;
+//     }
+
+//          List<Resource> resourceList = new java.util.ArrayList<>();
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         if(resource.getTitle().toLowerCase().contains(title.toLowerCase()))
+//         {
+//             resourceList.add(resource);
+//         }
+//        }
+//        return resourceList;
+//     }
+
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         if(resource.getResourceId().equals(resourceId))
+//         {
+//             return resource;
+//         }
+//        }
+//        return null;
+//     }
+
+survey response:
+ for (SurveyResponse response : surveyResponseRepository.findAll()) {
+            if (response.getSurveyId().equals(surveyId) && response.getEmployeeId().equals(employeeId)) 
+            {
+                return response;
+            }
+        }
+        return null;
+
+         List<SurveyResponse> responses = new java.util.ArrayList<>();
+        for (SurveyResponse response : surveyResponseRepository.findAll()) {
+            if (response.getSurveyId().equals(surveyId)) {
+                responses.add(response);
+            }
+        }
+        return responses;
+
+         for (SurveyResponse response : surveyResponseRepository.findAll()) {
+            if (response.getEmployeeId().equals(employeeId)) {
+                return response;
+            }
+        }
+        return null;

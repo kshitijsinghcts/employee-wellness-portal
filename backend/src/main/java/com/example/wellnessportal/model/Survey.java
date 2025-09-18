@@ -15,29 +15,42 @@ public class Survey {
     @ElementCollection
     private List<String> surveyQuestions;
 
-    public Survey(String surveyTitle, 
-                  List<String> surveyQuestions)
+    //Constructors
+    public Survey()
+    {
+
+    }
+    
+    public Survey(String surveyTitle,
+        List<String> surveyQuestions) 
     {
         this.surveyTitle = surveyTitle;
         this.surveyQuestions = surveyQuestions;
     }
 
     // Getters and Setters
-    public Long getSurveyId() { 
+    public Long getSurveyId() 
+    {
         return surveyId;
-     }
-
-    public String getSurveyTitle() { 
-        return surveyTitle; 
     }
-    public void setSurveyTitle(String surveyTitle) {
-         this.surveyTitle = surveyTitle;
-         }
 
-    public List<String> getQuestions() {
+    public String getSurveyTitle()
+    {
+        return surveyTitle;
+    }
+
+    public void setSurveyTitle(String surveyTitle) 
+    {
+        this.surveyTitle = surveyTitle;
+    }
+
+    public List<String> getQuestions() 
+    {
         return surveyQuestions;
     }
-    public void setQuestions(List<String> surveyQuestions) {
+
+    public void setQuestions(List<String> surveyQuestions) 
+    {
         this.surveyQuestions = surveyQuestions;
     }
 }

@@ -13,14 +13,19 @@ public class SurveyResponse {
     private Long surveyId;
     private Long employeeId;
 
-    //Table named survey_answers with question and answer as columns
+    // Separate Table named survey_answers with question and answer as columns for data integrity
     @ElementCollection
     @CollectionTable(name = "survey_answers", joinColumns = @JoinColumn(name = "response_id"))
     @MapKeyColumn(name = "question")
     @Column(name = "answer")
     private Map<String, String> answers;
 
-   
+    // Constructors
+    public SurveyResponse()
+    {
+
+    }
+    
     public SurveyResponse(Long surveyId, 
                           Long employeeId, 
                           Map<String, String> answers) 
@@ -31,26 +36,35 @@ public class SurveyResponse {
     }
 
     // Getters and Setters
-    public Long getResponseId() { 
+    public Long getResponseId() 
+    { 
         return responseId; 
     }
-    public Long getSurveyId() {
+
+    public Long getSurveyId() 
+    {
          return surveyId;
          }
-    public void setSurveyId(Long surveyId) { 
+    public void setSurveyId(Long surveyId) 
+    { 
         this.surveyId = surveyId; 
     }
-    public Long getEmployeeId() { 
+
+    public Long getEmployeeId() 
+    { 
         return employeeId; 
     }
-    public void setEmployeeId(Long employeeId) { 
+    public void setEmployeeId(Long employeeId) 
+    { 
         this.employeeId = employeeId; 
     }
-    public Map<String, String> getAnswers() { 
+
+    public Map<String, String> getAnswers() 
+    { 
         return answers; 
     }
-
-    public void setAnswers(Map<String, String> answers) { 
+    public void setAnswers(Map<String, String> answers) 
+    { 
         this.answers = answers; 
     }
 }
