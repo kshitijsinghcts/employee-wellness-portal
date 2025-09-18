@@ -1,5 +1,7 @@
 package com.example.wellnessportal.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,6 @@ import com.example.wellnessportal.repository.EmployeeRepository;
 import com.example.wellnessportal.repository.AuthUserRepository;
 import com.example.wellnessportal.repository.GoalRepository;
 import com.example.wellnessportal.repository.WellnessMetricRepository;
-
 
 @Service
 public class AuthService {
@@ -36,14 +37,19 @@ public class AuthService {
 
     public String validateEmployee(AuthUser inputAuthUser) {
 
-        long employeeId = inputAuthUser.getEmployeeId();
-        AuthUser authUser = authUserRepository.findById(employeeId).orElse(null);
+        String email = inputAuthUser.getEmail();
 
-        if (authUser == null || !inputAuthUser.getPassword().equals(authUser.getPassword())) {
-            return "Invalid credentials";
+        AuthUser authUser = authUserRepository.findUserByEmail(email);
+
+        if (authUser == null) {
+            return "Invalid credentials. User not found.";
         }
+        if (!inputAuthUser.getPassword().equals(authUser.getPassword())) {
+            return "Invalid credentials. Incorrect password.";
+        }
+        Long employeeId = authUser.getEmployeeId();
 
-        String role = inputAuthUser.getRole();
+        String role = authUser.getRole();
         if ("ADMIN".equals(role)) {
             Admin admin = adminRepository.findAdminByEmployeeId(employeeId);
             if (admin != null) {
@@ -63,74 +69,78 @@ public class AuthService {
 
     }
 
-    public String registerEmployee(Employee employee) 
-    {
+    public String registerEmployee(Employee employee) {
         if (employeeRepository.existsById(employee.getEmployeeId())
                 ||
                 authUserRepository.existsById(employee.getEmployeeId())) {
             return "Employee with ID " + employee.getEmployeeId() + " already exists. Kindly login.";
         }
-        
-        /* Storing user in 2 databases:
-           1. AuthUser: Contains both employees and admins
-           2. Employee: Contains only employees
-        
-        */ 
+
+        /*
+         * Storing user in 2 databases:
+         * 1. AuthUser: Contains both employees and admins
+         * 2. Employee: Contains only employees
+         * 
+         */
         employeeRepository.save(employee);
         authUserRepository.save(new AuthUser(
                 employee.getEmployeeId(),
-                employee.getName(),
+                employee.getEmail(),
                 employee.getPassword(),
-                "EMPLOYEE")
-                );
+                "EMPLOYEE"));
 
-        // Creating a record in each table which has employeeId immediately upon registering user
-        /* The tables associated with employee Id as primary/composite key are:
+        // Creating a record in each table which has employeeId immediately upon
+        // registering user
+        /*
+         * The tables associated with employee Id as primary/composite key are:
          * 1. Goal
          * 2. WellnessMetric
          * Hence, their objects are created as:
          * 1. goalRecord
          * 2. wellnessMetricRecord
          */
-        Goal goalRecord= new Goal(employee.getEmployeeId());
-        WellnessMetric wellnessMetricRecord=new WellnessMetric(employee.getEmployeeId());
+        // Goal goalRecord= new Goal(employee.getEmployeeId());
+        // WellnessMetric wellnessMetricRecord=new
+        // WellnessMetric(employee.getEmployeeId());
 
-        goalRepository.save(goalRecord);
-        wellnessMetricRepository.save(wellnessMetricRecord);
+        // goalRepository.save(goalRecord);
+        // wellnessMetricRepository.save(wellnessMetricRecord);
+
         return "Employee registered successfully with ID " + employee.getEmployeeId();
     }
 
-    public String registerAdmin(Admin admin) 
-    {
+    public String registerAdmin(Admin admin) {
         if (employeeRepository.existsById(admin.getEmployeeId())
                 ||
                 authUserRepository.existsById(admin.getEmployeeId())) {
             return "Admin with ID " + admin.getEmployeeId() + " already exists. Kindly login.";
         }
-        
-        /* Storing user in 2 databases:
-           1. AuthUser: Contains both employees and admins
-           2. Admin: Contains only admins
-        
-        */ 
+
+        /*
+         * Storing user in 2 databases:
+         * 1. AuthUser: Contains both employees and admins
+         * 2. Admin: Contains only admins
+         * 
+         */
         adminRepository.save(admin);
         authUserRepository.save(new AuthUser(
                 admin.getEmployeeId(),
-                admin.getName(),
+                admin.getEmail(),
                 admin.getPassword(),
-                "ADMIN")
-                );
+                "ADMIN"));
 
-        // Creating a record in each table which has employeeId immediately upon registering user
-        /* The tables associated with employee Id as primary/composite key are:
+        // Creating a record in each table which has employeeId immediately upon
+        // registering user
+        /*
+         * The tables associated with employee Id as primary/composite key are:
          * 1. Goal
          * 2. WellnessMetric
          * Hence, their objects are created as:
          * 1. goalRecord
          * 2. wellnessMetricRecord
          */
-        Goal goalRecord= new Goal(admin.getEmployeeId());
-        WellnessMetric wellnessMetricRecord=new WellnessMetric(admin.getEmployeeId());
+        Goal goalRecord = new Goal(admin.getEmployeeId());
+        WellnessMetric wellnessMetricRecord = new WellnessMetric(admin.getEmployeeId());
 
         goalRepository.save(goalRecord);
         wellnessMetricRepository.save(wellnessMetricRecord);
@@ -138,5 +148,33 @@ public class AuthService {
         return "Admin registered successfully with ID " + admin.getEmployeeId();
     }
 
+    // This maps email to employeeId
+    // Exception can be caught in controller stating that email doesnt exist
+    public Long getAdminIdByEmail(String email) throws Exception {
+        Admin admin = adminRepository.findAdminByEmail(email);
+        try {
+            if (admin != null)
+                return admin.getEmployeeId();
+
+            else
+                throw new Exception();
+        } catch (Exception e) {
+            return (long) 0.0;
+        }
+
+    }
+
+    public Long getEmployeeIdByEmail(String email) throws Exception {
+        Employee employee = employeeRepository.findEmployeeByEmail(email);
+        try {
+            if (employee != null)
+                return employee.getEmployeeId();
+            else
+                throw new Exception();
+        } catch (Exception e) {
+            return (long) 0.0;
+        }
+
+    }
 
 }

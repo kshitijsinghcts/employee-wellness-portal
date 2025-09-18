@@ -15,24 +15,31 @@ public class AuthUser {
     // For Role-Based Login
     private String role;
 
-    public AuthUser() 
-    {
+    public AuthUser() {
     }
 
+    // what we need for login
+    public AuthUser(String email, String password) {
+        this.email = email;
+        this.password = password;
+        if (email != null && email.endsWith("@portaladmin.com")) {
+            this.role = "ADMIN";
+        } else {
+            this.role = "EMPLOYEE";
+        }
+    }
 
-   
-
-    public AuthUser(Long employeeId, 
-                    String email, 
-                    String password, 
-                    String role) 
-                    {
+    public AuthUser(Long employeeId,
+            String email,
+            String password,
+            String role) {
         this.employeeId = employeeId;
         this.email = email;
         this.password = password;
         this.role = role;
     }
 
+   
     // Getters and setters
     public Long getEmployeeId() {
         return employeeId;

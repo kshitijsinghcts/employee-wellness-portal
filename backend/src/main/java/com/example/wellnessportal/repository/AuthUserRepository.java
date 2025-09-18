@@ -11,7 +11,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long> {
     // @Query("SELECT u FROM AuthUser u WHERE u.employeeId = :employeeId")
     // AuthUser findUserByEmployeeId(@Param("employeeId") Long employeeId);
 
-    // @Query("SELECT u FROM AuthUser u WHERE u.email = :email")
-    // AuthUser findUserByEmail(@Param("email") String email);
+     @Query("SELECT u FROM AuthUser u WHERE u.email = :email")
+     AuthUser findUserByEmail(@Param("email") String email);
 
 }
