@@ -39,27 +39,37 @@ public class AuthService
 
     public String validateEmployee(AuthUser inputAuthUser) {
 
-        long employeeId = inputAuthUser.getEmployeeId();
-        AuthUser authUser = authUserRepository.findById(employeeId).orElse(null);
+        String email = inputAuthUser.getEmail();
 
-        if (authUser == null || !inputAuthUser.getPassword().equals(authUser.getPassword())) {
-            return "Invalid credentials";
+        AuthUser authUser = authUserRepository.findUserByEmail(email);
+
+        if (authUser == null || !inputAuthUser.getPassword().equals(authUser.getPassword())) 
+        {
+            return "Invalid credentials"+authUser.getEmployeeId();
         }
+        Long employeeId=authUser.getEmployeeId();
 
-        String role = inputAuthUser.getRole();
-        if ("ADMIN".equals(role)) {
+        String role = authUser.getRole();
+        if ("ADMIN".equals(role)) 
+        {
             Admin admin = adminRepository.findAdminByEmployeeId(employeeId);
-            if (admin != null) {
+            if (admin != null) 
+            {
                 // Return dummy token for admin
                 return "dummy-token-for-admin-" + employeeId;
             }
-        } else if ("EMPLOYEE".equals(role)) {
+        } 
+        else if ("EMPLOYEE".equals(role)) 
+        {
             Employee employee = employeeRepository.findEmployeeByEmployeeId(employeeId);
-            if (employee != null) {
+            if (employee != null) 
+            {
                 // Return dummy token for employee
                 return "dummy-token-for-employee-" + employeeId;
             }
-        } else {
+        } 
+        else 
+        {
             return "Create your account";
         }
         return "Invalid credentials. Please try again";
@@ -82,7 +92,7 @@ public class AuthService
         employeeRepository.save(employee);
         authUserRepository.save(new AuthUser(
                 employee.getEmployeeId(),
-                employee.getName(),
+                employee.getEmail(),
                 employee.getPassword(),
                 "EMPLOYEE")
                 );
@@ -120,7 +130,7 @@ public class AuthService
         adminRepository.save(admin);
         authUserRepository.save(new AuthUser(
                 admin.getEmployeeId(),
-                admin.getName(),
+                admin.getEmail(),
                 admin.getPassword(),
                 "ADMIN")
                 );
@@ -147,20 +157,35 @@ public class AuthService
     public Long getAdminIdByEmail(String email) throws Exception
     {
         Admin admin=adminRepository.findAdminByEmail(email);
+        try
+        {
         if(admin!=null)
         return admin.getEmployeeId();
+        
         else
         throw new Exception();
+        }
+        catch(Exception e)
+        {
+        return (long)0.0;
+        }
 
     }
 
      public Long getEmployeeIdByEmail(String email) throws Exception
     {
         Employee employee=employeeRepository.findEmployeeByEmail(email);
+        try
+        {
         if(employee!=null)
         return employee.getEmployeeId();
         else
         throw new Exception();
+        }
+        catch(Exception e)
+        {
+            return (long) 0.0;
+        }
 
     }
 

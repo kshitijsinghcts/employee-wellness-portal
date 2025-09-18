@@ -33,6 +33,13 @@ public class AuthUser {
         this.role = role;
     }
 
+     // Constructor for Login. Fetch other details from repository.
+    public AuthUser(String email,
+        String password)
+    {
+        this.email = email;
+        this.password = password;
+    }
     // Getters and setters
     public Long getEmployeeId() {
         return employeeId;
