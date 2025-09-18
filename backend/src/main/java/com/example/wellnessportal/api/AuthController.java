@@ -20,8 +20,11 @@ public class AuthController {
     public String login(@RequestBody AuthUser authUser) {
         try {
             authUser.setEmployeeId(authService.getEmployeeIdByEmail(authUser.getEmail()));
+            if (authUser.getEmployeeId() == 0L) {
+                return "Invalid credentials. User not found.";
+            }
         } catch (Exception e) {
-            return (e.getMessage());
+            return "Error during login: " + e.getMessage();
         }
         return authService.validateEmployee(authUser);
     }
