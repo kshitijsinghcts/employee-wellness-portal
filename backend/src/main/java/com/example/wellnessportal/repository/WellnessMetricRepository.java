@@ -16,7 +16,7 @@ public interface WellnessMetricRepository extends JpaRepository<WellnessMetric, 
 
    
 
-      @Query(value="SELECT wm FROM WellnessMetric wm WHERE wm.employeeId = :employeeId ORDER BY wm.date DESC LIMIT 1", nativeQuery=true)
+      @Query("SELECT wm FROM WellnessMetric wm WHERE wm.employeeId = :employeeId ORDER BY wm.recordDate DESC LIMIT 1")
        WellnessMetric findByEmployeeId(@Param("employeeId") Long employeeId);
 
        @Query("SELECT wm FROM WellnessMetric wm WHERE wm.employeeId = :employeeId")

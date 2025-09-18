@@ -1,6 +1,7 @@
 package com.example.wellnessportal.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +57,10 @@ public class GoalService {
             LocalDate recordDate) {
 
         List<Goal> goals = findGoalsByEmployeeId(employeeId);
+        List<Boolean> goalStatus=new ArrayList<>();
 
         for (Goal goal : goals) {
+            System.out.println(goal.getGoalType()+","+recordDate);
             if (!isGoalCompleted(goal,
                     wellnessMetric,
                     recordDate)) {
@@ -88,11 +91,11 @@ public class GoalService {
             WellnessMetric wellnessMetric,
             LocalDate recordDate) {
         switch (goal.getGoalType()) {
-            case "mood" -> {
-                return wellnessMetric.getMood().equalsIgnoreCase("Happy")
-                        &&
-                        goal.getTargetDate().isBefore(recordDate);
-            }
+            // case "mood" -> {
+            //     // return wellnessMetric.getMood().equalsIgnoreCase("Happy")
+            //     //         &&
+            //     //         goal.getTargetDate().isBefore(recordDate);
+            // }
 
             case "dailySteps" -> {
 
@@ -108,8 +111,12 @@ public class GoalService {
             }
 
         }
-        return (goal.getStatus() >= goal.getTargetScores())
+        return ((goal.getStatus() >= goal.getTargetScores())
                 &&
-                goal.getTargetDate().isBefore(recordDate);
+                goal.getTargetDate().isBefore(recordDate))
+                ||
+                ((goal.getStatus() <= goal.getTargetScores())
+                &&
+                goal.getTargetDate().isAfter(recordDate));
     }
 }

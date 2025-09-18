@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Table(name="wellnessmetric")
 public class WellnessMetric {
 
     @Id

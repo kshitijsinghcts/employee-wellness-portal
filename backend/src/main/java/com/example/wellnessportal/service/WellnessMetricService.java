@@ -139,7 +139,8 @@ public class WellnessMetricService {
     // List of metrics logged by the employee since his/her account creation
     public List<WellnessMetric> getEmployeeLogs(Long employeeId) 
     {
-        return wellnessMetricRepository.findAllByEmployeeId(employeeId);
+        List<WellnessMetric> wm=wellnessMetricRepository.findAllByEmployeeId(employeeId);
+        return wm;
     }
 
     // The following methods are for letting the user know how he/she is on par with his self-set goals
@@ -151,6 +152,8 @@ public class WellnessMetricService {
     {
       
         WellnessMetric wellnessMetric=wellnessMetricRepository.findByEmployeeId(employeeId);
+        if(wellnessMetric==null)
+        return "Employee does not exist";
         if(goalService.validateGoalCompletion(employeeId,
                                               wellnessMetric,
                                               LocalDate.now()))
@@ -166,6 +169,8 @@ public class WellnessMetricService {
     {
        
         WellnessMetric wellnessMetric=wellnessMetricRepository.findByEmployeeId(employeeId);
+          if(wellnessMetric==null)
+        return "Employee does not exist";
         if(goalService.validateGoalCompletion(employeeId,
                                               wellnessMetric,
                                               goal,
@@ -180,8 +185,9 @@ public class WellnessMetricService {
     {
        // This method from repository interface returns the latest row and is limited to one row
        WellnessMetric wellnessMetric=wellnessMetricRepository.findByEmployeeId(employeeId);
+         if(wellnessMetric==null)
+        return List.of("Employee does not exist");
        List<String> wmList=new ArrayList<>();
-       
        wmList.add(wellnessMetric.getMood());
        wmList.add(String.valueOf(wellnessMetric.getDailySteps()));
        wmList.add(String.valueOf(wellnessMetric.getSleepHours()));
@@ -198,7 +204,8 @@ public class WellnessMetricService {
     // The formula used is weighted sum of metrics
     // The weights can be set by the user, allowing him to prioritize his/her metrics    
     List<Long> rankedList = wellnessMetricRepository.findEmployeesRankedByHealthScore();
-
+      if(rankedList==null)
+        return -1;
     for (int i = 0; i < rankedList.size(); i++) {
         if (rankedList.get(i).equals(employeeId)) {
             return i + 1; 

@@ -43,7 +43,7 @@ public class AuthService {
 
         if (authUser == null || !inputAuthUser.getPassword().equals(authUser.getPassword())) 
         {
-            return "Invalid credentials"+authUser.getEmployeeId();
+            return "Invalid credentials";
         }
         Long employeeId=authUser.getEmployeeId();
 
