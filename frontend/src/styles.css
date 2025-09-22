@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+/* globals.css translated to login.css */
+:root {
+  --background: #ffffff;
+  --foreground: #252525;
+  --card: #ffffff;
+  --card-foreground: #252525;
+  --primary: #030213;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f7;
+  --secondary-foreground: #030213;
+  --muted: #ececf0;
+  --muted-foreground: #717182;
+  --accent: #e9ebef;
+  --accent-foreground: #030213;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --input-background: #f3f3f5;
+  --ring: #b4b4b4;
+  --radius: 0.625rem;
+}
+
