@@ -17,3 +17,4 @@
 /frontend/.angular/cache/
 
 backend/src/main/resources/application.properties
+frontend/src/app/app.routes.ts
