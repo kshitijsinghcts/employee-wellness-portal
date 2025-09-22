@@ -1,6 +1,7 @@
 package com.example.wellnessportal.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,7 @@ public class AuthService {
         Long employeeId = authUser.getEmployeeId();
 
         String role = authUser.getRole();
+
         if ("ADMIN".equals(role)) {
             Admin admin = adminRepository.findAdminByEmployeeId(employeeId);
             if (admin != null) {
