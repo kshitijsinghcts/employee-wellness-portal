@@ -1,1 +1,279 @@
-<p>dashboard works!</p>
+<div class="container" *ngIf="user">
+  <!-- Welcome Section -->
+  <div class="welcome-banner">
+    <div>
+      <h1>{{ greeting }} 👋</h1>
+      <p>
+        Welcome to your wellness dashboard. Track your progress, achieve your goals, and build healthier habits.
+      </p>
+    </div>
+    <div class="welcome-image-container">
+      <img
+        src="https://s3-alpha-sig.figma.com/img/b187/0e2b/7f9aa6458898c2a56e9d5b4d1ee1f1b3?Expires=1722211200&Key-Pair-Id=K2Y6YVDC2JSV4S&Signature=a23~2-~682-g-z6911-3y50552~3-4~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3--~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3--~3-~3-~3-~3-~3-~3-~3-~3-~3--~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3--~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3--~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3--~3-~3-~3--~3--~3--~3--~3--~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3--~3-~3-~3-~3-~3-~3-~3--~3-~3--~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3--~3-~3-~3-~3--~3-~3-~3-~3-~3-~3-~3-~3-~3-~3--~3-~3-~3--~3--~3-~3-~3-~3-~3-~3-~3-~3-~3-~3--~3--~3-~3-~3--~3--~3--~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3-~3--~3-~3-~3-~3-~3-~3-~3-~3-~3-~3--~3-~3-~3--~3-~3-~3--~3--~-~3-~3-~3-~3-~3-~3-~-~3--~3-~-~3--~3--~3--~3-~-~3---~3--~3--~-~3---~3-~3--~-~3--~3--~-~3--~3--~3--~-~-~-~--~--~3--~3--~-~-~3----~3-~3--~-~-~-~-~--t.."
+        alt="Wellness illustration" class="welcome-image" />
+    </div>
+  </div>
+
+  <!-- Today's Progress -->
+  <div class="section">
+    <div class="section-header">
+      - <h2>Today's Progress</h2>
+      - <div class="badge badge-secondary">📅 {{ today | date: 'mediumDate' }}</div>
+      + <h2>Today's Progress</h2>
+      + <div class="badge badge-secondary">📅 {{ today | date: 'mediumDate' }}</div>
+    </div>
+    <div class="grid-4-col">
+      <div class="card" *ngFor="let metric of todaysMetrics">
+        <div class="card-header">
+          <div class="flex-between">
+            <div class="icon-wrapper-primary">
+              <!-- Placeholder for icon -->
+              <span class="icon-placeholder">{{ metric.icon.charAt(0) }}</span>
+            </div>
+            <div *ngIf="metric.progress >= 100" class="badge badge-success">Complete!</div>
+          </div>
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="metric-value">
+              <span>{{ metric.value.toLocaleString() }}</span>
+              <span class="metric-target">/ {{ metric.target.toLocaleString() }} {{ metric.unit }}</span>
+            </div>
+            <h4>{{ metric.label }}</h4>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" [style.width.%]="metric.progress"></div>
+          </div>
+          <p class="progress-label">{{ metric.progress }}% of daily goal</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Points & Tier Status Section -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">⭐ Points & Tier Status</h3>
+      <p class="card-description">Track your wellness points and unlock tier benefits</p>
+    </div>
+    <div class="card-content">
+      <div class="points-summary">
+        <div class="points-display">
+          <span class="icon-placeholder-large">⚡️</span>
+          <span class="points-value">{{ userPoints.current.toLocaleString() }}</span>
+          <span class="points-label">Points</span>
+        </div>
+        <div *ngIf="currentTier" class="tier-badge-wrapper">
+          <div class="tier-badge" [ngClass]="'tier-' + currentTier.color">
+            <span class="icon-placeholder">{{ currentTier.icon.charAt(0) }}</span>
+            <span>{{ currentTier.name }} Tier</span>
+          </div>
+        </div>
+        <div *ngIf="nextTier" class="tier-progress">
+          <div class="flex-between">
+            <span>Progress to {{ nextTier.name }}</span>
+            <span>{{ nextTier.pointsNeeded }} points needed</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" [style.width.%]="getTierProgress(nextTier.name)"></div>
+          </div>
+        </div>
+        <p *ngIf="!nextTier" class="text-center">🎉 Congratulations! You've reached the highest tier!</p>
+      </div>
+
+      <div class="grid-3-col">
+        <div *ngFor="let tier of tierSystem.tiers; let i = index" class="tier-card"
+          [class.current-tier]="i === currentTierIndex" [class.unlocked-tier]="isTierUnlocked(tier)"
+          [class.locked-tier]="!isTierUnlocked(tier)">
+          <div class="tier-icon-wrapper" [ngClass]="'tier-icon-' + tier.color">
+            <span class="icon-placeholder-medium">{{ tier.icon.charAt(0) }}</span>
+          </div>
+          <h3>{{ tier.name }}</h3>
+          <p class="tier-range">{{ tier.range }} points</p>
+          <div class="tier-status-badge">
+            <div *ngIf="i === currentTierIndex" class="badge badge-info">Current Tier</div>
+            <div *ngIf="i !== currentTierIndex && isTierUnlocked(tier)" class="badge badge-success">Unlocked</div>
+            <div *ngIf="!isTierUnlocked(tier)" class="badge badge-muted">Locked</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts and Stats -->
+  <div class="grid-2-col">
+    <!-- Weekly Progress Chart -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">📈 Weekly Progress</h3>
+        <p class="card-description">Your wellness metrics over the past week</p>
+      </div>
+      <div class="card-content">
+        <div class="chart-placeholder">
+          <p>Weekly Progress Chart Placeholder</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Achievements -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">🏆 Recent Achievements</h3>
+        <p class="card-description">Your latest wellness milestones</p>
+      </div>
+      <div class="card-content">
+        <div *ngFor="let achievement of recentAchievements" class="achievement-item">
+          <div class="icon-wrapper-success">
+            <span class="icon-placeholder">{{ achievement.icon.charAt(0) }}</span>
+          </div>
+          <div class="achievement-details">
+            <h4>{{ achievement.title }}</h4>
+            <p>{{ achievement.description }}</p>
+          </div>
+          <span class="achievement-date">{{ achievement.date }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">🎯 Quick Actions</h3>
+      <p class="card-description">Common tasks to help you stay on track</p>
+    </div>
+    <div class="card-content">
+      <div class="grid-3-col">
+        <button class="quick-action-btn">
+          <span class="icon-placeholder-large">🏃</span>
+          <h4>Log Activity</h4>
+          <p>Record your wellness metrics</p>
+        </button>
+        <button class="quick-action-btn">
+          <span class="icon-placeholder-large">🏁</span>
+          <h4>Set New Goal</h4>
+          <p>Create a wellness objective</p>
+        </button>
+        <button class="quick-action-btn">
+          <span class="icon-placeholder-large">📝</span>
+          <h4>Take Survey</h4>
+          <p>Share your feedback</p>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Points and Rewards Section -->
+  <div class="grid-3-col">
+    <!-- Wellness Points -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">⭐ Wellness Points</h3>
+        <p class="card-description">Earn points for healthy activities</p>
+      </div>
+      <div class="card-content">
+        <div class="points-summary-small">
+          <div class="points-display-small">
+            <span class="icon-placeholder-medium">⚡️</span>
+            <span class="points-value-small">{{ userPoints.current.toLocaleString() }}</span>
+          </div>
+          <p>Total Points</p>
+          <div class="tier-progress">
+            <div class="flex-between">
+              <span>Progress to next level</span>
+              <span>{{ userPoints.current }}/{{ userPoints.nextLevel }}</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar" [style.width.%]="(userPoints.current / userPoints.nextLevel) * 100"></div>
+            </div>
+          </div>
+        </div>
+        <div class="recent-earnings">
+          <h4>Recent Earnings</h4>
+          <div *ngFor="let earning of userPoints.recentEarnings" class="earning-item">
+            <div>
+              <p class="earning-activity">{{ earning.activity }}</p>
+              <p class="earning-time">{{ earning.time }}</p>
+            </div>
+            <div class="badge badge-success">+{{ earning.points }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">🏆 Leaderboard</h3>
+        <p class="card-description">See how you rank among colleagues</p>
+      </div>
+      <div class="card-content" *ngIf="leaderboard.length > 0">
+        <div *ngFor="let person of leaderboard" class="leaderboard-item" [class.current-user]="person.isCurrentUser">
+          <div class="leaderboard-rank" [ngClass]="'rank-' + person.rank">
+            <span *ngIf="person.rank === 1">🥇</span>
+            <span *ngIf="person.rank === 2">🥈</span>
+            <span *ngIf="person.rank === 3">🥉</span>
+            <span *ngIf="person.rank > 3">{{ person.rank }}</span>
+          </div>
+          <div class="leaderboard-details">
+            <p>{{ person.name }} <span *ngIf="person.isCurrentUser">(You)</span></p>
+            <p class="leaderboard-points">{{ person.points.toLocaleString() }} points</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rewards Store -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">🎁 Rewards Store</h3>
+        <p class="card-description">Redeem points for wellness rewards</p>
+      </div>
+      <div class="card-content">
+        <div *ngFor="let reward of pointRewards" class="reward-item"
+          [class.available]="reward.available && canAfford(reward)" [class.unavailable]="!reward.available">
+          <div class="reward-details">
+            <span class="icon-placeholder">{{ reward.icon.charAt(0) }}</span>
+            <div>
+              <p>{{ reward.title }}</p>
+              <p class="reward-cost">{{ reward.cost }} points</p>
+            </div>
+          </div>
+          <button class="btn btn-sm" [disabled]="!reward.available || !canAfford(reward)">
+            <span *ngIf="!reward.available">Sold Out</span>
+            <span *ngIf="reward.available && !canAfford(reward)">Need More</span>
+            <span *ngIf="reward.available && canAfford(reward)">Redeem</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Company Stats (Admin only) -->
+  <div class="card" *ngIf="user.role === 'ADMIN'">
+    <div class="card-header">
+      <h3 class="card-title">👥 Company Wellness Overview</h3>
+      <p class="card-description">Overall wellness program engagement</p>
+    </div>
+    <div class="card-content">
+      <div class="grid-4-col">
+        <div class="stat-item">
+          <p class="stat-value-blue">124</p>
+          <p class="stat-label">Active Users</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-value-green">78%</p>
+          <p class="stat-label">Engagement Rate</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-value-purple">156</p>
+          <p class="stat-label">Goals Completed</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-value-orange">89</p>
+          <p class="stat-label">Survey Responses</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
