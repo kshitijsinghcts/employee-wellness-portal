@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EmployeeService } from '../services/employee.service';
+import { Employee } from '../models/employee.model';
 
 // Mock data and types based on the provided dashboard.tsx
 // In a real app, these would be in separate models/services.
@@ -54,14 +56,7 @@ interface Reward {
   imports: [CommonModule]
 })
 export class DashboardComponent implements OnInit {
-  // Mock user from useAuth()
-  user = {
-    name: 'Emily',
-    role: 'user' // 'admin' to see admin panel
-  };
-
-  greeting = '';
-  
+  user: Employee | null = null;
   todaysMetrics: Metric[] = [
     { label: 'Steps', value: 9200, target: 10000, unit: 'steps', icon: 'Activity', progress: 92 },
     { label: 'Water', value: 7, target: 8, unit: 'glasses', icon: 'Droplets', progress: 87 },
@@ -109,22 +104,37 @@ export class DashboardComponent implements OnInit {
   nextTier: { name: string; pointsNeeded: number; } | null = null;
   
   today = new Date();
+  greeting = '';
+
+  constructor(private employeeService: EmployeeService) {}
 
   ngOnInit(): void {
-    this.setGreeting();
-    this.setupLeaderboard();
-    this.calculateTierStatus();
+    const employeeId = localStorage.getItem('employeeId');
+    if (employeeId) {
+      this.employeeService.getEmployeeById(employeeId).subscribe({
+        next: (employeeData) => {
+          this.user = employeeData;
+          // Now that we have the user data, we can set up the rest of the component
+          this.setGreeting();
+          this.setupLeaderboard();
+          this.calculateTierStatus();
+        },
+        error: (err) => {
+          console.error('Failed to fetch employee data', err);
+          // TODO: Handle error, e.g., navigate back to login
+        }
+      });
+    } else {
+      // No employeeId found, maybe redirect to login
+      console.error('No employeeId found in local storage.');
+    }
   }
 
   private setGreeting(): void {
     const currentHour = new Date().getHours();
-    if (currentHour < 12) {
-      this.greeting = 'Good morning';
-    } else if (currentHour < 18) {
-      this.greeting = 'Good afternoon';
-    } else {
-      this.greeting = 'Good evening';
-    }
+    const timeOfDay = currentHour < 12 ? 'morning' : currentHour < 18 ? 'afternoon' : 'evening';
+    const name = this.user ? `, ${this.user.name}` : '';
+    this.greeting = `Good ${timeOfDay}${name}`;
   }
 
   private setupLeaderboard(): void {
