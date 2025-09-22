@@ -2,6 +2,7 @@ package com.example.wellnessportal.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 
 @Entity
 public class AuthUser {
@@ -10,6 +11,7 @@ public class AuthUser {
     private Long employeeId;
     // Username can be customized by the employee but employee id is a mandatory
     // field
+        @Column(unique=true)
     private String email;
     private String password;
     // For Role-Based Login

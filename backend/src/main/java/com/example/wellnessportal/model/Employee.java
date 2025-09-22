@@ -1,5 +1,6 @@
 package com.example.wellnessportal.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,6 +13,7 @@ public class Employee {
     private Long employeeId;
     private String password;
     private String name;
+    @Column(unique=true)
     private String email;
    
 

@@ -2,6 +2,7 @@ package com.example.wellnessportal.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -17,6 +18,7 @@ public class Admin {
     // Attributes for Authentication
      private String password;
     private String name;
+        @Column(unique=true)
     private String email;
    
 

@@ -3,12 +3,16 @@ package com.example.wellnessportal.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.wellnessportal.model.Goal;
+import com.example.wellnessportal.model.AuthUser;
+
 import com.example.wellnessportal.model.WellnessMetric;
+import com.example.wellnessportal.repository.AuthUserRepository;
 import com.example.wellnessportal.repository.GoalRepository;
 
 @Service
@@ -17,10 +21,17 @@ public class GoalService {
     @Autowired
     private GoalRepository goalRepository;
 
+    @Autowired
+    private AuthUserRepository authUserRepository;
+
     public String setGoal(Goal goal) {
         if (goal == null || goal.getEmployeeId() == null) {
             throw new IllegalArgumentException("Goal or Employee ID cannot be empty");
         }
+        Optional<AuthUser> authUser=authUserRepository.findById(goal.getEmployeeId());
+        if(authUser==null)
+        return "Employee Does Not Exist";
+
         goalRepository.save(goal);
         return "Goal set successfully";
     }
