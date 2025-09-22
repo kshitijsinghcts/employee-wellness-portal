@@ -1,6 +1,7 @@
 package com.example.wellnessportal.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,7 @@ public class AuthService {
         Long employeeId = authUser.getEmployeeId();
 
         String role = authUser.getRole();
+
         if ("ADMIN".equals(role)) {
             Admin admin = adminRepository.findAdminByEmployeeId(employeeId);
             if (admin != null) {
@@ -70,6 +72,9 @@ public class AuthService {
     }
 
     public String registerEmployee(Employee employee) {
+        if (employee.getEmployeeId() == null) {
+            return "Employee ID is required.";
+        }
         if (employeeRepository.existsById(employee.getEmployeeId())
                 ||
                 authUserRepository.existsById(employee.getEmployeeId())) {
@@ -110,6 +115,9 @@ public class AuthService {
     }
 
     public String registerAdmin(Admin admin) {
+        if (admin.getEmployeeId() == null) {
+            return "Admin Employee ID is required.";
+        }
         if (employeeRepository.existsById(admin.getEmployeeId())
                 ||
                 authUserRepository.existsById(admin.getEmployeeId())) {
