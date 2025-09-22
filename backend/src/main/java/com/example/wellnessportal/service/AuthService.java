@@ -70,6 +70,9 @@ public class AuthService {
     }
 
     public String registerEmployee(Employee employee) {
+        if (employee.getEmployeeId() == null) {
+            return "Employee ID is required.";
+        }
         if (employeeRepository.existsById(employee.getEmployeeId())
                 ||
                 authUserRepository.existsById(employee.getEmployeeId())) {
@@ -110,6 +113,9 @@ public class AuthService {
     }
 
     public String registerAdmin(Admin admin) {
+        if (admin.getEmployeeId() == null) {
+            return "Admin Employee ID is required.";
+        }
         if (employeeRepository.existsById(admin.getEmployeeId())
                 ||
                 authUserRepository.existsById(admin.getEmployeeId())) {

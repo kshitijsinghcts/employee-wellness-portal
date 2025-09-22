@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,19 +16,42 @@ export class Login {
   showPassword = false;
 
   loginData = { email: '', password: '' };
-  registerData = { email: '', password: '', name: '', department: '' };
+  registerData = { employeeId: null as number | null, password: '', name: '', email: '' };
+
+  constructor(private authService: AuthService) {}
 
   handleLogin() {
     this.isLoading = true;
     console.log('Logging in with:', this.loginData);
-    // Mock API call
-    setTimeout(() => { this.isLoading = false; }, 1500);
+    this.authService.login(this.loginData).subscribe({
+      next: (response) => {
+        console.log('Login successful', response);
+        // TODO: Handle successful login, e.g., save token and navigate
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Login failed', error);
+        // TODO: Show an error message to the user
+        this.isLoading = false;
+      }
+    });
   }
 
   handleRegister() {
     this.isLoading = true;
     console.log('Registering with:', this.registerData);
-    // Mock API call
-    setTimeout(() => { this.isLoading = false; }, 1500);
+    this.authService.register(this.registerData).subscribe({
+      next: (response) => {
+        console.log('Registration successful', response);
+        // TODO: Handle successful registration, e.g., switch to login tab
+        this.isLoading = false;
+        this.activeTab = 'login';
+      },
+      error: (error) => {
+        console.error('Registration failed', error);
+        // TODO: Show an error message to the user
+        this.isLoading = false;
+      }
+    });
   }
 }
