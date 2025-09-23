@@ -109,6 +109,41 @@
       </div>
     </div>
 
+    <!-- Submitted for Review Goals -->
+    <div *ngIf="submittedForReviewGoals.length > 0" class="section">
+      <h3 class="section-title">
+        <span class="icon-placeholder-sm">📝</span>
+        Submitted for Review
+      </h3>
+      <div class="grid-2-col">
+        <div *ngFor="let goal of submittedForReviewGoals" class="card card-review">
+          <div class="card-header">
+            <div class="goal-title-group">
+              <div class="icon-wrapper-yellow">
+                <span class="icon-placeholder">{{ getGoalIcon(goal.type) }}</span>
+              </div>
+              <div>
+                <h4 class="card-title">{{ goal.title }}</h4>
+                <p class="card-description">{{ goal.description }}</p>
+              </div>
+            </div>
+            <div class="badge badge-warning">
+              <span class="icon-placeholder-sm">⏳</span>
+              In Review
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="progress-bar-container">
+              <div class="progress-bar" [style.width.%]="100"></div>
+            </div>
+            <p class="text-yellow">
+              👍 Submitted for review. Awaiting approval.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Completed Goals -->
     <div *ngIf="completedGoals.length > 0" class="section">
       <h3 class="section-title">

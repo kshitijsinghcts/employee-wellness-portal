@@ -12,7 +12,7 @@ export interface Goal {
   currentValue: number;
   unit: string;
   deadline: string;
-  status: 'active' | 'completed' | 'paused';
+  status: 'active' | 'completed' | 'paused' | 'review';
   progress: number;
 }
 
@@ -53,6 +53,10 @@ export class Goals implements OnInit {
 
   get pausedGoals(): Goal[] {
     return this.goals.filter(goal => goal.status === 'paused');
+  }
+
+  get submittedForReviewGoals(): Goal[] {
+    return this.goals.filter(goal => goal.status === 'review');
   }
 
   get averageProgress(): number {
@@ -134,6 +138,7 @@ export class Goals implements OnInit {
       { id: '3', title: 'Sleep Optimization', description: 'Get 8 hours of quality sleep each night', type: 'sleep', targetValue: 8, currentValue: 7.2, unit: 'hours', deadline: '2024-12-31', status: 'active', progress: 90 },
       { id: '4', title: 'Weekly Exercise', description: 'Complete 150 minutes of exercise per week', type: 'exercise', targetValue: 150, currentValue: 120, unit: 'minutes', deadline: '2024-12-31', status: 'active', progress: 80 },
       { id: '5', title: 'Weight Loss Goal', description: 'Lose 10 pounds over the next 3 months', type: 'weight', targetValue: 10, currentValue: 6, unit: 'lbs', deadline: '2024-12-31', status: 'active', progress: 60 },
+      { id: '6', title: 'Mindfulness Meditation', description: 'Practice 10 minutes of mindfulness daily', type: 'custom', targetValue: 10, currentValue: 10, unit: 'minutes', deadline: '2024-12-31', status: 'review', progress: 100 },
     ];
   }
 

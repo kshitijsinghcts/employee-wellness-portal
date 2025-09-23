@@ -79,6 +79,13 @@
   border-radius: 9999px;
 }
 
+.icon-wrapper-yellow {
+  padding: 0.5rem;
+  background-color: #fef9c3; /* yellow-100 */
+  color: #ca8a04; /* yellow-600 */
+  border-radius: 9999px;
+}
+
 /* Goal Cards */
 .goal-title-group {
   display: flex;
@@ -125,6 +132,15 @@
 
 .text-green {
   color: #15803d; /* green-700 */
+}
+
+.card-review {
+  border-color: #fde68a; /* yellow-200 */
+  background-color: #fefce8; /* yellow-50/50 */
+}
+
+.text-yellow {
+  color: #a16207; /* yellow-700 */
 }
 
 /* Modal description */
