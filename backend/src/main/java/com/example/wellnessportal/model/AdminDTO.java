@@ -1,11 +1,15 @@
 package com.example.wellnessportal.model;
 
+import java.util.List;
+
+
 // DTO for Admin (role hardcoded as "ADMIN")
 public class AdminDTO {
     private Long employeeId;
     private String name;
     private String email;
     private final String role = "ADMIN";
+    private List<Employee> employeeList;
 
     public AdminDTO() 
     {
@@ -52,5 +56,15 @@ public class AdminDTO {
     public String getRole() 
     {
         return role;
+    }
+
+    public List<Employee> getListOfEmployees()
+    {
+        return this.employeeList;
+    }
+
+    public void setListOfEmployees()
+    {
+        this.employeeList=employeeList;
     }
 }
