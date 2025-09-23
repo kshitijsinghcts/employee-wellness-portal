@@ -31,7 +31,14 @@ public class WellnessMetric {
     private List<Rewards> rewards;
 
     @ElementCollection
-    private List<Integer> scores;
+    private double scores;
+
+    // Attributes dealt by admin
+    private static double dailyStepsWeight = 1.0;
+    private static double sleepHoursWeight = 1.0;
+    private static double waterIntakeWeight = 1.0;
+
+   
 
     // Constructors
     public WellnessMetric() {
@@ -150,11 +157,39 @@ public class WellnessMetric {
         this.rewards = rewards;
     }
 
-    public List<Integer> getScores() {
+    public double getScores() {
         return scores;
     }
 
-    public void setScores(List<Integer> scores) {
-        this.scores = scores;
+    public void setScores(double score) {
+        this.scores = score;
+    }
+
+    //These all are defined by admin
+
+     // Setter methods to configure weights
+    public static void setDailyStepsWeight(double weight) {
+        dailyStepsWeight = weight;
+    }
+
+    public static void setSleepHoursWeight(double weight) {
+        sleepHoursWeight = weight;
+    }
+
+    public static void setWaterIntakeWeight(double weight) {
+        waterIntakeWeight = weight;
+    }
+
+    // Optional: Getter methods if needed
+    public static double getDailyStepsWeight() {
+        return dailyStepsWeight;
+    }
+
+    public static double getSleepHoursWeight() {
+        return sleepHoursWeight;
+    }
+
+    public static double getWaterIntakeWeight() {
+        return waterIntakeWeight;
     }
 }

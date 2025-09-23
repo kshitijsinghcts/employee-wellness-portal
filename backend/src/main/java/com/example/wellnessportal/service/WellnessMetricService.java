@@ -26,6 +26,10 @@ public class WellnessMetricService {
     @Autowired
     private WellnessMetricRepository wellnessMetricRepository;
 
+    
+
+
+
     // User logs his health metrics. He should do this periodically for best results
     // Daily steps in goal entity is named activityLevel here due to contextual
     // differences.
@@ -250,5 +254,33 @@ else
 
         return rewards;
     }
+
+    // To compute the scores, we need to get admin-defined weighted average of all wellness metrics
+    public void applyWeightedScoreToAllMetrics(double stepsWeight, 
+    double sleepWeight, 
+    double waterWeight) {
+    // Set weights
+    WellnessMetric.setDailyStepsWeight(stepsWeight);
+    WellnessMetric.setSleepHoursWeight(sleepWeight);
+    WellnessMetric.setWaterIntakeWeight(waterWeight);
+
+    // Fetch all wellness metrics
+    List<WellnessMetric> allMetrics = wellnessMetricRepository.findAll();
+
+    for (WellnessMetric metric : allMetrics) {
+        // Calculate weighted score
+        double score = (
+            (metric.getDailySteps() * stepsWeight) +
+            (metric.getSleepHours() * sleepWeight) +
+            (metric.getWaterIntake() * waterWeight)
+        ) / (stepsWeight + sleepWeight + waterWeight);
+
+        // Set score in the metric
+        metric.setScores(score);
+
+        // Save updated metric
+        wellnessMetricRepository.save(metric);
+    }
+}
 
 }
