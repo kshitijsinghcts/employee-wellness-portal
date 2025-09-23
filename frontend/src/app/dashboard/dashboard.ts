@@ -197,18 +197,18 @@ export class DashboardComponent implements OnInit {
     if (metricForDate) {
       const moodScore = this.getMoodScore(metricForDate.mood);
       this.todaysMetrics = [
-        { label: 'Steps', value: metricForDate.dailySteps, target: 10000, unit: 'steps', icon: 'Activity', progress: Math.min(100, (metricForDate.dailySteps / 10000) * 100) },
-        { label: 'Water', value: metricForDate.waterIntake, target: 8, unit: 'glasses', icon: 'Droplets', progress: Math.min(100, (metricForDate.waterIntake / 8) * 100) },
-        { label: 'Sleep', value: metricForDate.sleepHours, target: 8, unit: 'hours', icon: 'Moon', progress: Math.min(100, (metricForDate.sleepHours / 8) * 100) },
-        { label: 'Mood', value: metricForDate.mood || 'N/A', target: '', unit: '', icon: 'Heart', progress: Math.min(100, (moodScore / 5) * 100) },
+        { label: 'Steps', value: metricForDate.dailySteps, target: 10000, unit: 'steps', icon: '👟', progress: Math.min(100, (metricForDate.dailySteps / 10000) * 100) },
+        { label: 'Water', value: metricForDate.waterIntake, target: 8, unit: 'glasses', icon: '🥛', progress: Math.min(100, (metricForDate.waterIntake / 8) * 100) },
+        { label: 'Sleep', value: metricForDate.sleepHours, target: 8, unit: 'hours', icon: '🛌', progress: Math.min(100, (metricForDate.sleepHours / 8) * 100) },
+        { label: 'Mood', value: metricForDate.mood || 'N/A', target: '', unit: '', icon: '😄', progress: Math.min(100, (moodScore / 5) * 100) },
       ];
     } else {
       // No data for this date, show empty state
       this.todaysMetrics = [
-        { label: 'Steps', value: 0, target: 10000, unit: 'steps', icon: 'Activity', progress: 0 },
-        { label: 'Water', value: 0, target: 8, unit: 'glasses', icon: 'Droplets', progress: 0 },
-        { label: 'Sleep', value: 0, target: 8, unit: 'hours', icon: 'Moon', progress: 0 },
-        { label: 'Mood', value: 'N/A', target: '', unit: '', icon: 'Heart', progress: 0 },
+        { label: 'Steps', value: 0, target: 10000, unit: 'steps', icon: '👟', progress: 0 },
+        { label: 'Water', value: 0, target: 8, unit: 'glasses', icon: '🥛', progress: 0 },
+        { label: 'Sleep', value: 0, target: 8, unit: 'hours', icon: '🛌', progress: 0 },
+        { label: 'Mood', value: 'N/A', target: '', unit: '', icon: '😄', progress: 0 },
       ];
     }
   }

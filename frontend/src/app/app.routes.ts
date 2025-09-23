@@ -4,5 +4,5 @@ import { DashboardComponent } from './dashboard/dashboard';
 
 export const routes: Routes = [
     {path: '', component: Login},
-    {path: 'home', component: DashboardComponent}
+    {path: 'dashboard', component: DashboardComponent}
 ];
