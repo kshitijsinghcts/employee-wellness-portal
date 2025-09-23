@@ -5,6 +5,7 @@ import { EmployeeService } from '../services/employee.service';
 import { Employee } from '../models/employee.model';
 import { WellnessService } from '../services/wellness.service';
 import { WellnessMetric } from '../models/wellness-metric.model';
+import { Navbar } from '../navbar/navbar';
 
 // Mock data and types based on the provided dashboard.tsx
 // In a real app, these would be in separate models/services.
@@ -56,7 +57,7 @@ interface Reward {
   selector: 'app-dashboard',
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, Navbar]
 })
 export class DashboardComponent implements OnInit {
   user: Employee | null = null;
