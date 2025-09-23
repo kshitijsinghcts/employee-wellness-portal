@@ -26,6 +26,7 @@ public interface ResourceRepository extends JpaRepository<Resource, Long>
     List<Resource> findResourceByResourceCategory(@Param("resourceCategory") String resourceCategory);
 
     // Search by tag 
-    @Query("SELECT r FROM Resource r JOIN r.resourceTags t WHERE LOWER(t) = LOWER(:tag)")
-    List<Resource> findResourcesByTag(@Param("tag") String tag);
+    @Query("SELECT r FROM Resource r JOIN r.resourceTags t WHERE LOWER(t) IN :tags")
+    List<Resource> findResourcesByTag(@Param("tags") List<String> tags);
+
 }

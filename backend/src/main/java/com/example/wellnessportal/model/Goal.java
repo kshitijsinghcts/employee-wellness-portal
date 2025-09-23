@@ -15,7 +15,7 @@ public class Goal {
     private int status;
     // Attributes For Performance Measurement API
     private int targetScores;
-    private Rewards targetRewards;
+    private String targetRewards;
 
     private String description;
 
@@ -40,7 +40,7 @@ public class Goal {
         this.description = "";
         this.targetDate = LocalDate.now();
         this.targetScores = 0;
-        this.targetRewards = Rewards.BRONZE;
+        this.targetRewards = "BRONZE";
 
     }
 
@@ -49,7 +49,7 @@ public class Goal {
             String description,
             LocalDate targetDate,
             int targetScores,
-            Rewards targetRewards) {
+            String targetRewards) {
         this.employeeId = employeeId;
         this.goalType = goalType;
         this.description = description;
@@ -68,7 +68,7 @@ public class Goal {
         this.description = description;
         this.targetDate = LocalDate.parse(targetDate);
         this.targetScores = 0;
-        this.targetRewards = Rewards.BRONZE;
+        this.targetRewards = "BRONZE";
     }
 
     // Useful in Rewards Service where description is not necessary
@@ -76,7 +76,7 @@ public class Goal {
             String goalType,
             LocalDate targetDate,
             int targetScores,
-            Rewards targetRewards) {
+            String targetRewards) {
         this.employeeId = employeeId;
         this.goalType = goalType;
         this.targetDate = targetDate;
@@ -137,11 +137,11 @@ public class Goal {
         this.targetScores = targetScores;
     }
 
-    public Rewards getTargetRewards() {
+    public String getTargetRewards() {
         return targetRewards;
     }
 
-    public void setTargetRewards(Rewards targetRewards) {
+    public void setTargetRewards(String targetRewards) {
         this.targetRewards = targetRewards;
     }
 

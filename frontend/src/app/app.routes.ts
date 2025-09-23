@@ -5,6 +5,5 @@ import { Goals } from './goals/goals';
 
 export const routes: Routes = [
     {path: '', component: Login},
-    {path: 'home', component: DashboardComponent},
-    {path: 'goals', component: Goals}
+    {path: 'dashboard', component: DashboardComponent}
 ];

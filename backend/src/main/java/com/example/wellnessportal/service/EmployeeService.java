@@ -1,7 +1,13 @@
+
+
 package com.example.wellnessportal.service;
 
 import com.example.wellnessportal.model.Employee;
 import com.example.wellnessportal.model.Admin;
+import com.example.wellnessportal.model.AuthUser;
+import com.example.wellnessportal.model.AdminDTO;
+import com.example.wellnessportal.model.EmployeeDTO;
+
 import com.example.wellnessportal.repository.EmployeeRepository;
 import com.example.wellnessportal.repository.AdminRepository;
 
@@ -10,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 // Since admins are also employees, their operations are also performed here
 @Service
@@ -23,39 +30,48 @@ public class EmployeeService
 
     // The following methods can be used by adminfor analytics:
 
-    public List<Employee> getAllEmployees() 
-    {
-        return employeeRepository.findAll();
-    }
+// Get all employees as DTOs
+public List<EmployeeDTO> getAllEmployees() 
+{
+    return employeeRepository.findAll()
+            .stream()
+            .map(emp -> new EmployeeDTO(emp.getEmployeeId(), emp.getName(), emp.getEmail()))
+            .collect(Collectors.toList());
+}
 
-    public Optional<Employee> getEmployeeById(Long id) 
-    {
-        return employeeRepository.findById(id);
-    }
+// Get employee by ID as Optional<EmployeeDTO>
+public Optional<EmployeeDTO> getEmployeeById(Long id) 
+{
+    return employeeRepository.findById(id)
+            .map(emp -> new EmployeeDTO(emp.getEmployeeId(), emp.getName(), emp.getEmail()));
+}
 
-    /* The following methods can be invoked by employee to search for admins:
-       1. Employee Id
-       2. Email
-    */
-    
-    public Admin getAdminByEmployeeId(Long employeeId)
-    {
-        return adminRepository.findAdminByEmployeeId(employeeId);
-    }
+// Get admin by employee ID as AdminDTO
+public AdminDTO getAdminByEmployeeId(Long employeeId) 
+{
+    Admin admin = adminRepository.findAdminByEmployeeId(employeeId);
+    if (admin == null) return null;
+    return new AdminDTO(admin.getEmployeeId(), admin.getName(), admin.getEmail());
+}
 
-    public Admin getAdminByEmail(String email)
-    {
-       return adminRepository.findAdminByEmail(email);
-    }
+// Get admin by email as AdminDTO
+public AdminDTO getAdminByEmail(String email) 
+{
+    Admin admin = adminRepository.findAdminByEmail(email);
+    if (admin == null) return null;
+    return new AdminDTO(admin.getEmployeeId(), admin.getName(), admin.getEmail());
+}
 
-    // Handle exception in controller
-    public Employee updateEmployee(Long id, Employee updatedEmployee) {
-        return employeeRepository.findById(id)
-                .map(employee -> {
-                    employee.setName(updatedEmployee.getName());
-                    employee.setEmail(updatedEmployee.getEmail());
-                    return employeeRepository.save(employee);
-                })
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-    }
+// Update employee (returns updated EmployeeDTO)
+public EmployeeDTO updateEmployee(Long id, Employee updatedEmployee) 
+{
+    return employeeRepository.findById(id)
+            .map(employee -> {
+                employee.setName(updatedEmployee.getName());
+                employee.setEmail(updatedEmployee.getEmail());
+                Employee saved = employeeRepository.save(employee);
+                return new EmployeeDTO(saved.getEmployeeId(), saved.getName(), saved.getEmail());
+            })
+            .orElseThrow(() -> new RuntimeException("Employee not found"));
+        }
 }

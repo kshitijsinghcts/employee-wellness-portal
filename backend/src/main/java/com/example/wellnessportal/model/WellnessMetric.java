@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Table(name = "wellnessmetric", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "employeeId", "recordDate" })
+})
 public class WellnessMetric {
 
     @Id
@@ -22,12 +25,6 @@ public class WellnessMetric {
     private int dailySteps;
 
     private int waterIntake;
-
-    @ElementCollection(targetClass = Rewards.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "wellness_rewards", joinColumns = @JoinColumn(name = "metric_id"))
-    @Column(name = "reward")
-    private List<Rewards> rewards;
 
     @ElementCollection
     private List<Integer> scores;
@@ -76,15 +73,13 @@ public class WellnessMetric {
             String mood,
             int sleepHours,
             int dailySteps,
-            int waterIntake,
-            List<Rewards> rewards) {
+            int waterIntake) {
         this.employeeId = employeeId;
         this.recordDate = recordDate;
         this.mood = mood;
         this.sleepHours = sleepHours;
         this.dailySteps = dailySteps;
         this.waterIntake = waterIntake;
-        this.rewards = rewards;
 
     }
 
@@ -101,11 +96,11 @@ public class WellnessMetric {
         this.employeeId = employeeId;
     }
 
-    public LocalDate getrecordDate() {
+    public LocalDate getRecordDate() {
         return recordDate;
     }
 
-    public void setrecordDate(LocalDate recordDate) {
+    public void setRecordDate(LocalDate recordDate) {
         this.recordDate = recordDate;
     }
 
@@ -139,14 +134,6 @@ public class WellnessMetric {
 
     public void setWaterIntake(int waterIntake) {
         this.waterIntake = waterIntake;
-    }
-
-    public List<Rewards> getRewards() {
-        return rewards;
-    }
-
-    public void setRewards(List<Rewards> rewards) {
-        this.rewards = rewards;
     }
 
     public List<Integer> getScores() {

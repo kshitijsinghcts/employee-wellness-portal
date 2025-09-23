@@ -32,7 +32,7 @@ public class ResourceService
     }
 
 
-    public List<Resource> getResourcesByTags(String tags)
+    public List<Resource> getResourcesByTags(List<String> tags)
     {
         return resourceRepository.findResourcesByTag(tags);
     }
