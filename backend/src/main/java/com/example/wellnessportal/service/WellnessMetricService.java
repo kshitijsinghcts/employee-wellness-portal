@@ -29,156 +29,151 @@ public class WellnessMetricService {
     // User logs his health metrics. He should do this periodically for best results
     // Daily steps in goal entity is named activityLevel here due to contextual
     // differences.
-   public WellnessMetric saveWellnessMetric(Long employeeId,
-        LocalDate date,
-        String mood,
-        int sleepHours,
-        int dailySteps,
-        int waterIntake) {
+    public WellnessMetric saveWellnessMetric(Long employeeId,
+            LocalDate date,
+            String mood,
+            int sleepHours,
+            int dailySteps,
+            int waterIntake) {
 
-    AuthUser authUser = authUserRepository.findById(employeeId).orElse(null);
+        AuthUser authUser = authUserRepository.findById(employeeId).orElse(null);
 
-    if (authUser == null) {
-        throw new IllegalArgumentException("Invalid employee ID");
+        if (authUser == null) {
+            throw new IllegalArgumentException("Invalid employee ID");
+        }
+
+        // Determine rewards based on input values
+        /*
+         * Rewards is of the form: {mood reward,
+         * sleepHours reward,
+         * activityLevel reward,
+         * waterIntake reward
+         * }
+         */
+        List<Rewards> rewards = calculateRewards(mood, sleepHours, dailySteps, waterIntake);
+
+        // Check if a record for the current date already exists
+        WellnessMetric existing = wellnessMetricRepository.findByEmployeeIdAndRecordDate(employeeId, date);
+
+        if (existing != null) {
+            // Update the existing record
+            existing.setMood(mood);
+            existing.setSleepHours(sleepHours);
+            existing.setDailySteps(dailySteps);
+            existing.setWaterIntake(waterIntake);
+            existing.setRewards(rewards);
+            return wellnessMetricRepository.save(existing);
+        } else {
+            // Create a new record
+            WellnessMetric wellnessMetric = new WellnessMetric(
+                    employeeId,
+                    date,
+                    mood,
+                    sleepHours,
+                    dailySteps,
+                    waterIntake,
+                    rewards);
+
+            return wellnessMetricRepository.save(wellnessMetric);
+        }
     }
-
-    // Determine rewards based on input values
-    /*
-     * Rewards is of the form: {mood reward,
-     * sleepHours reward,
-     * activityLevel reward,
-     * waterIntake reward
-     * }
-     */
-    List<Rewards> rewards = calculateRewards(mood, sleepHours, dailySteps, waterIntake);
-
-    // Check if a record for the current date already exists
-    WellnessMetric existing = wellnessMetricRepository.findByEmployeeIdAndRecordDate(employeeId, date);
-
-    if (existing != null) {
-        // Update the existing record
-        existing.setMood(mood);
-        existing.setSleepHours(sleepHours);
-        existing.setDailySteps(dailySteps);
-        existing.setWaterIntake(waterIntake);
-        existing.setRewards(rewards);
-        return wellnessMetricRepository.save(existing);
-    } else {
-        // Create a new record
-        WellnessMetric wellnessMetric = new WellnessMetric(
-                employeeId,
-                date,
-                mood,
-                sleepHours,
-                dailySteps,
-                waterIntake,
-                rewards);
-
-        return wellnessMetricRepository.save(wellnessMetric);
-    }
-}
 
     public WellnessMetric saveWellnessMetric(WellnessMetric wellnessMetric) {
-       if (wellnessMetric == null || wellnessMetric.getEmployeeId() == null) {
-    throw new IllegalArgumentException("WellnessMetric and Employee ID cannot be null.");
-}
+        if (wellnessMetric == null || wellnessMetric.getEmployeeId() == null) {
+            throw new IllegalArgumentException("WellnessMetric and Employee ID cannot be null.");
+        }
 
-// Validate employee exists
-authUserRepository.findById(wellnessMetric.getEmployeeId())
-        .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID"));
+        // Validate employee exists
+        authUserRepository.findById(wellnessMetric.getEmployeeId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID"));
 
-// Ensure record date is set
-if (wellnessMetric.getrecordDate() == null) {
-    wellnessMetric.setrecordDate(LocalDate.now());
-}
+        // Ensure record date is set
+        if (wellnessMetric.getRecordDate() == null) {
+            wellnessMetric.setRecordDate(LocalDate.now());
+        }
 
-// Check for existing record for this employee and date
-WellnessMetric existing = wellnessMetricRepository.findByEmployeeIdAndRecordDate(
-        wellnessMetric.getEmployeeId(), wellnessMetric.getrecordDate());
+        // Check for existing record for this employee and date
+        WellnessMetric existing = wellnessMetricRepository.findByEmployeeIdAndRecordDate(
+                wellnessMetric.getEmployeeId(), wellnessMetric.getRecordDate());
 
         // Calculate and set rewards
-    List<Rewards> rewards = calculateRewards(
-        wellnessMetric.getMood(),
-        wellnessMetric.getSleepHours(),
-        wellnessMetric.getDailySteps(),
-        wellnessMetric.getWaterIntake());
+        List<Rewards> rewards = calculateRewards(
+                wellnessMetric.getMood(),
+                wellnessMetric.getSleepHours(),
+                wellnessMetric.getDailySteps(),
+                wellnessMetric.getWaterIntake());
 
-    if (existing != null) {
-    // Update existing record
-        existing.setMood(wellnessMetric.getMood());
-        existing.setSleepHours(wellnessMetric.getSleepHours());
-        existing.setDailySteps(wellnessMetric.getDailySteps());
-        existing.setWaterIntake(wellnessMetric.getWaterIntake());
-        existing.setRewards(rewards);
-    return wellnessMetricRepository.save(existing);
-} 
-else 
-{
-    // Set rewards for new record
-    wellnessMetric.setRewards(rewards);
-    return wellnessMetricRepository.save(wellnessMetric);
-}
-}
+        if (existing != null) {
+            // Update existing record
+            existing.setMood(wellnessMetric.getMood());
+            existing.setSleepHours(wellnessMetric.getSleepHours());
+            existing.setDailySteps(wellnessMetric.getDailySteps());
+            existing.setWaterIntake(wellnessMetric.getWaterIntake());
+            existing.setRewards(rewards);
+            return wellnessMetricRepository.save(existing);
+        } else {
+            // Set rewards for new record
+            wellnessMetric.setRewards(rewards);
+            return wellnessMetricRepository.save(wellnessMetric);
+        }
+    }
 
     // List of metrics logged by the employee since his/her account creation
-    public List<WellnessMetric> getEmployeeLogs(Long employeeId) 
-    {
-        List<WellnessMetric> wm=wellnessMetricRepository.findAllByEmployeeId(employeeId);
+    public List<WellnessMetric> getEmployeeLogs(Long employeeId) {
+        List<WellnessMetric> wm = wellnessMetricRepository.findAllByEmployeeId(employeeId);
         return wm;
     }
 
     // The following methods are for letting the user know how he/she is on par with
     // his self-set goals
     // They can also be used for analytics on UI:
-    
-    //Getting overall wellness metric status for all metrics of the user
-    //Useful for dashboard and analytics
-    public String getOverallWellnessMetricsStatus(Long employeeId)
-    {
-      
-        WellnessMetric wellnessMetric=wellnessMetricRepository.findByEmployeeId(employeeId);
-        if(wellnessMetric==null)
-        return "Employee does not exist";
-        if(goalService.validateGoalCompletion(employeeId,
-                                              wellnessMetric,
-                                              LocalDate.now()))
-        return "On Track";
+
+    // Getting overall wellness metric status for all metrics of the user
+    // Useful for dashboard and analytics
+    public String getOverallWellnessMetricsStatus(Long employeeId) {
+
+        WellnessMetric wellnessMetric = wellnessMetricRepository.findByEmployeeId(employeeId);
+        if (wellnessMetric == null)
+            return "Employee does not exist";
+        if (goalService.validateGoalCompletion(employeeId,
+                wellnessMetric,
+                LocalDate.now()))
+            return "On Track";
         else
             return "Behind Schedule";
     }
 
-    //Getting overall wellness metric status individually for each goal
-    //Response to User Request
-    public String getOverallWellnessMetricsStatus(Long employeeId, 
-                                                  Goal goal)
-    {
-       
-        WellnessMetric wellnessMetric=wellnessMetricRepository.findByEmployeeId(employeeId);
-          if(wellnessMetric==null)
-        return "Employee does not exist";
-        if(goalService.validateGoalCompletion(employeeId,
-                                              wellnessMetric,
-                                              goal,
-                                              LocalDate.now()))
-        return "On Track";
+    // Getting overall wellness metric status individually for each goal
+    // Response to User Request
+    public String getOverallWellnessMetricsStatus(Long employeeId,
+            Goal goal) {
+
+        WellnessMetric wellnessMetric = wellnessMetricRepository.findByEmployeeId(employeeId);
+        if (wellnessMetric == null)
+            return "Employee does not exist";
+        if (goalService.validateGoalCompletion(employeeId,
+                wellnessMetric,
+                goal,
+                LocalDate.now()))
+            return "On Track";
         else
             return "Behind Schedule";
     }
 
-    //To display on employee or admin analytics dashboard
-    public List<String> getLatestWellnessMetrics(Long employeeId)
-    {
-       // This method from repository interface returns the latest row and is limited to one row
-       WellnessMetric wellnessMetric=wellnessMetricRepository.findByEmployeeId(employeeId);
-         if(wellnessMetric==null)
-        return List.of("Employee does not exist");
-       List<String> wmList=new ArrayList<>();
-       wmList.add(wellnessMetric.getMood());
-       wmList.add(String.valueOf(wellnessMetric.getDailySteps()));
-       wmList.add(String.valueOf(wellnessMetric.getSleepHours()));
-       wmList.add(String.valueOf(wellnessMetric.getWaterIntake()));
-       
-       return wmList;
+    // To display on employee or admin analytics dashboard
+    public List<String> getLatestWellnessMetrics(Long employeeId) {
+        // This method from repository interface returns the latest row and is limited
+        // to one row
+        WellnessMetric wellnessMetric = wellnessMetricRepository.findByEmployeeId(employeeId);
+        if (wellnessMetric == null)
+            return List.of("Employee does not exist");
+        List<String> wmList = new ArrayList<>();
+        wmList.add(wellnessMetric.getMood());
+        wmList.add(String.valueOf(wellnessMetric.getDailySteps()));
+        wmList.add(String.valueOf(wellnessMetric.getSleepHours()));
+        wmList.add(String.valueOf(wellnessMetric.getWaterIntake()));
+
+        return wmList;
     }
 
     // We can use this method to rank the employees based on how they fare among

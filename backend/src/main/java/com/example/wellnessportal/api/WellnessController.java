@@ -3,6 +3,8 @@ package com.example.wellnessportal.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.wellnessportal.service.WellnessMetricService;
@@ -10,21 +12,20 @@ import com.example.wellnessportal.model.WellnessMetric;
 
 @RestController
 @RequestMapping("/api/wellness")
+@CrossOrigin(origins = "http://localhost:4200") // Allow requests from Angular frontend
 public class WellnessController {
 
     @Autowired
     private WellnessMetricService wellnessMetricService;
 
     @PostMapping("/submit-metrics")
-    public String submitMetrics(@RequestBody WellnessMetric metrics) {
-        // accepts: {id, mood, sleep, steps, water}
+    public ResponseEntity<?> submitMetrics(@RequestBody WellnessMetric metrics) {
         try {
-            wellnessMetricService.saveWellnessMetric(metrics);
-            return "Metrics submitted successfully";
+            WellnessMetric savedMetric = wellnessMetricService.saveWellnessMetric(metrics);
+            return ResponseEntity.ok(savedMetric);
         } catch (Exception e) {
-            return "Error submitting metrics: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error submitting metrics: " + e.getMessage());
         }
-
     }
 
     @GetMapping("/{employeeId}")

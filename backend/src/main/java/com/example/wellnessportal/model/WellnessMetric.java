@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name="wellnessmetric")
+@Table(name = "wellnessmetric")
 public class WellnessMetric {
 
     @Id
@@ -102,11 +102,11 @@ public class WellnessMetric {
         this.employeeId = employeeId;
     }
 
-    public LocalDate getrecordDate() {
+    public LocalDate getRecordDate() {
         return recordDate;
     }
 
-    public void setrecordDate(LocalDate recordDate) {
+    public void setRecordDate(LocalDate recordDate) {
         this.recordDate = recordDate;
     }
 

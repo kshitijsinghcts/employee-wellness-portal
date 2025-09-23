@@ -1,58 +1,47 @@
 package com.example.wellnessportal.model;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Employee {
-    
+
     @Id
     private Long employeeId;
-   // @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String name;
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
-   
 
-   
-
-    public Employee()
-     {
+    public Employee() {
     }
 
     public Employee(Long employeeId,
             String password,
             String name,
-            String email)
-            {
+            String email) {
         this.employeeId = employeeId;
         this.password = password;
         this.name = name;
         this.email = email;
-      
+
     }
 
     // Constructor for Login. Fetch other details from repository.
     public Employee(String email,
-        String password)
-    {
+            String password) {
         this.email = email;
         this.password = password;
     }
 
-     public Employee(Long employeeId,
-        String password)
-    {
+    public Employee(Long employeeId,
+            String password) {
         this.employeeId = employeeId;
         this.password = password;
     }
-
 
     // Getters and setters
     public Long getEmployeeId() {
@@ -87,7 +76,4 @@ public class Employee {
         this.email = email;
     }
 
-   
-
-   
-    }
+}

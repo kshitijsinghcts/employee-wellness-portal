@@ -7,7 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Admin {
@@ -16,41 +16,38 @@ public class Admin {
     @Id
     private Long employeeId;
     // List of Employees falling under the current HR
-  
-    // Attributes for Authentication
-    
-     private String password;
-    private String name;
-        @Column(unique=true)
-    private String email;
-   
 
-    public Admin()
-    {
+    // Attributes for Authentication
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+    private String name;
+    @Column(unique = true)
+    private String email;
+
+    public Admin() {
 
     }
+
     public Admin(Long employeeId,
-                 String password,
-                 String name,
-                 String email)
-                 {
-                    this.employeeId=employeeId;
-                    this.name=name;
-                    this.email=email;
-                    this.password=password;
-                 }
+            String password,
+            String name,
+            String email) {
+        this.employeeId = employeeId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
     // Constructor for Login. Fetch other details from repository.
     public Admin(String email,
-        String password)
-    {
+            String password) {
         this.email = email;
         this.password = password;
     }
 
     public Admin(Long employeeId,
-        String password)
-    {
+            String password) {
         this.employeeId = employeeId;
         this.password = password;
     }
@@ -63,8 +60,7 @@ public class Admin {
         this.employeeId = employeeId;
     }
 
-    public String getName() 
-    {
+    public String getName() {
         return this.name;
     }
 
