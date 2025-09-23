@@ -1,1 +1,194 @@
-<p>goals works!</p>
+<div class="container">
+  <!-- Header -->
+  <div class="section-header">
+    <div>
+      <h1 class="page-title">Wellness Goals</h1>
+      <p class="page-description">Track and manage your health and wellness objectives</p>
+    </div>
+    <button class="btn btn-primary" (click)="openDialog()">
+      <span class="icon-placeholder-sm">+</span>
+      Create Goal
+    </button>
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="grid-4-col">
+    <div class="card stat-card">
+      <div class="icon-wrapper-blue">
+        <span class="icon-placeholder">🎯</span>
+      </div>
+      <div>
+        <p class="stat-label">Active Goals</p>
+        <p class="stat-value">{{ activeGoals.length }}</p>
+      </div>
+    </div>
+    <div class="card stat-card">
+      <div class="icon-wrapper-green">
+        <span class="icon-placeholder">✔️</span>
+      </div>
+      <div>
+        <p class="stat-label">Completed</p>
+        <p class="stat-value">{{ completedGoals.length }}</p>
+      </div>
+    </div>
+    <div class="card stat-card">
+      <div class="icon-wrapper-orange">
+        <span class="icon-placeholder">⏸️</span>
+      </div>
+      <div>
+        <p class="stat-label">Paused</p>
+        <p class="stat-value">{{ pausedGoals.length }}</p>
+      </div>
+    </div>
+    <div class="card stat-card">
+      <div class="icon-wrapper-purple">
+        <span class="icon-placeholder">📈</span>
+      </div>
+      <div>
+        <p class="stat-label">Avg Progress</p>
+        <p class="stat-value">{{ averageProgress }}%</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Goals Lists -->
+  <div class="goals-lists">
+    <!-- Active Goals -->
+    <div *ngIf="activeGoals.length > 0" class="section">
+      <h3 class="section-title">
+        <span class="icon-placeholder-sm">▶️</span>
+        Active Goals
+      </h3>
+      <div class="grid-2-col">
+        <div *ngFor="let goal of activeGoals" class="card">
+          <div class="card-header">
+            <div class="goal-title-group">
+              <div class="icon-wrapper-primary">
+                <span class="icon-placeholder">{{ getGoalIcon(goal.type) }}</span>
+              </div>
+              <div>
+                <h4 class="card-title">{{ goal.title }}</h4>
+                <p class="card-description">{{ goal.description }}</p>
+              </div>
+            </div>
+            <div class="badge badge-secondary">{{ goal.status }}</div>
+          </div>
+          <div class="card-content">
+            <div class="progress-section">
+              <div class="flex-between">
+                <span class="progress-label">Progress</span>
+                <span class="metric-target">
+                  {{ goal.currentValue.toLocaleString() }} / {{ goal.targetValue.toLocaleString() }} {{ goal.unit }}
+                </span>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" [style.width.%]="goal.progress"></div>
+              </div>
+              <p class="progress-percent">{{ goal.progress }}% complete</p>
+            </div>
+
+            <div class="flex-between text-sm text-muted-foreground">
+              <div class="goal-deadline">
+                <span class="icon-placeholder-sm">📅</span>
+                Due: {{ goal.deadline | date: 'mediumDate' }}
+              </div>
+            </div>
+
+            <div class="goal-actions">
+              <button class="btn btn-secondary" (click)="toggleGoalStatus(goal.id)">
+                <span class="icon-placeholder-sm">⏸️</span>
+                Pause
+              </button>
+              <button class="btn btn-primary" (click)="completeGoal(goal.id)">
+                <span class="icon-placeholder-sm">✔️</span>
+                Complete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completed Goals -->
+    <div *ngIf="completedGoals.length > 0" class="section">
+      <h3 class="section-title">
+        <span class="icon-placeholder-sm">🏆</span>
+        Completed Goals
+      </h3>
+      <div class="grid-2-col">
+        <div *ngFor="let goal of completedGoals" class="card card-completed">
+          <div class="card-header">
+            <div class="goal-title-group">
+              <div class="icon-wrapper-green">
+                <span class="icon-placeholder">{{ getGoalIcon(goal.type) }}</span>
+              </div>
+              <div>
+                <h4 class="card-title">{{ goal.title }}</h4>
+                <p class="card-description">{{ goal.description }}</p>
+              </div>
+            </div>
+            <div class="badge badge-success">
+              <span class="icon-placeholder-sm">✔️</span>
+              Completed
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="progress-bar-container">
+              <div class="progress-bar" [style.width.%]="100"></div>
+            </div>
+            <p class="text-green">
+              🎉 Goal achieved! {{ goal.targetValue.toLocaleString() }} {{ goal.unit }} completed
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Goal Modal -->
+<div *ngIf="isDialogOpen" class="modal-backdrop" (click)="closeDialog()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Create New Goal</h3>
+      <button class="btn-close" (click)="closeDialog()">×</button>
+    </div>
+    <p class="modal-description">Set a new wellness goal to track your progress.</p>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="title">Goal Title</label>
+        <input id="title" type="text" [(ngModel)]="newGoal.title" placeholder="Enter goal title">
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" [(ngModel)]="newGoal.description" placeholder="Describe your goal"></textarea>
+      </div>
+      <div class="grid-2-col">
+        <div class="form-group">
+          <label for="type">Goal Type</label>
+          <select id="type" [(ngModel)]="newGoal.type">
+            <option *ngFor="let type of goalTypes" [value]="type">{{ type | titlecase }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="targetValue">Target Value</label>
+          <input id="targetValue" type="number" [(ngModel)]="newGoal.targetValue" placeholder="0">
+        </div>
+      </div>
+      <div class="grid-2-col">
+        <div class="form-group">
+          <label for="unit">Unit</label>
+          <input id="unit" type="text" [(ngModel)]="newGoal.unit" placeholder="e.g., steps, glasses, hours">
+        </div>
+        <div class="form-group">
+          <label for="deadline">Deadline</label>
+          <input id="deadline" type="date" [(ngModel)]="newGoal.deadline">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
+      <button class="btn btn-primary" (click)="handleCreateGoal()">Create Goal</button>
+    </div>
+  </div>
+</div>
