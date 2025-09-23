@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class Login {
   loginData = { email: '', password: '' };
   registerData = { employeeId: null as number | null, password: '', name: '', email: '' };
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   handleLogin() {
     this.isLoading = true;
@@ -26,8 +27,19 @@ export class Login {
     this.authService.login(this.loginData).subscribe({
       next: (response) => {
         console.log('Login successful', response);
-        // TODO: Handle successful login, e.g., save token and navigate
+        // 1. Save token to local storage for future API calls
+        localStorage.setItem('token', response.token);
+
+        // 2. Extract employee ID from token and save it
+        const tokenParts = response.token.split('-');
+        const employeeId = tokenParts[tokenParts.length - 1];
+        const role = tokenParts[tokenParts.length - 2]; // 'employee' or 'admin'
+        localStorage.setItem('employeeId', employeeId);
+        localStorage.setItem('userRole', role.toUpperCase()); // Store as EMPLOYEE or ADMIN
+
         this.isLoading = false;
+        // 3. Navigate to the dashboard
+        this.router.navigate(['/home']);
       },
       error: (error) => {
         console.error('Login failed', error);

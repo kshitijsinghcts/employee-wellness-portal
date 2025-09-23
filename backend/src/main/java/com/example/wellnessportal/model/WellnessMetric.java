@@ -34,12 +34,11 @@ public class WellnessMetric {
     private List<Integer> scores;
 
     // Constructors
-    public WellnessMetric()
-    {
+    public WellnessMetric() {
 
     }
 
-     //For first-time record creation
+    // For first-time record creation
     /*
      * Default values for the fields are:
      * Employee Id must be provided
@@ -49,49 +48,45 @@ public class WellnessMetric {
      * dailySteps is 0
      * waterIntake is 0
      */
-    public WellnessMetric(Long employeeId)
-    {
-        this.employeeId=employeeId;
-        this.recordDate=LocalDate.now();
-        this.mood="";
-        this.sleepHours=0;
-        this.dailySteps=0;
-        this.waterIntake=0;
-    }
-    
-    //UI-specific
-    public WellnessMetric(Long employeeId,
-        LocalDate recordDate,
-        String mood,
-        int sleepHours,
-        int dailySteps,
-        int waterIntake) 
-    {
+    public WellnessMetric(Long employeeId) {
         this.employeeId = employeeId;
-        this.recordDate = recordDate;
+        this.recordDate = LocalDate.now();
+        this.mood = "";
+        this.sleepHours = 0;
+        this.dailySteps = 0;
+        this.waterIntake = 0;
+    }
+
+    // UI-specific
+    public WellnessMetric(Long employeeId,
+            String mood,
+            int sleepHours,
+            int dailySteps,
+            int waterIntake) {
+        this.employeeId = employeeId;
+        this.recordDate = LocalDate.now();
         this.mood = mood;
         this.sleepHours = sleepHours;
         this.dailySteps = dailySteps;
         this.waterIntake = waterIntake;
-       
+
     }
 
     public WellnessMetric(Long employeeId,
-        LocalDate recordDate,
-        String mood,
-        int sleepHours,
-        int dailySteps,
-        int waterIntake,
-        List<Rewards> rewards) 
-    {
+            LocalDate recordDate,
+            String mood,
+            int sleepHours,
+            int dailySteps,
+            int waterIntake,
+            List<Rewards> rewards) {
         this.employeeId = employeeId;
         this.recordDate = recordDate;
         this.mood = mood;
         this.sleepHours = sleepHours;
         this.dailySteps = dailySteps;
         this.waterIntake = waterIntake;
-        this.rewards=rewards;
-       
+        this.rewards = rewards;
+
     }
 
     // Getters and Setters
