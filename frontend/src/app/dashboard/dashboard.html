@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <div class="container" *ngIf="user">
   <!-- Welcome Section -->
   <div class="welcome-banner">
@@ -148,7 +149,7 @@
   </div>
 
   <!-- Company Stats (Admin only) -->
-  <div class="card" *ngIf="user.role === 'ADMIN'">
+  <div class="card" *ngIf="user?.role === 'ADMIN'">
     <div class="card-header">
       <h3 class="card-title">👥 Company Wellness Overview</h3>
       <p class="card-description">Overall wellness program engagement</p>

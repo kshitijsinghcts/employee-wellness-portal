@@ -38,7 +38,7 @@ interface Reward {
   selector: 'app-dashboard',
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, Navbar]
 })
 export class DashboardComponent implements OnInit {
   user: (Employee & { role?: string }) | null = null;
