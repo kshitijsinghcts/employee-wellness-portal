@@ -1,5 +1,7 @@
 package com.example.wellnessportal.api;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +26,8 @@ public class GoalsController {
         return "Update goal endpoint";
     }
 
-    @GetMapping
-    public String viewGoals() {
-        // TODO: Implement view goals logic
-        return "View goals endpoint";
+    @GetMapping("/{employeeId}")
+    public List<Goal> viewGoals(@PathVariable Long employeeId) {
+        return goalService.findGoalsByEmployeeId(employeeId);
     }
 }
