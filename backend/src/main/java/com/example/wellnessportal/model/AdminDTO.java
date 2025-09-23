@@ -1,5 +1,6 @@
 package com.example.wellnessportal.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -67,4 +68,32 @@ public class AdminDTO {
     {
         this.employeeList=employeeList;
     }
+
+    
+   // Add an employee
+    public void addEmployee(Employee employee) 
+    {
+        if (employeeList == null) {
+            employeeList = new ArrayList<>();
+        }
+        employeeList.add(employee);
+    }
+
+    // Remove an employee by ID
+    public boolean removeEmployee(Long employeeId) 
+    {
+        if (employeeList == null) return false;
+        return employeeList.removeIf(emp -> emp.getEmployeeId().equals(employeeId));
+    }
+
+    // Fetch an employee by ID
+    public Employee fetchEmployee(Long employeeId) 
+    {
+        if (employeeList == null) return null;
+        return employeeList.stream()
+                .filter(emp -> emp.getEmployeeId().equals(employeeId))
+                .findFirst()
+                .orElse(null);
+    }
+
 }
