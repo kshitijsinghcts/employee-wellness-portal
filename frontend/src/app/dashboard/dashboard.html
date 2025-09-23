@@ -17,10 +17,15 @@
   <!-- Today's Progress -->
   <div class="section">
     <div class="section-header">
-      - <h2>Today's Progress</h2>
-      - <div class="badge badge-secondary">📅 {{ today | date: 'mediumDate' }}</div>
-      + <h2>Today's Progress</h2>
-      + <div class="badge badge-secondary">📅 {{ today | date: 'mediumDate' }}</div>
+      <h2>Daily Progress</h2>
+      <div class="date-selector">
+        <button *ngIf="isToday()" class="btn btn-sm btn-edit" (click)="openEditModal()">
+          ✏️ Edit
+        </button>
+        <button class="btn btn-icon" (click)="changeDate(-1)">-</button>
+        <div class="badge badge-secondary">📅 {{ selectedDate | date: 'mediumDate' }}</div>
+        <button class="btn btn-icon" (click)="changeDate(1)" [disabled]="isToday()">+</button>
+      </div>
     </div>
     <div class="grid-4-col">
       <div class="card" *ngFor="let metric of todaysMetrics">
@@ -36,8 +41,12 @@
         <div class="card-content">
           <div>
             <div class="metric-value">
-              <span>{{ metric.value.toLocaleString() }}</span>
-              <span class="metric-target">/ {{ metric.target.toLocaleString() }} {{ metric.unit }}</span>
+              <!-- Display value as a string if it's not a number (for Mood) -->
+              <span [class.mood-value]="typeof metric.value === 'string'">{{ typeof metric.value === 'number' ?
+                metric.value.toLocaleString() : metric.value }}</span>
+              <!-- Only show target if it exists -->
+              <span *ngIf="metric.target" class="metric-target">/ {{ metric.target.toLocaleString() }} {{ metric.unit
+                }}</span>
             </div>
             <h4>{{ metric.label }}</h4>
           </div>
@@ -274,6 +283,40 @@
           <p class="stat-label">Survey Responses</p>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Metrics Modal -->
+<div *ngIf="isEditing" class="modal-backdrop" (click)="closeEditModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Log Today's Metrics</h3>
+      <button class="btn-close" (click)="closeEditModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="steps">Daily Steps</label>
+        <input id="steps" type="number" [(ngModel)]="editMetricData.dailySteps" max="10000" placeholder="e.g., 8500">
+      </div>
+      <div class="form-group">
+        <label for="water">Water Intake (glasses)</label>
+        <input id="water" type="number" [(ngModel)]="editMetricData.waterIntake" max="8" placeholder="e.g., 6">
+      </div>
+      <div class="form-group">
+        <label for="sleep">Sleep (hours)</label>
+        <input id="sleep" type="number" [(ngModel)]="editMetricData.sleepHours" max="8" placeholder="e.g., 7.5">
+      </div>
+      <div class="form-group">
+        <label for="mood">Mood</label>
+        <select id="mood" [(ngModel)]="editMetricData.mood">
+          <option *ngFor="let mood of moodOptions" [value]="mood">{{ mood }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeEditModal()">Cancel</button>
+      <button class="btn btn-primary" (click)="saveMetrics()">Save</button>
     </div>
   </div>
 </div>
