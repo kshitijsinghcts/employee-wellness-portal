@@ -1,10 +1,17 @@
 import { Routes } from '@angular/router';
-import { Login } from './login/login';
+import { Login } from './login/login'; // Assuming the component class is `Login`
 import { DashboardComponent } from './dashboard/dashboard';
-import { Goals } from './goals/goals';
+import { Resources } from './resources/resources';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
+    // The login route at the root path, accessible to everyone.
     {path: '', component: Login},
-    {path: 'dashboard', component: DashboardComponent},
-    {path: 'goals', component: Goals}
+
+    // Protected routes that require the user to be logged in.
+    {path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
+    {path: 'resources', component: Resources, canActivate: [authGuard]},
+
+    // A wildcard route to redirect any unknown paths back to the login page.
+    { path: '**', redirectTo: '' }
 ];
