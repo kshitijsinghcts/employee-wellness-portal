@@ -144,4 +144,11 @@ public class Goal {
     public void setTargetRewards(Rewards targetRewards) {
         this.targetRewards = targetRewards;
     }
+
+    @Override
+    public String toString() {
+        return "[goalId=" + goalId + ", employeeId=" + employeeId + ", goalType=" + goalType + ", targetDate="
+                + targetDate + ", status=" + status + ", targetScores=" + targetScores + ", targetRewards="
+                + targetRewards + ", description=" + description + "]";
+    }
 }
