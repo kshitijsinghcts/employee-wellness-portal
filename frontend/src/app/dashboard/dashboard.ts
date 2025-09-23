@@ -121,8 +121,11 @@ export class DashboardComponent implements OnInit {
     this.rewardsService.getRewards(employeeId).subscribe({
         next: (rewards) => {
             const currentAchievementCount = this.recentAchievements.length;
+            
+            // Sort by date, most recent first
+            const sortedRewards = rewards.sort((a, b) => new Date(b.achievedDate).getTime() - new Date(a.achievedDate).getTime());
 
-            this.recentAchievements = rewards.map(reward => ({
+            this.recentAchievements = sortedRewards.map(reward => ({
                 title: reward.title,
                 description: reward.description,
                 icon: this.getIconForAchievement(reward.title),

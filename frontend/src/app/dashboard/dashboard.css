@@ -273,6 +273,22 @@
   border: 1px solid #bbf7d0;
 }
 
+/* Make achievement list scrollable */
+.achievement-list {
+  max-height: 280px;
+  /* Approx. height for 3 items with gaps */
+  overflow-y: auto;
+}
+
+/* Make reward store list scrollable */
+.reward-list {
+  max-height: 250px;
+  /* Approx. height for 3 items with gaps */
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  /* Add some space for the scrollbar */
+}
+
 .icon-wrapper-success {
   padding: 0.5rem;
   background-color: #dcfce7;

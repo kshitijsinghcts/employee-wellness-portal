@@ -80,7 +80,7 @@
         <h3 class="card-title">🏆 Recent Achievements</h3>
         <p class="card-description">Your latest wellness milestones</p>
       </div>
-      <div class="card-content">
+      <div class="card-content achievement-list">
         <div *ngFor="let achievement of recentAchievements" class="achievement-item">
           <div class="icon-wrapper-success">
             <span class="icon-placeholder">{{ achievement.icon.charAt(0) }}</span>
@@ -100,7 +100,7 @@
         <h3 class="card-title">🎁 Rewards Store</h3>
         <p class="card-description">Redeem points for wellness rewards</p>
       </div>
-      <div class="card-content">
+      <div class="card-content reward-list">
         <div *ngFor="let reward of pointRewards" class="reward-item"
           [class.available]="reward.available && canAfford(reward)" [class.unavailable]="!reward.available">
           <div class="reward-details">
