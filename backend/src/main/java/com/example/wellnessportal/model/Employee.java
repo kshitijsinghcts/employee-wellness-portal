@@ -6,11 +6,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Employee {
     
     @Id
     private Long employeeId;
+   // @JsonIgnore
     private String password;
     private String name;
     @Column(unique=true)

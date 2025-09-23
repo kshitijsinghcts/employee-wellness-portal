@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.wellnessportal.model.Admin;
+import com.example.wellnessportal.model.AdminDTO;
 import com.example.wellnessportal.model.Employee;
+import com.example.wellnessportal.model.EmployeeDTO;
 import com.example.wellnessportal.model.AuthUser;
 import com.example.wellnessportal.model.Goal;
 import com.example.wellnessportal.model.WellnessMetric;
@@ -183,6 +185,50 @@ public class AuthService {
             return (long) 0.0;
         }
 
+    }
+    
+   //While previous methods just return employee ids, these methods return complete employee objects
+   //EmployeeDTO is a clone of Employee Object without password but with hardcoded role
+   public EmployeeDTO getEmployeeByEmail(String email) 
+   {
+    Employee original = employeeRepository.findEmployeeByEmail(email);
+    if (original == null) 
+    return null;
+    // Map to DTO (role is hardcoded in DTO)
+    return new EmployeeDTO(original.getEmployeeId(), original.getName(), original.getEmail());
+
+    }
+
+    public List<EmployeeDTO> getAllEmployees() 
+    {
+    List<Employee> employees = employeeRepository.findAll();
+    List<EmployeeDTO> dtos = new ArrayList<>();
+    for (Employee emp : employees) {
+        dtos.add(new EmployeeDTO(emp.getEmployeeId(), emp.getName(), emp.getEmail()));
+    }
+    return dtos;
+    }
+
+    //While previous methods just return admin employee ids, these methods return complete admin objects
+   //AdminDTO is a clone of Admin Object without password but with hardcoded role
+   public AdminDTO getAdminByEmail(String email) 
+   {
+    Admin original = adminRepository.findAdminByEmail(email);
+    if (original == null) 
+    return null;
+    // Map to DTO (role is hardcoded in DTO)
+    return new AdminDTO(original.getEmployeeId(), original.getName(), original.getEmail());
+
+    }
+
+    public List<AdminDTO> getAllAdmins() 
+    {
+    List<Admin> admins = adminRepository.findAll();
+    List<AdminDTO> dtos = new ArrayList<>();
+    for (Admin emp : admins) {
+        dtos.add(new AdminDTO(emp.getEmployeeId(), emp.getName(), emp.getEmail()));
+    }
+    return dtos;
     }
 
 }

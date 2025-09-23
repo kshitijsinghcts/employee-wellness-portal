@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Admin {
 
@@ -16,6 +18,7 @@ public class Admin {
     // List of Employees falling under the current HR
   
     // Attributes for Authentication
+    @JsonIgnore
      private String password;
     private String name;
         @Column(unique=true)

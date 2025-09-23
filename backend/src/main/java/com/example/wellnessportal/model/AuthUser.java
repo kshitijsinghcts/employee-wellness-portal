@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class AuthUser {
 
@@ -13,6 +15,7 @@ public class AuthUser {
     // field
         @Column(unique=true)
     private String email;
+    //@JsonIgnore
     private String password;
     // For Role-Based Login
     private String role;
