@@ -39,7 +39,7 @@ export class Login {
 
         this.isLoading = false;
         // 3. Navigate to the dashboard
-        this.router.navigate(['/home']);
+        this.router.navigate(['/dashboard']);
       },
       error: (error) => {
         console.error('Login failed', error);

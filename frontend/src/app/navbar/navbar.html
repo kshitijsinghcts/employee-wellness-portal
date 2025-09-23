@@ -1,8 +1,9 @@
-<nav class="navbar">
+<nav class="navbar" *ngIf="showNavbar">
   <div class="navbar-container">
     <div class="navbar-brand">
-      <a routerLink="/" class="logo">
-        <img src="https://www.kindpng.com/picc/m/111-1119239_heart-icon-png-image-free-download-searchpng-transparent.png" alt="Wellness Portal Logo" width="32" height="32" />
+      <a routerLink="/dashboard" class="logo">
+        <img src="https://clipartcraft.com/images/heart-outline-clipart-transparent-background-4.png"
+          alt="Wellness Portal Logo" width="32" height="32" />
         <span>Wellness Portal</span>
       </a>
     </div>
@@ -12,21 +13,22 @@
       <li><a routerLink="/goals" routerLinkActive="active">Goals</a></li>
       <li><a routerLink="/surveys" routerLinkActive="active">Surveys</a></li>
       <li><a routerLink="/resources" routerLinkActive="active">Resources</a></li>
-      <li><a routerLink="/ai-assistant" routerLinkActive="active">AI Assistant</a></li>
     </ul>
     <div class="profile">
       <button class="profile-button" (click)="toggleProfileMenu()">
-        <img src="https://www.pngmart.com/files/23/Profile-PNG-Photo.png" alt="User Profile" class="avatar" width="40" height="40" />
+        <img src="https://www.pngmart.com/files/23/Profile-PNG-Photo.png" alt="User Profile" class="avatar" width="40"
+          height="40" />
       </button>
       <div class="profile-menu" *ngIf="isProfileMenuOpen">
-        <div class="menu-header">
-          <strong>Jane Doe</strong>
-          <small>jane.doe@example.com</small>
+        <div class="menu-header" *ngIf="user">
+          <strong>{{ user.name }}</strong>
+          <small>{{ user.email }}</small>
         </div>
         <ul>
-          <li><a routerLink="/profile"><i class="icon-user"></i>My Profile</a></li>
-          <li><a routerLink="/settings"><i class="icon-settings"></i>Settings</a></li>
-          <li><a routerLink="/logout"><i class="icon-logout"></i>Logout</a></li>
+          <li><a (click)="logout()">
+              <img src="https://creazilla-store.fra1.digitaloceanspaces.com/icons/3234132/logout-icon-md.png"
+                alt="Logout" width="24" height="24">Logout
+            </a></li>
         </ul>
       </div>
     </div>

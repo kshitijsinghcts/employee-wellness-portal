@@ -1,6 +1,9 @@
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs';
+import { EmployeeService } from '../services/employee.service';
+import { Employee } from '../models/employee.model';
 
 @Component({
   selector: 'app-navbar',
@@ -11,11 +14,48 @@ import { RouterModule } from '@angular/router';
 })
 export class Navbar {
   isProfileMenuOpen = false;
+  showNavbar = true;
+  user: Employee | null = null;
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(
+    private elementRef: ElementRef,
+    private router: Router,
+    private employeeService: EmployeeService
+  ) {
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        // Hide navbar on the login page (path: '')
+        const isLoginPage = event.urlAfterRedirects === '/';
+        this.showNavbar = !isLoginPage;
+
+        if (this.showNavbar && !this.user) {
+          this.loadUser();
+        } else if (isLoginPage) {
+          this.user = null; // Clear user data when on login page
+        }
+      });
+  }
+
+  private loadUser(): void {
+    const employeeId = localStorage.getItem('employeeId');
+    if (employeeId) {
+      this.employeeService.getEmployeeById(employeeId).subscribe(userData => {
+        this.user = userData;
+      });
+    }
+  }
 
   toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
+  }
+
+  logout() {
+    localStorage.removeItem('employeeId');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('token');
+    this.isProfileMenuOpen = false;
+    this.router.navigate(['']);
   }
 
   @HostListener('document:click', ['$event'])

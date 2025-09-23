@@ -1,27 +1,15 @@
-import { Component, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { filter } from 'rxjs';
+import { Navbar } from './navbar/navbar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, Navbar],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('frontend');
-  showNavbar: boolean = true;
-
-  constructor(private router: Router) {
-    this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        if (event.url === '/' || event.urlAfterRedirects.includes('/login')) {
-          this.showNavbar = false;
-        } else {
-          this.showNavbar = true;
-        }
-      });
-  }
+  // The logic for showing/hiding the navbar is now self-contained
+  // within the navbar component itself.
 }
