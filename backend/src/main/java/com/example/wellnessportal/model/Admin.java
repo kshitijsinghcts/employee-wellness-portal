@@ -18,7 +18,7 @@ public class Admin {
     // List of Employees falling under the current HR
   
     // Attributes for Authentication
-    @JsonIgnore
+    
      private String password;
     private String name;
         @Column(unique=true)
