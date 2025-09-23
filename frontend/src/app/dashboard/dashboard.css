@@ -144,8 +144,8 @@
   }
 
   .welcome-image {
-    width: 8rem;
-    height: 8rem;
+    width: 10rem;
+    height: 10rem;
     object-fit: cover;
   }
 }
@@ -215,11 +215,10 @@
 .icon-placeholder {
   height: 1.25rem;
   width: 1.25rem;
-  color: var(--primary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  font-size: 1.25rem;
 }
 
 .metric-value {
