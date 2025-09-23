@@ -29,30 +29,42 @@ public class WellnessMetricService {
     // User logs his health metrics. He should do this periodically for best results
     // Daily steps in goal entity is named activityLevel here due to contextual
     // differences.
-    public WellnessMetric saveWellnessMetric(Long employeeId,
-            LocalDate date,
-            String mood,
-            int sleepHours,
-            int dailySteps,
-            int waterIntake) {
+   public WellnessMetric saveWellnessMetric(Long employeeId,
+        LocalDate date,
+        String mood,
+        int sleepHours,
+        int dailySteps,
+        int waterIntake) {
 
-        AuthUser authUser = authUserRepository.findById(employeeId).orElse(null);
+    AuthUser authUser = authUserRepository.findById(employeeId).orElse(null);
 
-        if (authUser == null) {
-            throw new IllegalArgumentException("Invalid employee ID");
-        }
+    if (authUser == null) {
+        throw new IllegalArgumentException("Invalid employee ID");
+    }
 
-        // Determine rewards based on input values
-        /*
-         * Rewards is of the form: {mood reward,
-         * sleepHours reward,
-         * activityLevel reward,
-         * waterIntake reward
-         * }
-         */
+    // Determine rewards based on input values
+    /*
+     * Rewards is of the form: {mood reward,
+     * sleepHours reward,
+     * activityLevel reward,
+     * waterIntake reward
+     * }
+     */
+    List<Rewards> rewards = calculateRewards(mood, sleepHours, dailySteps, waterIntake);
 
-        List<Rewards> rewards = calculateRewards(mood, sleepHours, dailySteps, waterIntake);
+    // Check if a record for the current date already exists
+    WellnessMetric existing = wellnessMetricRepository.findByEmployeeIdAndRecordDate(employeeId, date);
 
+    if (existing != null) {
+        // Update the existing record
+        existing.setMood(mood);
+        existing.setSleepHours(sleepHours);
+        existing.setDailySteps(dailySteps);
+        existing.setWaterIntake(waterIntake);
+        existing.setRewards(rewards);
+        return wellnessMetricRepository.save(existing);
+    } else {
+        // Create a new record
         WellnessMetric wellnessMetric = new WellnessMetric(
                 employeeId,
                 date,
@@ -64,31 +76,49 @@ public class WellnessMetricService {
 
         return wellnessMetricRepository.save(wellnessMetric);
     }
+}
 
     public WellnessMetric saveWellnessMetric(WellnessMetric wellnessMetric) {
-        if (wellnessMetric == null || wellnessMetric.getEmployeeId() == null) {
-            throw new IllegalArgumentException("WellnessMetric and Employee ID cannot be null.");
-        }
+       if (wellnessMetric == null || wellnessMetric.getEmployeeId() == null) {
+    throw new IllegalArgumentException("WellnessMetric and Employee ID cannot be null.");
+}
 
-        // Validate employee exists
-        authUserRepository.findById(wellnessMetric.getEmployeeId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID"));
+// Validate employee exists
+authUserRepository.findById(wellnessMetric.getEmployeeId())
+        .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID"));
 
-        // Ensure record date is set
-        if (wellnessMetric.getrecordDate() == null) {
-            wellnessMetric.setrecordDate(LocalDate.now());
-        }
+// Ensure record date is set
+if (wellnessMetric.getrecordDate() == null) {
+    wellnessMetric.setrecordDate(LocalDate.now());
+}
+
+// Check for existing record for this employee and date
+WellnessMetric existing = wellnessMetricRepository.findByEmployeeIdAndRecordDate(
+        wellnessMetric.getEmployeeId(), wellnessMetric.getrecordDate());
 
         // Calculate and set rewards
-        List<Rewards> rewards = calculateRewards(
-                wellnessMetric.getMood(),
-                wellnessMetric.getSleepHours(),
-                wellnessMetric.getDailySteps(),
-                wellnessMetric.getWaterIntake());
-        wellnessMetric.setRewards(rewards);
+    List<Rewards> rewards = calculateRewards(
+        wellnessMetric.getMood(),
+        wellnessMetric.getSleepHours(),
+        wellnessMetric.getDailySteps(),
+        wellnessMetric.getWaterIntake());
 
-        return wellnessMetricRepository.save(wellnessMetric);
-    }
+    if (existing != null) {
+    // Update existing record
+        existing.setMood(wellnessMetric.getMood());
+        existing.setSleepHours(wellnessMetric.getSleepHours());
+        existing.setDailySteps(wellnessMetric.getDailySteps());
+        existing.setWaterIntake(wellnessMetric.getWaterIntake());
+        existing.setRewards(rewards);
+    return wellnessMetricRepository.save(existing);
+} 
+else 
+{
+    // Set rewards for new record
+    wellnessMetric.setRewards(rewards);
+    return wellnessMetricRepository.save(wellnessMetric);
+}
+}
 
     // List of metrics logged by the employee since his/her account creation
     public List<WellnessMetric> getEmployeeLogs(Long employeeId) 

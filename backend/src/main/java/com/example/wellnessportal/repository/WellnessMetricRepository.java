@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import com.example.wellnessportal.model.WellnessMetric;
 import com.example.wellnessportal.model.Rewards;
 import java.util.List;
+import java.time.LocalDate;
 
 
 public interface WellnessMetricRepository extends JpaRepository<WellnessMetric, Long> {
@@ -24,6 +25,9 @@ public interface WellnessMetricRepository extends JpaRepository<WellnessMetric, 
 
         @Query("SELECT employeeId FROM WellnessMetric wm ORDER BY (wm.waterIntake * 1.0 + wm.dailySteps * 0.01 + wm.sleepHours * 1.5) DESC")
         List<Long> findEmployeesRankedByHealthScore();
+
+        @Query("SELECT wm FROM WellnessMetric wm WHERE wm.employeeId = :employeeId AND wm.recordDate = :date")
+WellnessMetric findByEmployeeIdAndRecordDate(@Param("employeeId") Long employeeId, @Param("date") LocalDate date);
 
 
     //Will be implemented based on required analytics
