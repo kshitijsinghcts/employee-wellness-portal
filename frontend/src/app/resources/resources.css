@@ -9,9 +9,6 @@
 
 /* General Layout */
 .container {
-    /* The outer div in the template doesn't have this class, 
-       but assuming the component host will provide a container.
-       If not, these styles can be moved to a wrapper div inside the template. */
     max-width: 1280px;
     margin-left: auto;
     margin-right: auto;
