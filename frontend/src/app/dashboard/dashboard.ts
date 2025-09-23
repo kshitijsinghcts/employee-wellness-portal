@@ -33,6 +33,13 @@ interface Reward {
     available: boolean;
 }
 
+interface WeeklyChartData {
+  dateLabel: string;
+  steps: number;
+  water: number;
+  sleep: number;
+}
+
 @Component({
   standalone: true,
   selector: 'app-dashboard',
@@ -75,6 +82,8 @@ export class DashboardComponent implements OnInit {
   allMetrics: WellnessMetric[] = [];
   selectedDate = new Date();
   greeting = '';
+  weeklyChartData: WeeklyChartData[] = [];
+  chartColors = { steps: '#22c55e', water: '#3b82f6', sleep: '#8b5cf6' };
 
   constructor(
     private employeeService: EmployeeService,
@@ -96,10 +105,12 @@ export class DashboardComponent implements OnInit {
               // Sort by date, most recent first
               this.allMetrics = metrics.sort((a, b) => new Date(b.recordDate).getTime() - new Date(a.recordDate).getTime());
               this.updateDisplayedMetrics();
+              this.prepareWeeklyChartData();
             },
             error: (err) => {
               console.error('Failed to fetch wellness metrics', err);
               this.updateDisplayedMetrics(); // Initialize with empty metrics on error
+              this.prepareWeeklyChartData();
             }
           });
         },
@@ -193,8 +204,55 @@ export class DashboardComponent implements OnInit {
       return this.userPoints.current >= reward.cost;
   }
 
+  getPolylinePoints(metric: 'steps' | 'water' | 'sleep'): string {
+    return this.weeklyChartData
+      .map((day, i) => {
+        const x = 65 + i * 65;
+        const y = 210 - day[metric] * 2;
+        return `${x},${y}`;
+      })
+      .join(' ');
+  }
+
+  private toLocalDateString(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  private prepareWeeklyChartData(): void {
+    const today = new Date();
+    const last7Days: WeeklyChartData[] = [];
+
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setHours(0, 0, 0, 0);
+      date.setDate(today.getDate() - i);
+      const dateString = this.toLocalDateString(date);
+      const metricForDate = this.allMetrics.find(m => m.recordDate === dateString);
+
+      if (metricForDate) {
+        last7Days.push({
+          dateLabel: date.toLocaleDateString('en-US', { weekday: 'short' }),
+          steps: Math.min(100, (metricForDate.dailySteps / 10000) * 100),
+          water: Math.min(100, (metricForDate.waterIntake / 8) * 100),
+          sleep: Math.min(100, (metricForDate.sleepHours / 8) * 100),
+        });
+      } else {
+        last7Days.push({
+          dateLabel: date.toLocaleDateString('en-US', { weekday: 'short' }),
+          steps: 0,
+          water: 0,
+          sleep: 0,
+        });
+      }
+    }
+    this.weeklyChartData = last7Days;
+  }
+
   private updateDisplayedMetrics(): void {
-    const selectedDateString = this.selectedDate.toISOString().split('T')[0];
+    const selectedDateString = this.toLocalDateString(this.selectedDate);
     const metricForDate = this.allMetrics.find(m => m.recordDate === selectedDateString);
 
     if (metricForDate) {
@@ -238,7 +296,7 @@ export class DashboardComponent implements OnInit {
   }
 
   openEditModal(): void {
-    const todayString = new Date().toISOString().split('T')[0];
+    const todayString = this.toLocalDateString(new Date());
     const todaysMetric = this.allMetrics.find(m => m.recordDate === todayString);
 
     if (todaysMetric) {
