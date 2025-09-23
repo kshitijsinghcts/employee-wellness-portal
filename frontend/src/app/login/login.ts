@@ -27,18 +27,9 @@ export class Login {
     this.authService.login(this.loginData).subscribe({
       next: (response) => {
         console.log('Login successful', response);
-        // 1. Save token to local storage for future API calls
-        localStorage.setItem('token', response.token);
-
-        // 2. Extract employee ID from token and save it
-        const tokenParts = response.token.split('-');
-        const employeeId = tokenParts[tokenParts.length - 1];
-        const role = tokenParts[tokenParts.length - 2]; // 'employee' or 'admin'
-        localStorage.setItem('employeeId', employeeId);
-        localStorage.setItem('userRole', role.toUpperCase()); // Store as EMPLOYEE or ADMIN
-
+        // The AuthService now handles saving the token and updating the login state.
         this.isLoading = false;
-        // 3. Navigate to the dashboard
+        // Navigate to the dashboard on successful login.
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {

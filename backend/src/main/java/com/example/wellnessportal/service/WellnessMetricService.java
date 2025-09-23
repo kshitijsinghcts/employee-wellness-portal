@@ -104,8 +104,7 @@ public class WellnessMetricService {
 
     // List of metrics logged by the employee since his/her account creation
     public List<WellnessMetric> getEmployeeLogs(Long employeeId) {
-        List<WellnessMetric> wm = wellnessMetricRepository.findAllByEmployeeId(employeeId);
-        return wm;
+        return wellnessMetricRepository.findAllByEmployeeId(employeeId);
     }
 
     // The following methods are for letting the user know how he/she is on par with
