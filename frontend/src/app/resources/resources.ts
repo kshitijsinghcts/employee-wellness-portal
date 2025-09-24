@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export interface Resource {
-  id: number;
+  id: string;
   title: string;
   description: string;
   url: string;
-  category: 'mental_health' | 'physical_health' | 'nutrition' | 'mindfulness';
+  category: 'mental-health' | 'ergonomics' | 'nutrition' | 'fitness' | 'general';
   type: 'article' | 'video' | 'pdf';
   tags: string[];
   featured: boolean;
@@ -29,8 +29,8 @@ export class Resources implements OnInit {
   selectedCategory: 'all' | Resource['category'] = 'all';
   selectedType: 'all' | Resource['type'] = 'all';
 
-  categories: Resource['category'][] = ['mental_health', 'physical_health', 'nutrition', 'mindfulness'];
-  types: Resource['type'][] = ['article', 'video', 'pdf'];
+  categories: Resource['category'][] = ['mental-health', 'ergonomics', 'nutrition', 'fitness', 'general'];
+  types: Resource['type'][] = ['video', 'pdf', 'article'];
 
   ngOnInit() {
     this.allResources = this.getMockResources();
@@ -61,7 +61,10 @@ export class Resources implements OnInit {
   }
 
   formatCategoryName(category: string): string {
-    return category.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+    return category
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   }
 
   formatTypeName(type: string): string {
@@ -71,63 +74,63 @@ export class Resources implements OnInit {
   private getMockResources(): Resource[] {
     return [
       {
-        id: 1,
-        title: 'The Benefits of Mindfulness Meditation',
-        description: 'Learn how daily meditation can reduce stress and improve focus. This comprehensive guide covers various techniques.',
-        url: '#',
-        category: 'mindfulness',
-        type: 'article',
-        tags: ['Stress Reduction', 'Focus', 'Well-being'],
-        featured: true,
-      },
-      {
-        id: 2,
-        title: '10-Minute Morning Yoga for Energy',
-        description: 'Start your day with this quick and energizing yoga routine. Perfect for all skill levels.',
-        url: '#',
-        category: 'physical_health',
+        id: '1',
+        title: '10-Minute MORNING MEDITATION: Wake Up Early & Start a Good Day!',
+        description: 'A guided morning meditation to help you start your day with clarity, intention, and inner peace.',
         type: 'video',
-        tags: ['Yoga', 'Exercise', 'Energy'],
+        url: 'https://www.youtube.com/watch?v=FfWVh5ieG3c',
+        category: 'mental-health',
+        tags: ['meditation', 'mindfulness', 'morning routine'],
         featured: true,
       },
       {
-        id: 3,
-        title: 'Healthy Eating Plate Guide',
-        description: 'A downloadable guide to creating balanced and nutritious meals every day.',
-        url: '#',
-        category: 'nutrition',
+        id: '2',
+        title: 'Computer Workstation Ergonomics Self-Setup Guide',
+        description: 'A practical PDF guide to setting up your workstation ergonomically to prevent discomfort and injury.',
         type: 'pdf',
-        tags: ['Nutrition', 'Diet', 'Healthy Eating'],
+        url: 'https://ehs.prod.fbweb.psu.edu/sites/ehs/files/ergonomics_self_setup_guide.pdf',
+        category: 'ergonomics',
+        tags: ['ergonomics', 'posture', 'workspace', 'back pain'],
         featured: true,
       },
       {
-        id: 4,
-        title: 'Understanding Anxiety and How to Cope',
-        description: 'An in-depth article on the causes of anxiety and practical strategies for managing it.',
-        url: '#',
-        category: 'mental_health',
+        id: '3',
+        title: 'Healthy Meal Prep Ideas for Busy Professionals',
+        description: 'Quick, high-protein recipes and smart strategies to simplify healthy eating for busy schedules.',
         type: 'article',
-        tags: ['Anxiety', 'Mental Health', 'Coping'],
+        url: 'https://blog.eatfitlifefoods.com/healthy-meal-prep-ideas-for-busy-professionals/',
+        category: 'nutrition',
+        tags: ['nutrition', 'meal prep', 'healthy eating', 'recipes'],
         featured: false,
       },
       {
-        id: 5,
-        title: 'Guide to Strength Training',
-        description: 'A PDF guide covering the fundamentals of strength training, including sample workout plans.',
-        url: '#',
-        category: 'physical_health',
-        type: 'pdf',
-        tags: ['Fitness', 'Workout', 'Strength'],
+        id: '4',
+        title: '15 Min Desk Exercises for Beginners',
+        description: 'Burn fat and stay active during work hours with this no-equipment desk workout video.',
+        type: 'video',
+        url: 'https://www.youtube.com/watch?v=_tQMtw_0QLA',
+        category: 'fitness',
+        tags: ['fitness', 'desk exercises', 'workplace wellness'],
+        featured: true,
+      },
+      {
+        id: '5',
+        title: 'Stress Management: 10 Techniques & Quick Tips',
+        description: 'Evidence-based strategies to reduce anxiety, prevent burnout, and build resilience.',
+        type: 'article',
+        url: 'https://positivepsychology.com/stress-management-techniques-tips-burn-out/',
+        category: 'mental-health',
+        tags: ['stress management', 'resilience', 'mental health'],
         featured: false,
       },
       {
-        id: 6,
-        title: 'Cooking for Better Brain Health',
-        description: 'A video tutorial on preparing meals that are packed with brain-boosting nutrients.',
-        url: '#',
-        category: 'nutrition',
-        type: 'video',
-        tags: ['Cooking', 'Brain Health', 'Recipe'],
+        id: '6',
+        title: '30 Sleep Hygiene Checklist',
+        description: 'A printable checklist with 30 actionable tips to improve your sleep quality and habits.',
+        type: 'pdf',
+        url: 'https://thesleepsavvy.com/wp-content/uploads/2019/10/30-SLEEP-HYGIENE-CHECKLIST.pdf',
+        category: 'general',
+        tags: ['sleep', 'sleep hygiene', 'rest', 'recovery'],
         featured: false,
       },
     ];
