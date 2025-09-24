@@ -19,4 +19,8 @@
   --input-background: #f3f3f5;
   --ring: #b4b4b4;
   --radius: 0.625rem;
+  --card: #ffffff;
+  --primary: #030213;
+  --muted-foreground: #717182;
+  --border: rgba(0, 0, 0, 0.1);
 }

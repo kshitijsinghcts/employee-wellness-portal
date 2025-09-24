@@ -1,0 +1,120 @@
+/* 
+  Note: Please add the following @import to your global styles.css or index.html 
+  to load the 'Hanuman' font used in the footer.
+  
+  @import url('https://fonts.googleapis.com/css2?family=Hanuman:wght@400;700&display=swap');
+*/
+
+
+.footer-container {
+  background-color: var(--card);
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+  color: var(--foreground);
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1rem; /* py-8 px-4 */
+  max-width: 1280px; /* A common container width */
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 2rem;
+  padding: 1rem; /* Add padding around the grid */
+}
+
+/* On screens 768px and wider, go to a 3-column layout with equal spacing */
+/* Updated to use space-between for even distribution */
+
+/* On screens 768px and wider */
+@media (min-width: 768px) {
+  .grid {
+    /* Adjusted to 3 columns as 'Resources' is removed */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem; /* space-y-4 */
+}
+
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.5rem; /* space-y-2 */
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  margin-left: 0.5rem; /* space-x-2 */
+}
+
+.icon-primary {
+  color: var(--primary);
+  height: 1.5rem; /* h-6 */
+  width: 1.5rem; /* w-6 */
+}
+
+.icon-contact {
+  height: 1rem; /* h-4 */
+  width: 1rem; /* w-4 */
+}
+
+.font-semibold {
+  font-weight: 600; /* Tailwind's semibold is 600 */
+}
+
+.font-hanuman {
+  font-family: 'Hanuman', sans-serif;
+}
+
+.text-lg {
+  font-size: 1.125rem; /* 18px */
+}
+
+.text-sm {
+  font-size: 0.875rem; /* 14px */
+}
+
+.text-muted-foreground {
+  color: var(--muted-foreground);
+}
+
+.block {
+  display: block;
+}
+
+.hover-text-foreground:hover {
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+a.text-muted-foreground {
+  color: var(--muted-foreground);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.copyright-section {
+  border-top: 1px solid var(--border);
+  margin-top: 2rem; /* mt-8 */
+  padding-top: 2rem; /* pt-8 */
+  text-align: center;
+}
+
+.footer-column {
+  text-align: center;
+}
