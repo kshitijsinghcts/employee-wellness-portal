@@ -7,7 +7,7 @@ import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
     // The login route at the root path, accessible to everyone.
-    {path: '', component: Login},
+    { path: '', component: Login },
 
     // Protected routes that require the user to be logged in.
     {path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
