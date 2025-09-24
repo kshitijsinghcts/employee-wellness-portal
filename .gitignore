@@ -9,6 +9,7 @@
 /backend/dependency-reduced-pom.xml
 /backend/build/
 /backend/src/main/resources/application.properties
+/backend/bin/
 
 ### frontend
 /frontend/dist/
@@ -17,3 +18,4 @@
 /frontend/.angular/cache/
 
 backend/src/main/resources/application.properties
+frontend/src/app/app.routes.ts

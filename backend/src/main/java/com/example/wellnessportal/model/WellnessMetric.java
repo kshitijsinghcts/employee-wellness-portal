@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "wellnessmetric")
+@Table(name = "wellnessmetric", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "employeeId", "recordDate" })
+})
 public class WellnessMetric {
 
     @Id
