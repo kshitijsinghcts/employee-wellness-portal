@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Employee } from '../models/employee.model';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AdminService } from '../services/admin.service';
 import { WellnessService } from '../services/wellness.service';
 import { GoalsService } from '../services/goals.service';
 import { WellnessMetric } from '../models/wellness-metric.model';
 import { Goal } from '../goals/goals';
+import { AuthService } from '../services/auth.service';
 
 interface MetricDisplay {
   label: string;
@@ -18,7 +20,7 @@ interface MetricDisplay {
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule], // RouterModule is not needed if we inject Router
   templateUrl: './admin-panel.html',
   styleUrls: ['./admin-panel.css']
 })
@@ -34,7 +36,9 @@ export class AdminPanelComponent implements OnInit {
   constructor(
     private adminService: AdminService,
     private wellnessService: WellnessService,
-    private goalsService: GoalsService
+    private goalsService: GoalsService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -116,5 +120,10 @@ export class AdminPanelComponent implements OnInit {
     if (title.toLowerCase().includes('water')) return '💧';
     if (title.toLowerCase().includes('sleep')) return '😴';
     return '🎯';
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['']); // Navigate to the login page
   }
 }

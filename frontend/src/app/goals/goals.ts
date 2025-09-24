@@ -5,6 +5,8 @@ import { GoalsService } from '../services/goals.service';
 import { AuthService } from '../services/auth.service';
 
 export interface Goal {
+  // `id` is used in admin-panel, `goalId` is used here. Let's align them.
+  // The backend returns `goalId`, so we'll use that and map if needed.
   goalId: number;
   employeeId: number;
   title: string;
@@ -12,7 +14,6 @@ export interface Goal {
   targetDate: string; // YYYY-MM-DD
   targetValue: string; // e.g., "10000 steps"
   status: number; // -1: active, 0: review, 1: completed
-
   // Frontend-only properties for display
   displayStatus?: 'active' | 'completed' | 'review';
   progress?: number;

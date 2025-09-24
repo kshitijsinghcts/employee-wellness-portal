@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
@@ -7,7 +7,7 @@ import { Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -19,13 +19,19 @@ export class Login implements OnInit {
   loginData = { email: '', password: '' };
   registerData = { employeeId: null as number | null, password: '', name: '', email: '' };
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
-    // If user is already logged in, redirect them
-    const userRole = localStorage.getItem('userRole');
-    if (userRole) {
-      this.redirectUser(userRole);
+    if (isPlatformBrowser(this.platformId)) {
+      // If user is already logged in, redirect them
+      const userRole = localStorage.getItem('userRole');
+      if (userRole) {
+        this.redirectUser(userRole);
+      }
     }
   }
 

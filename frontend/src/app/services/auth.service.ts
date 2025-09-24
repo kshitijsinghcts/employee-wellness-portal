@@ -33,15 +33,17 @@ export class AuthService {
     login(credentials: LoginCredentials): Observable<string> {
         return this.http.post(`${this.apiUrl}/login`, credentials, { responseType: 'text' }).pipe(
             tap(response => {
-                // 1. Save token to local storage for future API calls
-                localStorage.setItem('token', response);
+                if (isPlatformBrowser(this.platformId)) {
+                    // 1. Save token to local storage for future API calls
+                    localStorage.setItem('token', response);
 
-                // 2. Extract employee ID and role from token and save it
-                const tokenParts = response.split('-');
-                const role = tokenParts[3]; // 'admin' or 'employee'
-                const employeeId = tokenParts[4];
-                localStorage.setItem('employeeId', employeeId);
-                localStorage.setItem('userRole', role.toUpperCase()); // Store as EMPLOYEE or ADMIN
+                    // 2. Extract employee ID and role from token and save it
+                    const tokenParts = response.split('-');
+                    const role = tokenParts[3]; // 'admin' or 'employee'
+                    const employeeId = tokenParts[4];
+                    localStorage.setItem('employeeId', employeeId);
+                    localStorage.setItem('userRole', role.toUpperCase()); // Store as EMPLOYEE or ADMIN
+                }
 
                 // 3. Update the logged-in status
                 this._isLoggedIn$.next(true);

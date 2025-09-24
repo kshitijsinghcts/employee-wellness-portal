@@ -38,9 +38,11 @@ export class Navbar implements OnInit, OnDestroy {
         )
       ]).subscribe(([isLoggedIn, event]) => {
         const isLoginPage = event.urlAfterRedirects === '/';
-        // Show navbar only if logged in AND not on the login page
-        this.showNavbar = isLoggedIn && !isLoginPage;
-        this.userRole = localStorage.getItem('userRole');
+        if (isPlatformBrowser(this.platformId)) {
+          // Show navbar only if logged in AND not on the login page
+          this.showNavbar = isLoggedIn && !isLoginPage;
+          this.userRole = localStorage.getItem('userRole');
+        }
 
         if (isLoggedIn && !this.user && !isLoginPage) { // Only load user if logged in and not on login page
           this.loadUser();
