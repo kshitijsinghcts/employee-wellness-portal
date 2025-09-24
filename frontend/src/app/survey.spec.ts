@@ -11,6 +11,8 @@ describe('Survey', () => {
   });
 
   it('should be created', () => {
+    // toBeTruthy from Jasmine
+    // All javascript falsy values not allowed
     expect(service).toBeTruthy();
   });
 });

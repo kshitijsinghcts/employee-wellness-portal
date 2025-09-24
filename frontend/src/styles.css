@@ -9,13 +9,20 @@
   --secondary: #f5f5f7;
   --secondary-foreground: #030213;
   --muted: #ececf0;
+
+  /* subdued text color */
   --muted-foreground: #717182;
+  /* background/ highlight color for accent elements like buttons/links */
   --accent: #e9ebef;
+  /* Text color */
   --accent-foreground: #030213;
+  /* destructive actions like delete or remove */
   --destructive: #d4183d;
+  /* text */
   --destructive-foreground: #ffffff;
   --border: rgba(0, 0, 0, 0.1);
   --input-background: #f3f3f5;
+  /* Focus rings or outlines around interactive elements for focus */
   --ring: #b4b4b4;
   --radius: 0.625rem;
 }

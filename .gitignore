@@ -17,5 +17,7 @@
 /frontend/npm-debug.log*
 /frontend/.angular/cache/
 
+/node_modules/
+
 backend/src/main/resources/application.properties
 frontend/src/app/app.routes.ts

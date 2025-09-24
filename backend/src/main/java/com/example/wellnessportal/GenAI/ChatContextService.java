@@ -1,6 +1,7 @@
 package com.example.wellnessportal.GenAI;
 
 import com.example.wellnessportal.GenAI.ChatContext;
+import com.example.wellnessportal.model.WellnessMetric;
 import com.example.wellnessportal.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,13 +48,26 @@ public class ChatContextService {
         return context;
     }
 
-    private Map<String, Object> fetchWellnessMetrics(Long employeeId) {
-        return wellnessMetricRepository.findByEmployeeId(employeeId).stream()
-                .collect(Collectors.toMap(
-                        metric -> metric.get(), // e.g., "sleep", "stress"
-                        metric -> metric.getReward()
-                ));
+  private Map<String, Object> fetchWellnessMetrics(Long employeeId) {
+    List<WellnessMetric> metrics = wellnessMetricRepository.findAllByEmployeeId(employeeId);
+
+    Map<String, Object> result = new LinkedHashMap<>();
+
+    for (WellnessMetric metric : metrics) {
+        result.put("Date", metric.getRecordDate().toString());
+        result.put("Mood", metric.getMood());
+        result.put("Sleep Hours", metric.getSleepHours());
+        result.put("Daily Steps", metric.getDailySteps());
+        result.put("Water Intake", metric.getWaterIntake());
+
+        if (metric.getScores() != null && !metric.getScores().isEmpty()) {
+            result.put("Scores", metric.getScores());
+        }
     }
+
+    return result;
+}
+
 
     private List<String> fetchGoals(Long employeeId) {
         return goalRepository.findGoalsByEmployeeId(employeeId).stream()
@@ -67,24 +81,17 @@ public class ChatContextService {
                 .collect(Collectors.toList());
     }
 
-    private List<String> fetchSurveyResponses(Long employeeId) {
-        return surveyResponseRepository.findAll().stream()
-                .filter(sr -> sr.getEmployeeId().equals(employeeId))
-                .map(sr -> {
-                    String question = sr.getQuestion().getText();
-                    String answer = sr.getAnswer();
-                    return "Q: " + question + " A: " + answer;
-                })
-                .collect(Collectors.toList());
-    }
-
-    private List<String> fetchAllSurveySummaries() {
-        return surveyResponseRepository.findAll().stream()
-                .map(sr -> {
-                    String question = sr.getQuestion().getText();
-                    String answer = sr.getAnswer();
-                    return "Q: " + question + " A: " + answer;
-                })
-                .collect(Collectors.toList());
-    }
+   private List<String> fetchSurveyResponses(Long employeeId) {
+    return surveyResponseRepository.findAll().stream()
+        .filter(sr -> sr.getEmployeeId().equals(employeeId))
+        .flatMap(sr -> sr.getAnswers().entrySet().stream()
+            .map(entry -> "Q: " + entry.getKey() + " A: " + entry.getValue()))
+        .collect(Collectors.toList());
+}
+  private List<String> fetchAllSurveySummaries() {
+    return surveyResponseRepository.findAll().stream()
+        .flatMap(sr -> sr.getAnswers().entrySet().stream()
+            .map(entry -> "Q: " + entry.getKey() + " A: " + entry.getValue()))
+        .collect(Collectors.toList());
+}
 }

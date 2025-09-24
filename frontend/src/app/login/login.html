@@ -33,35 +33,60 @@
 
       <div class="tabs">
         <div class="tabs-list">
-          <button class="tab-trigger" [class.active]="activeTab === 'login'" (click)="activeTab = 'login'">Sign
-            In</button>
-          <button class="tab-trigger" [class.active]="activeTab === 'register'" (click)="activeTab = 'register'">Sign
-            Up</button>
+          <button class="tab-trigger" 
+                  [class.active]="activeTab === 'login'" 
+                  (click)="activeTab = 'login'">
+                  Sign In
+                </button>
+          <button class="tab-trigger" 
+                  [class.active]="activeTab === 'register'" 
+                  (click)="activeTab = 'register'">
+                  Sign Up</button>
         </div>
 
         <!-- Login Tab -->
-        <div class="tab-content" *ngIf="activeTab === 'login'">
+        <div class="tab-content" 
+             *ngIf="activeTab === 'login'">
           <div class="card">
             <div class="card-header">
               <h2 class="card-title">Sign in to your account</h2>
               <p class="card-description">Enter your email and password to access your wellness dashboard</p>
             </div>
             <div class="card-content">
-              <form (ngSubmit)="handleLogin()" class="form-content">
+              <form (ngSubmit)="handleLogin()" 
+                    class="form-content">
                 <div class="input-group">
                   <label for="email">Email</label>
-                  <input id="email" type="email" placeholder="john@company.com" [(ngModel)]="loginData.email"
-                    name="email" required>
+                  <input id="email" 
+                         type="email" 
+                         placeholder="john@company.com" 
+                         [(ngModel)]="loginData.email"
+                         name="email" 
+                         required>
                 </div>
                 <div class="input-group">
                   <label for="password">Password</label>
                   <div class="password-wrapper">
-                    <input id="password" [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password"
-                      [(ngModel)]="loginData.password" name="password" required>
-                    <button type="button" class="password-toggle" (click)="showPassword = !showPassword">
-                      <svg *ngIf="!showPassword" class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="24"
-                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
+                    <input id="password" 
+                           [type]="showPassword ? 'text' : 'password'" 
+                           placeholder="Enter your password"
+                           [(ngModel)]="loginData.password" 
+                           name="password" 
+                           required>
+                    <button type="button" 
+                            class="password-toggle" 
+                            (click)="showPassword = !showPassword">
+                      <svg *ngIf="!showPassword" 
+                           class="eye-icon" 
+                           xmlns="http://www.w3.org/2000/svg" 
+                           width="24"
+                           height="24" 
+                           viewBox="0 0 24 24" 
+                           fill="none" 
+                           stroke="currentColor" 
+                           stroke-width="2"
+                           stroke-linecap="round" 
+                           stroke-linejoin="round">
                         <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                         <circle cx="12" cy="12" r="3" />
                       </svg>
