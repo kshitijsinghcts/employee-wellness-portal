@@ -32,6 +32,8 @@ export class AdminPanelComponent implements OnInit {
   reviewGoals: Goal[] = [];
   filteredEmployees: Employee[] = [];
   searchTerm: string = '';
+  goalPoints: { [goalId: number]: number } = {};
+  pointsOptions = [0, 10, 20, 50, 100, 200];
 
   constructor(
     private adminService: AdminService,
@@ -87,6 +89,7 @@ export class AdminPanelComponent implements OnInit {
       next: (goals) => {
         // Filter for goals submitted for review (status 0)
         this.reviewGoals = goals.filter(goal => goal.status === 0);
+        this.reviewGoals.forEach(goal => this.goalPoints[goal.goalId] = 0); // Default points to 0
       },
       error: (err) => console.error(`Failed to load goals for employee ${employee.employeeId}`, err)
     });
@@ -125,5 +128,27 @@ export class AdminPanelComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['']); // Navigate to the login page
+  }
+
+  approveGoal(goalToApprove: Goal): void {
+    const points = this.goalPoints[goalToApprove.goalId] ?? 0;
+
+    const updatedGoal: Goal = {
+      ...goalToApprove,
+      status: 1, // Mark as completed/approved
+      points: points,
+    };
+
+    this.goalsService.updateGoal(updatedGoal).subscribe({
+      next: () => {
+        // On success, remove the goal from the local list to update the UI
+        this.reviewGoals = this.reviewGoals.filter(goal => goal.goalId !== goalToApprove.goalId);
+        delete this.goalPoints[goalToApprove.goalId];
+      },
+      error: (err) => {
+        console.error('Failed to approve goal', err);
+        // Optionally, show an error message to the admin
+      }
+    });
   }
 }

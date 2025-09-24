@@ -14,6 +14,7 @@ export interface Goal {
   targetDate: string; // YYYY-MM-DD
   targetValue: string; // e.g., "10000 steps"
   status: number; // -1: active, 0: review, 1: completed
+  points?: number; // Points awarded, from backend
   // Frontend-only properties for display
   displayStatus?: 'active' | 'completed' | 'review';
   progress?: number;
