@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EmployeeService } from '../services/employee.service';
+import { RouterModule } from '@angular/router';
 import { Employee } from '../models/employee.model';
 import { WellnessService } from '../services/wellness.service';
 import { WellnessMetric } from '../models/wellness-metric.model';
@@ -45,7 +46,7 @@ interface WeeklyChartData {
   selector: 'app-dashboard',
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class DashboardComponent implements OnInit {
   user: (Employee & { role?: string }) | null = null;
