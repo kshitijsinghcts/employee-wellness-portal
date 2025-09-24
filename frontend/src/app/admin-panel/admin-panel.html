@@ -1,1 +1,69 @@
-<p>admin-panel works!</p>
+<div class="admin-container">
+  <!-- Main Content: Employee List -->
+  <div class="main-content">
+    <div class="card">
+      <div class="card-header">
+        <h2>Employee Overview</h2>
+      </div>
+      <div class="search-bar-container">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" placeholder="Search by name..." 
+                 [(ngModel)]="searchTerm" (ngModelChange)="filterEmployees()">
+          <button *ngIf="searchTerm" class="clear-search-btn" (click)="clearSearch()">×</button>
+        </div>
+      </div>
+      <div class="card-content">
+        <ul class="employee-list" *ngIf="filteredEmployees.length > 0; else noEmployees">
+          <ng-container *ngFor="let employee of filteredEmployees">
+            <li class="employee-item"
+                [class.selected]="selectedEmployee?.employeeId === employee.employeeId"
+                (click)="selectEmployee(employee)">
+              <div class="employee-details">
+                {{ employee.name }}
+              </div>
+              <div class="employee-id">
+                ID: {{ employee.employeeId }}
+              </div>
+            </li>
+            <div *ngIf="selectedEmployee?.employeeId === employee.employeeId" class="details-dropdown">
+              <div class="details-section">
+                <h4 class="details-header">Wellness Metrics</h4>
+                <div *ngIf="latestMetrics.length > 0; else noMetrics" class="details-grid">
+                  <div *ngFor="let metric of latestMetrics" class="metric-card">
+                    <div class="metric-icon">{{ metric.icon }}</div>
+                    <div class="metric-info">
+                      <h5>{{ metric.label }}</h5>
+                      <p>{{ metric.value }} <span *ngIf="metric.unit">{{ metric.unit }}</span></p>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #noMetrics>
+                  <p class="no-data-inline">No wellness metrics logged.</p>
+                </ng-template>
+              </div>
+              <div class="details-section">
+                <h4 class="details-header">Submitted for approval</h4>
+                <div *ngIf="completedGoals.length > 0; else noGoals">
+                  <div *ngFor="let goal of completedGoals" class="goal-card">
+                    <h5>{{ getGoalIcon(goal.goalType) }} {{ goal.description }}</h5>
+                    <p>Target: {{ goal.targetScores }} | Achieved: {{ goal.status }}</p>
+                    <div class="progress-bar-container">
+                      <div class="progress-bar" [style.width.%]="getGoalProgress(goal)"></div>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #noGoals>
+                  <p class="no-data-inline">No completed goals found.</p>
+                </ng-template>
+              </div>
+            </div>
+          </ng-container>
+        </ul>
+        <ng-template #noEmployees>
+          <p class="no-data">No employees found.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
