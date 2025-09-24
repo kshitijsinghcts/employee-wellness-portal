@@ -25,7 +25,8 @@ public class Admin {
     @Column(unique = true)
     private String email;
 
-    public Admin() {
+    public Admin() 
+    {
 
     }
 
