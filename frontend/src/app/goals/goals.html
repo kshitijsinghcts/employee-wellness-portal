@@ -32,15 +32,6 @@
       </div>
     </div>
     <div class="card stat-card">
-      <div class="icon-wrapper-orange">
-        <span class="icon-placeholder">⏸️</span>
-      </div>
-      <div>
-        <p class="stat-label">Paused</p>
-        <p class="stat-value">{{ pausedGoals.length }}</p>
-      </div>
-    </div>
-    <div class="card stat-card">
       <div class="icon-wrapper-purple">
         <span class="icon-placeholder">📈</span>
       </div>
@@ -71,35 +62,26 @@
                 <p class="card-description">{{ goal.description }}</p>
               </div>
             </div>
-            <div class="badge badge-secondary">{{ goal.status }}</div>
+            <div class="badge badge-secondary">{{ goal.displayStatus }}</div>
           </div>
           <div class="card-content">
-            <div class="progress-section">
-              <div class="flex-between">
-                <span class="progress-label">Progress</span>
-                <span class="metric-target">
-                  {{ goal.currentValue.toLocaleString() }} / {{ goal.targetValue.toLocaleString() }} {{ goal.unit }}
-                </span>
-              </div>
-              <div class="progress-bar-container">
-                <div class="progress-bar" [style.width.%]="goal.progress"></div>
-              </div>
-              <p class="progress-percent">{{ goal.progress }}% complete</p>
-            </div>
+            <span class="metric-target">
+              Target: {{ goal.targetValue }}
+            </span>
 
             <div class="flex-between text-sm text-muted-foreground">
               <div class="goal-deadline">
                 <span class="icon-placeholder-sm">📅</span>
-                Due: {{ goal.deadline | date: 'mediumDate' }}
+                Due: {{ goal.targetDate | date: 'mediumDate' }}
               </div>
             </div>
 
             <div class="goal-actions">
-              <button class="btn btn-secondary" (click)="toggleGoalStatus(goal.id)">
-                <span class="icon-placeholder-sm">⏸️</span>
-                Pause
+              <button class="btn btn-danger" (click)="deleteGoal(goal.goalId)">
+                <span class="icon-placeholder-sm">🗑️</span>
+                Delete
               </button>
-              <button class="btn btn-primary" (click)="completeGoal(goal.id)">
+              <button class="btn btn-primary" (click)="completeGoal(goal)">
                 <span class="icon-placeholder-sm">✔️</span>
                 Complete
               </button>
@@ -133,9 +115,6 @@
             </div>
           </div>
           <div class="card-content">
-            <div class="progress-bar-container">
-              <div class="progress-bar" [style.width.%]="100"></div>
-            </div>
             <p class="text-yellow">
               👍 Submitted for review. Awaiting approval.
             </p>
@@ -168,11 +147,8 @@
             </div>
           </div>
           <div class="card-content">
-            <div class="progress-bar-container">
-              <div class="progress-bar" [style.width.%]="100"></div>
-            </div>
             <p class="text-green">
-              🎉 Goal achieved! {{ goal.targetValue.toLocaleString() }} {{ goal.unit }} completed
+              🎉 Goal achieved! Target: {{ goal.targetValue }}
             </p>
           </div>
         </div>
@@ -200,24 +176,12 @@
       </div>
       <div class="grid-2-col">
         <div class="form-group">
-          <label for="type">Goal Type</label>
-          <select id="type" [(ngModel)]="newGoal.type">
-            <option *ngFor="let type of goalTypes" [value]="type">{{ type | titlecase }}</option>
-          </select>
-        </div>
-        <div class="form-group">
           <label for="targetValue">Target Value</label>
-          <input id="targetValue" type="number" [(ngModel)]="newGoal.targetValue" placeholder="0">
-        </div>
-      </div>
-      <div class="grid-2-col">
-        <div class="form-group">
-          <label for="unit">Unit</label>
-          <input id="unit" type="text" [(ngModel)]="newGoal.unit" placeholder="e.g., steps, glasses, hours">
+          <input id="targetValue" type="text" [(ngModel)]="newGoal.targetValue" placeholder="e.g., 10000 steps">
         </div>
         <div class="form-group">
           <label for="deadline">Deadline</label>
-          <input id="deadline" type="date" [(ngModel)]="newGoal.deadline">
+          <input id="deadline" type="date" [(ngModel)]="newGoal.targetDate">
         </div>
       </div>
     </div>

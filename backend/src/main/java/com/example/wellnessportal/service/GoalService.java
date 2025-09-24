@@ -28,18 +28,16 @@ public class GoalService {
         if (goal == null || goal.getEmployeeId() == null) {
             throw new IllegalArgumentException("Goal or Employee ID cannot be empty");
         }
-        Optional<AuthUser> authUser=authUserRepository.findById(goal.getEmployeeId());
-        if(authUser==null)
-        return "Employee Does Not Exist";
+        Optional<AuthUser> authUser = authUserRepository.findById(goal.getEmployeeId());
+        if (authUser == null)
+            return "Employee Does Not Exist";
 
         goalRepository.save(goal);
         return "Goal set successfully";
     }
 
-    public void deleteGoal(Goal goal) {
-        if (goal != null)
-            goalRepository.delete(goal);
-
+    public void deleteGoal(Long goalId) {
+        goalRepository.deleteById(goalId);
     }
 
     public List<Goal> findGoalsByEmployeeId(Long employeeId) {
@@ -68,10 +66,10 @@ public class GoalService {
             LocalDate recordDate) {
 
         List<Goal> goals = findGoalsByEmployeeId(employeeId);
-        List<Boolean> goalStatus=new ArrayList<>();
+        List<Boolean> goalStatus = new ArrayList<>();
 
         for (Goal goal : goals) {
-            System.out.println(goal.getGoalType()+","+recordDate);
+            System.out.println(goal.getTitle() + "," + recordDate);
             if (!isGoalCompleted(goal,
                     wellnessMetric,
                     recordDate)) {
@@ -101,7 +99,7 @@ public class GoalService {
     private boolean isGoalCompleted(Goal goal,
             WellnessMetric wellnessMetric,
             LocalDate recordDate) {
-        switch (goal.getGoalType()) {
+        switch (goal.getTitle()) {
             case "mood" -> {
                 return wellnessMetric.getMood().equalsIgnoreCase("Happy")
                         &&
@@ -127,7 +125,7 @@ public class GoalService {
                 goal.getTargetDate().isBefore(recordDate))
                 ||
                 ((goal.getStatus() <= goal.getTargetScores())
-                &&
-                goal.getTargetDate().isAfter(recordDate));
+                        &&
+                        goal.getTargetDate().isAfter(recordDate));
     }
 }

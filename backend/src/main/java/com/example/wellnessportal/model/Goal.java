@@ -10,12 +10,13 @@ public class Goal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long goalId;
     private Long employeeId;
-    private String goalType;
+    private String title;
     private LocalDate targetDate;
     private int status;
     // Attributes For Performance Measurement API
     private int targetScores;
-    private String targetRewards;
+    private int points;
+    private String targetValue;
 
     private String description;
 
@@ -28,60 +29,80 @@ public class Goal {
     /*
      * Default values for the fields are:
      * Employee Id must be provided
-     * goalType is an empty string
+     * title is an empty string
      * description empty string
      * targetDate is registered date
      * targetScores is 0
-     * targetRewards is Bronze
+     * targetValue is Bronze
      */
     public Goal(Long employeeId) {
         this.employeeId = employeeId;
-        this.goalType = "";
+        this.title = "";
         this.description = "";
         this.targetDate = LocalDate.now();
         this.targetScores = 0;
-        this.targetRewards = "BRONZE";
+        this.points = 0;
+        this.targetValue = "";
 
     }
 
     public Goal(Long employeeId,
-            String goalType,
+            String title,
             String description,
             LocalDate targetDate,
             int targetScores,
-            String targetRewards) {
+            String targetValue) {
         this.employeeId = employeeId;
-        this.goalType = goalType;
+        this.title = title;
         this.description = description;
         this.targetDate = targetDate;
         this.targetScores = targetScores;
-        this.targetRewards = targetRewards;
+        this.points = 0; // Or some other default
+        this.targetValue = targetValue;
     }
 
     // we will use this in controller
     public Goal(Long employeeId,
-            String goalType,
+            String title,
             String description,
             String targetDate) {
         this.employeeId = employeeId;
-        this.goalType = goalType;
+        this.title = title;
         this.description = description;
         this.targetDate = LocalDate.parse(targetDate);
         this.targetScores = 0;
-        this.targetRewards = "BRONZE";
+        this.points = 0;
+        this.targetValue = "";
     }
 
     // Useful in Rewards Service where description is not necessary
     public Goal(Long employeeId,
-            String goalType,
+            String title,
             LocalDate targetDate,
             int targetScores,
-            String targetRewards) {
+            String targetValue) {
         this.employeeId = employeeId;
-        this.goalType = goalType;
+        this.title = title;
         this.targetDate = targetDate;
         this.targetScores = targetScores;
-        this.targetRewards = targetRewards;
+        this.points = 0; // Or some other default
+        this.targetValue = targetValue;
+    }
+
+    // what is used in controller
+    public Goal(Long employeeId,
+            String goalType,
+            String description,
+            LocalDate targetDate,
+            String targetValue) {
+        this.employeeId = employeeId;
+        this.title = goalType; // also badly named this is title
+        this.description = description;
+        this.targetDate = targetDate;
+        this.status = -1; // -1 means going, 0 means submitted, 1 means completed
+        this.targetScores = 0;
+        this.points = 0;
+        this.targetValue = targetValue;
     }
 
     // Getters and setters
@@ -97,12 +118,12 @@ public class Goal {
         this.employeeId = employeeId;
     }
 
-    public String getGoalType() {
-        return goalType;
+    public String getTitle() {
+        return title;
     }
 
-    public void setGoalType(String goalType) {
-        this.goalType = goalType;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -137,18 +158,26 @@ public class Goal {
         this.targetScores = targetScores;
     }
 
-    public String getTargetRewards() {
-        return targetRewards;
+    public int getPoints() {
+        return points;
     }
 
-    public void setTargetRewards(String targetRewards) {
-        this.targetRewards = targetRewards;
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public String getTargetValue() {
+        return targetValue;
+    }
+
+    public void setTargetValue(String targetValue) {
+        this.targetValue = targetValue;
     }
 
     @Override
     public String toString() {
-        return "[goalId=" + goalId + ", employeeId=" + employeeId + ", goalType=" + goalType + ", targetDate="
-                + targetDate + ", status=" + status + ", targetScores=" + targetScores + ", targetRewards="
-                + targetRewards + ", description=" + description + "]";
+        return "[goalId=" + goalId + ", employeeId=" + employeeId + ", title=" + title + ", targetDate="
+                + targetDate + ", status=" + status + ", targetScores=" + targetScores + ", points=" + points
+                + ", targetValue=" + targetValue + ", description=" + description + "]";
     }
 }

@@ -9,7 +9,8 @@
 }
 
 .page-title {
-  font-size: 1.875rem; /* 30px */
+  font-size: 1.875rem;
+  /* 30px */
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
@@ -19,7 +20,8 @@
 }
 
 .section-title {
-  font-size: 1.25rem; /* 20px */
+  font-size: 1.25rem;
+  /* 20px */
   font-weight: var(--font-weight-medium);
   display: flex;
   align-items: center;
@@ -53,36 +55,46 @@
 
 .icon-wrapper-blue {
   padding: 0.5rem;
-  background-color: #dbeafe; /* blue-100 */
-  color: #2563eb; /* blue-600 */
+  background-color: #dbeafe;
+  /* blue-100 */
+  color: #2563eb;
+  /* blue-600 */
   border-radius: 9999px;
 }
 
 .icon-wrapper-green {
   padding: 0.5rem;
-  background-color: #dcfce7; /* green-100 */
-  color: #16a34a; /* green-600 */
+  background-color: #dcfce7;
+  /* green-100 */
+  color: #16a34a;
+  /* green-600 */
   border-radius: 9999px;
 }
 
 .icon-wrapper-orange {
   padding: 0.5rem;
-  background-color: #ffedd5; /* orange-100 */
-  color: #ea580c; /* orange-600 */
+  background-color: #ffedd5;
+  /* orange-100 */
+  color: #ea580c;
+  /* orange-600 */
   border-radius: 9999px;
 }
 
 .icon-wrapper-purple {
   padding: 0.5rem;
-  background-color: #f5f3ff; /* purple-100 */
-  color: #7c3aed; /* purple-600 */
+  background-color: #f5f3ff;
+  /* purple-100 */
+  color: #7c3aed;
+  /* purple-600 */
   border-radius: 9999px;
 }
 
 .icon-wrapper-yellow {
   padding: 0.5rem;
-  background-color: #fef9c3; /* yellow-100 */
-  color: #ca8a04; /* yellow-600 */
+  background-color: #fef9c3;
+  /* yellow-100 */
+  color: #ca8a04;
+  /* yellow-600 */
   border-radius: 9999px;
 }
 
@@ -126,21 +138,27 @@
 }
 
 .card-completed {
-  border-color: #bbf7d0; /* green-200 */
-  background-color: #f0fdf4; /* green-50/50 */
+  border-color: #bbf7d0;
+  /* green-200 */
+  background-color: #f0fdf4;
+  /* green-50/50 */
 }
 
 .text-green {
-  color: #15803d; /* green-700 */
+  color: #15803d;
+  /* green-700 */
 }
 
 .card-review {
-  border-color: #fde68a; /* yellow-200 */
-  background-color: #fefce8; /* yellow-50/50 */
+  border-color: #fde68a;
+  /* yellow-200 */
+  background-color: #fefce8;
+  /* yellow-50/50 */
 }
 
 .text-yellow {
-  color: #a16207; /* yellow-700 */
+  color: #a16207;
+  /* yellow-700 */
 }
 
 /* Modal description */
@@ -176,4 +194,18 @@
   align-items: center;
   justify-content: center;
   margin-right: 0.5rem;
+}
+
+.btn-danger {
+  background-color: #fee2e2;
+  /* red-100 */
+  color: #b91c1c;
+  /* red-700 */
+  border: 1px solid #fecaca;
+  /* red-200 */
+}
+
+.btn-danger:hover {
+  background-color: #fecaca;
+  /* red-200 */
 }
