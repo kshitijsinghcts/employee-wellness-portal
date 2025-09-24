@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EmployeeService } from '../services/employee.service';
+import { RouterModule } from '@angular/router';
 import { Employee } from '../models/employee.model';
 import { WellnessService } from '../services/wellness.service';
 import { WellnessMetric } from '../models/wellness-metric.model';
 import { RewardsService, Reward as ApiReward } from '../services/rewards.service';
+import { GoalsService } from '../services/goals.service';
 
 // Mock data and types based on the provided dashboard.tsx
 // In a real app, these would be in separate models/services.
@@ -26,7 +28,7 @@ interface DisplayAchievement {
   date: string;
 }
 
-interface Reward {
+interface DisplayReward {
     title: string;
     cost: number;
     icon: string;
@@ -45,7 +47,7 @@ interface WeeklyChartData {
   selector: 'app-dashboard',
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class DashboardComponent implements OnInit {
   user: (Employee & { role?: string }) | null = null;
@@ -53,7 +55,7 @@ export class DashboardComponent implements OnInit {
   isEditing = false;
   editMetricData: {
     mood: string;
-    sleepHours: number;
+   sleepHours: number;
     dailySteps: number;
     waterIntake: number;
   } = {
@@ -67,14 +69,14 @@ export class DashboardComponent implements OnInit {
   showToast = false;
   toastMessage = '';
 
-  // Mock data, can be replaced with real data from a service
+ // Mock data, can be replaced with real data from a service
   userPoints = { current: 250 };
 
-  recentAchievements: DisplayAchievement[] = [];
+ recentAchievements: DisplayAchievement[] = [];
 
-  pointRewards: Reward[] = [
+  pointRewards: DisplayReward[] = [
     { title: 'Coffee Voucher', cost: 500, icon: 'Gift', available: true },
-    { title: 'Gym Day Pass', cost: 1000, icon: 'Activity', available: true },
+   { title: 'Gym Day Pass', cost: 1000, icon: 'Activity', available: true },
     { title: 'Wellness Book', cost: 800, icon: 'Award', available: true },
     { title: 'Massage Session', cost: 2000, icon: 'Heart', available: false },
   ];
@@ -84,15 +86,17 @@ export class DashboardComponent implements OnInit {
   greeting = '';
   weeklyChartData: WeeklyChartData[] = [];
   chartColors = { steps: '#22c55e', water: '#3b82f6', sleep: '#8b5cf6' };
-
+ 
   constructor(
     private employeeService: EmployeeService,
     private wellnessService: WellnessService,
-    private rewardsService: RewardsService
+    private rewardsService: RewardsService,
+    private goalsService: GoalsService
   ) {}
 
   ngOnInit(): void {
-    const employeeId = localStorage.getItem('employeeId');
+   const employeeId = localStorage.getItem('employeeId');
+
     if (employeeId) { this.employeeService.getEmployeeById(employeeId).subscribe({
         next: (employeeData) => {
           this.user = { ...employeeData, role: localStorage.getItem('userRole') || 'EMPLOYEE' };
@@ -113,17 +117,35 @@ export class DashboardComponent implements OnInit {
               this.prepareWeeklyChartData();
             }
           });
+
+          this.calculateTotalPoints();
         },
         error: (err) => {
           console.error('Failed to fetch employee data', err);
-          // TODO: Handle error, e.g., navigate back to login
+         // TODO: Handle error, e.g., navigate back to login
         }
       });
     } else {
       // No employeeId found, maybe redirect to login
       console.error('No employeeId found in local storage.');
     }
+ }
+   calculateTotalPoints(): void {
+    const employeeId = localStorage.getItem('employeeId');
+    if (!employeeId) return;
+
+    this.goalsService.getGoals(Number(employeeId)).subscribe({
+      next: (goals) => {
+        // Sum the 'points' from each goal. The 'points' field can be undefined, so we default to 0.
+        this.totalPoints = goals.reduce((total, goal) => total + (goal.points || 0), 0);
+      },
+      error: (err) => {
+       console.error('Failed to fetch goals for points calculation', err);
+      }
+    });
   }
+  
+  totalPoints:number=0;
 
   private fetchAchievements(checkForNew: boolean = false): void {
     const employeeId = localStorage.getItem('employeeId');
@@ -133,7 +155,7 @@ export class DashboardComponent implements OnInit {
         next: (rewards) => {
             const currentAchievementCount = this.recentAchievements.length;
             
-            // Sort by date, most recent first
+          // Sort by date, most recent first
             const sortedRewards = rewards.sort((a, b) => new Date(b.achievedDate).getTime() - new Date(a.achievedDate).getTime());
 
             this.recentAchievements = sortedRewards.map(reward => ({
@@ -200,7 +222,7 @@ export class DashboardComponent implements OnInit {
     this.greeting = `Good ${timeOfDay}${name}`;
   }
 
-  canAfford(reward: Reward): boolean {
+  canAfford(reward: DisplayReward): boolean {
       return this.userPoints.current >= reward.cost;
   }
 
@@ -322,7 +344,7 @@ export class DashboardComponent implements OnInit {
     this.isEditing = false;
   }
 
-  saveMetrics(): void {
+ saveMetrics(): void {
     if (!this.user?.employeeId) {
       console.error("Cannot save metrics, user ID is missing.");
       return;

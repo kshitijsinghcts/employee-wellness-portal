@@ -4,6 +4,7 @@
     <div>
       <h1>{{ greeting }} 👋</h1>
       <p>
+        <b>Your Points: {{totalPoints}}</b><br>
         Welcome to your wellness dashboard. Track your progress, achieve your goals, and build healthier habits.
       </p>
     </div>
@@ -186,12 +187,12 @@
           <h4>Log Activity</h4>
           <p>Record your wellness metrics</p>
         </button>
-        <button class="quick-action-btn">
+        <button class="quick-action-btn" routerLink="/goals">
           <span class="icon-placeholder-large">🏁</span>
           <h4>Set New Goal</h4>
           <p>Create a wellness objective</p>
         </button>
-        <button class="quick-action-btn">
+        <button class="quick-action-btn" routerLink="/surveys">
           <span class="icon-placeholder-large">📝</span>
           <h4>Take Survey</h4>
           <p>Share your feedback</p>

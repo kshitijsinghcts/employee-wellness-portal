@@ -1,5 +1,6 @@
 /* globals.css translated to login.css */
 :root {
+  font-family: 'Hanuman', sans-serif;
   --background: #ffffff;
   --foreground: #252525;
   --card: #ffffff;
@@ -19,4 +20,3 @@
   --ring: #b4b4b4;
   --radius: 0.625rem;
 }
-

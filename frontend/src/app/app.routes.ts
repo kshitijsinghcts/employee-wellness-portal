@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard';
 import { Resources } from './resources/resources';
 import { Goals } from './goals/goals';
 import { Surveys } from './surveys/surveys';
+import { AdminPanelComponent } from './admin-panel/admin-panel';
 import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
@@ -15,6 +16,7 @@ export const routes: Routes = [
     {path: 'resources', component: Resources, canActivate: [authGuard]},
     {path: 'goals', component: Goals, canActivate: [authGuard]},
     {path: 'surveys', component: Surveys, canActivate: [authGuard]},
+    {path: 'admin-panel', component: AdminPanelComponent, canActivate: [authGuard]},
     // A wildcard route to redirect any unknown paths back to the login page.
     { path: '**', redirectTo: '' }
 ];
