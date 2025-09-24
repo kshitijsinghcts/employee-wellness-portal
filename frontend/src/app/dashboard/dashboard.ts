@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EmployeeService } from '../services/employee.service';
 import { Employee } from '../models/employee.model';
@@ -79,62 +79,63 @@ export class DashboardComponent implements OnInit {
   constructor(
     private employeeService: EmployeeService,
     private wellnessService: WellnessService,
-    private rewardsService: RewardsService
+    private rewardsService: RewardsService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
-    const employeeId = localStorage.getItem('employeeId');
-    if (employeeId) { this.employeeService.getEmployeeById(employeeId).subscribe({
-        next: (employeeData) => {
-          this.user = { ...employeeData, role: localStorage.getItem('userRole') || 'EMPLOYEE' };
-          this.setGreeting();
-
-          this.fetchAchievements();
-
-          this.wellnessService.getWellnessMetrics(employeeId).subscribe({
-            next: (metrics) => {
-              // Sort by date, most recent first
-              this.allMetrics = metrics.sort((a, b) => new Date(b.recordDate).getTime() - new Date(a.recordDate).getTime());
-              this.updateDisplayedMetrics();
-            },
-            error: (err) => {
-              console.error('Failed to fetch wellness metrics', err);
-              this.updateDisplayedMetrics(); // Initialize with empty metrics on error
-            }
-          });
-        },
-        error: (err) => {
-          console.error('Failed to fetch employee data', err);
-          // TODO: Handle error, e.g., navigate back to login
-        }
-      });
-    } else {
-      // No employeeId found, maybe redirect to login
-      console.error('No employeeId found in local storage.');
+    if (isPlatformBrowser(this.platformId)) {
+      const employeeId = localStorage.getItem('employeeId');
+      if (employeeId) {
+        this.employeeService.getEmployeeById(employeeId).subscribe({
+          next: (employeeData) => {
+            this.user = { ...employeeData, role: localStorage.getItem('userRole') || 'EMPLOYEE' };
+            this.setGreeting();
+            this.fetchAchievements();
+            this.wellnessService.getWellnessMetrics(employeeId).subscribe({
+              next: (metrics) => {
+                this.allMetrics = metrics.sort((a, b) => new Date(b.recordDate).getTime() - new Date(a.recordDate).getTime());
+                this.updateDisplayedMetrics();
+              },
+              error: (err) => {
+                console.error('Failed to fetch wellness metrics', err);
+                this.updateDisplayedMetrics();
+              }
+            });
+          },
+          error: (err) => {
+            console.error('Failed to fetch employee data', err);
+          }
+        });
+      } else {
+        console.error('No employeeId found in local storage.');
+      }
     }
   }
 
   private fetchAchievements(checkForNew: boolean = false): void {
-    const employeeId = localStorage.getItem('employeeId');
-    if (!employeeId) return;
+    if (isPlatformBrowser(this.platformId)) {
+      const employeeId = localStorage.getItem('employeeId');
+      if (!employeeId) return;
 
-    this.rewardsService.getRewards(employeeId).subscribe({
+      this.rewardsService.getRewards(employeeId).subscribe({
         next: (rewards) => {
-            const currentAchievementCount = this.recentAchievements.length;
+          const currentAchievementCount = this.recentAchievements.length;
 
-            this.recentAchievements = rewards.map(reward => ({
-                title: reward.title,
-                description: reward.description,
-                icon: this.getIconForAchievement(reward.title),
-                date: this.formatDateAsRelative(reward.achievedDate)
-            }));
+          this.recentAchievements = rewards.map(reward => ({
+            title: reward.title,
+            description: reward.description,
+            icon: this.getIconForAchievement(reward.title),
+            date: this.formatDateAsRelative(reward.achievedDate)
+          }));
 
-            if (checkForNew && this.recentAchievements.length > currentAchievementCount) {
-                this.showAchievementToast();
-            }
+          if (checkForNew && this.recentAchievements.length > currentAchievementCount) {
+            this.showAchievementToast();
+          }
         },
         error: (err) => console.error('Failed to fetch achievements', err)
-    });
+      });
+    }
   }
 
   private showAchievementToast(): void {
