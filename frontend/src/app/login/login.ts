@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
-export class Login {
+export class Login implements OnInit {
   activeTab: 'login' | 'register' = 'login';
   isLoading = false;
   showPassword = false;
@@ -21,16 +21,37 @@ export class Login {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  handleLogin() {
+  ngOnInit(): void {
+    // If user is already logged in, redirect them
+    const userRole = localStorage.getItem('userRole');
+    if (userRole) {
+      this.redirectUser(userRole);
+    }
+  }
+
+  private redirectUser(role: string): void {
+    if (role === 'ADMIN') {
+      this.router.navigate(['/admin-panel']);
+    } else {
+      this.router.navigate(['/dashboard']);
+    }
+  }
+
+  handleLogin(): void {
     this.isLoading = true;
-    console.log('Logging in with:', this.loginData);
     this.authService.login(this.loginData).subscribe({
       next: (response) => {
-        console.log('Login successful', response);
-        // The AuthService now handles saving the token and updating the login state.
-        this.isLoading = false;
-        // Navigate to the dashboard on successful login.
-        this.router.navigate(['/dashboard']);
+        this.isLoading = false;        
+        // AuthService handles storing token/info.
+        // We just need to get the role to redirect.
+        const userRole = localStorage.getItem('userRole');
+        if (userRole) {
+          this.redirectUser(userRole);
+        } else {
+          // Fallback or error handling if role isn't set
+          console.error('User role not found after login.');
+          this.router.navigate(['/dashboard']); // Default redirect
+        }
       },
       error: (error) => {
         console.error('Login failed', error);
@@ -40,7 +61,7 @@ export class Login {
     });
   }
 
-  handleRegister() {
+  handleRegister(): void {
     this.isLoading = true;
     console.log('Registering with:', this.registerData);
     this.authService.register(this.registerData).subscribe({

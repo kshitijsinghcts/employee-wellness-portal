@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, OnDestroy, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Subscription, combineLatest } from 'rxjs'; // Import combineLatest
@@ -13,11 +13,12 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
-export class Navbar implements OnInit, OnDestroy { // Implement OnInit and OnDestroy
+export class Navbar implements OnInit, OnDestroy {
   isProfileMenuOpen = false;
   showNavbar = false;
   user: Employee | null = null;
-  private subscriptions = new Subscription(); // Use a single subscription for cleanup
+  userRole: string | null = null;
+  private subscriptions = new Subscription();
 
   constructor(
     private elementRef: ElementRef,
@@ -39,6 +40,7 @@ export class Navbar implements OnInit, OnDestroy { // Implement OnInit and OnDes
         const isLoginPage = event.urlAfterRedirects === '/';
         // Show navbar only if logged in AND not on the login page
         this.showNavbar = isLoggedIn && !isLoginPage;
+        this.userRole = localStorage.getItem('userRole');
 
         if (isLoggedIn && !this.user && !isLoginPage) { // Only load user if logged in and not on login page
           this.loadUser();

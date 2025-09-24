@@ -1,4 +1,4 @@
-<nav class="navbar" *ngIf="showNavbar">
+<nav class="navbar" *ngIf="showNavbar && userRole !== 'ADMIN'">
   <div class="navbar-container">
     <div class="navbar-brand">
       <a routerLink="/dashboard" class="logo">

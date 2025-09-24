@@ -23,23 +23,14 @@ public class AuthController {
     // accepts {email, password}
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthUser authUser) {
-        try {
-            Long employeeId = authService.getEmployeeIdByEmail(authUser.getEmail());
-            if (employeeId == 0L) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials. User not found.");
-            }
-            authUser.setEmployeeId(employeeId);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error during login: " + e.getMessage());
-        }
-
         String token = authService.validateEmployee(authUser);
 
         if (token != null && token.startsWith("dummy-token")) {
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
-            return ResponseEntity.ok(response);
+            // The frontend expects the token directly as a string, not in a JSON object.
+            // The login.ts file parses this string: `response.split('-')`
+            return ResponseEntity.ok(token);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(token);
         }
