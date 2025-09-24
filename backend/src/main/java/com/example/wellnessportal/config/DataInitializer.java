@@ -3,10 +3,12 @@ package com.example.wellnessportal.config;
 import com.example.wellnessportal.model.Admin;
 import com.example.wellnessportal.model.AuthUser;
 import com.example.wellnessportal.model.Employee;
+import com.example.wellnessportal.model.Goal;
 import com.example.wellnessportal.model.WellnessMetric;
 import com.example.wellnessportal.repository.AdminRepository;
 import com.example.wellnessportal.repository.AuthUserRepository;
 import com.example.wellnessportal.repository.EmployeeRepository;
+import com.example.wellnessportal.repository.GoalRepository;
 import com.example.wellnessportal.service.RewardsService;
 import com.example.wellnessportal.repository.WellnessMetricRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -24,17 +26,20 @@ public class DataInitializer implements CommandLineRunner {
     private final EmployeeRepository employeeRepository;
     private final AdminRepository adminRepository;
     private final WellnessMetricRepository wellnessMetricRepository;
+    private final GoalRepository goalRepository;
     private final RewardsService rewardsService;
 
     public DataInitializer(AuthUserRepository authUserRepository,
             EmployeeRepository employeeRepository,
             AdminRepository adminRepository,
             WellnessMetricRepository wellnessMetricRepository,
+            GoalRepository goalRepository,
             RewardsService rewardsService) {
         this.authUserRepository = authUserRepository;
         this.employeeRepository = employeeRepository;
         this.adminRepository = adminRepository;
         this.wellnessMetricRepository = wellnessMetricRepository;
+        this.goalRepository = goalRepository;
         this.rewardsService = rewardsService;
     }
 
@@ -86,13 +91,52 @@ public class DataInitializer implements CommandLineRunner {
         }
         wellnessMetricRepository.saveAll(metrics);
 
-        // 4. Grant achievements for the seeded wellness data
+        // 4. Create goals for each employee
+        List<Goal> goals = new ArrayList<>();
+        for (Employee employee : employees) {
+            // Active goals (-1)
+            goals.add(new Goal(employee.getEmployeeId(), "Walk 10,000 steps daily",
+                    "Maintain a consistent daily step count for better cardiovascular health.",
+                    LocalDate.now().plusMonths(1), "10000 steps"));
+            goals.add(new Goal(employee.getEmployeeId(), "Drink 8 glasses of water",
+                    "Stay hydrated throughout the day to improve energy levels.",
+                    LocalDate.now().plusWeeks(2), "8 glasses"));
+
+            // In Review goals (0)
+            Goal reviewGoal = new Goal(employee.getEmployeeId(), "Achieve 7 hours of sleep",
+                    "Ensure at least 7 hours of quality sleep per night for a week.",
+                    LocalDate.now().minusDays(1), "7 hours/night");
+            reviewGoal.setStatus(0);
+            goals.add(reviewGoal);
+
+            Goal reviewGoal2 = new Goal(employee.getEmployeeId(), "Eat 5 servings of vegetables",
+                    "Incorporate five servings of vegetables into daily meals.",
+                    LocalDate.now().minusDays(2), "5 servings");
+            reviewGoal2.setStatus(0);
+            goals.add(reviewGoal2);
+
+            // Completed goals (1)
+            Goal completedGoal = new Goal(employee.getEmployeeId(), "Complete a 30-minute workout",
+                    "Engage in a 30-minute workout session three times this week.",
+                    LocalDate.now().minusWeeks(1), "3 sessions");
+            completedGoal.setStatus(1);
+            goals.add(completedGoal);
+
+            Goal completedGoal2 = new Goal(employee.getEmployeeId(), "Read for 20 minutes before bed",
+                    "Read a book for 20 minutes each night to unwind and improve sleep quality.",
+                    LocalDate.now().minusWeeks(2), "20 minutes/day");
+            completedGoal2.setStatus(1);
+            goals.add(completedGoal2);
+        }
+        goalRepository.saveAll(goals);
+
+        // 5. Grant achievements for the seeded wellness data
         for (WellnessMetric metric : metrics) {
             rewardsService.checkAndGrantRewards(metric);
         }
 
-        System.out.println(
-                "Database seeding complete: 1 admin, 10 employees, and " + metrics.size() + " metric records created.");
+        System.out.println("Database seeding complete: 1 admin, 10 employees, " + metrics.size()
+                + " metric records, and " + goals.size() + " goals created.");
         System.out.println("Initial achievements granted for seeded data.");
     }
 }
