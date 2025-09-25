@@ -7,12 +7,6 @@
     <br />
     <a href="#about-the-project"><strong>Explore the docs »</strong></a>
     <br />
-    <br />
-    <a href="#key-features">View Features</a>
-    ·
-    <a href="https://github.com/your-username/wellness-portal/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/your-username/wellness-portal/issues">Request Feature</a>
   </p>
 </div>
 
