@@ -1,7 +1,4 @@
 <div align="center">
-  <br />
-  <img src="https://user-images.githubusercontent.com/28642392/209335378-162789e8-0f58-4568-9359-2d155a085573.png" alt="Project Banner" width="600"/>
-  <br />
 
   <h1 align="center">Employee Wellness Portal</h1>
 
