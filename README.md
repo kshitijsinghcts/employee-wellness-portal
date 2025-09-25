@@ -123,8 +123,3 @@ Here is a summary of the core API endpoints available:
 | `/api/goals/{employeeId}`      | `GET`  | Retrieves all goals for an employee.         |
 | `/api/employeeRewards/{id}`    | `GET`  | Retrieves all rewards for an employee.       |
 
----
-
-## 📜 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
