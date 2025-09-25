@@ -16,7 +16,6 @@
   <img src="https://img.shields.io/badge/Spring_Boot-3.x-6DB33F.svg?style=for-the-badge&logo=spring-boot" alt="Spring Boot 3.x">
   <img src="https://img.shields.io/badge/Angular-17-DD0031.svg?style=for-the-badge&logo=angular" alt="Angular 17">
   <img src="https://img.shields.io/badge/MySQL-8.0-4479A1.svg?style=for-the-badge&logo=mysql" alt="MySQL 8.0">
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT">
 </div>
 
 ---
