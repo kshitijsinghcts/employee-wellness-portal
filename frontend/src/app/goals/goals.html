@@ -146,10 +146,14 @@
               Completed
             </div>
           </div>
-          <div class="card-content">
+          <div class="card-content flex-between">
             <p class="text-green">
               🎉 Goal achieved! Target: {{ goal.targetValue }}
             </p>
+            <div *ngIf="goal.points" class="badge badge-purple">
+              <span class="icon-placeholder-sm">⭐</span>
+              +{{ goal.points }} Points
+            </div>
           </div>
         </div>
       </div>
