@@ -5,34 +5,55 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Represents a user's authentication credentials in the system.
+ * This is a JPA entity that maps to the 'auth_user' table and is used for login
+ * and role management.
+ */
 @Entity
 public class AuthUser {
 
     @Id
     private Long employeeId;
-    // Username can be customized by the employee but employee id is a mandatory
-    // field
+
+    /** The user's email, which serves as their username and must be unique. */
     @Column(unique = true)
     private String email;
+
+    /** The user's password. It is write-only for security purposes. */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    // For Role-Based Login
+
+    /** The user's role (e.g., "ADMIN", "EMPLOYEE") for authorization. */
     private String role;
 
     public AuthUser() {
+        // Default constructor required by JPA.
     }
 
-    // what we need for login
+    /**
+     * Constructs an AuthUser instance from login credentials.
+     * This is used by Jackson to deserialize the request body from the
+     * `/api/auth/login` endpoint.
+     * The role is automatically inferred based on the email domain.
+     *
+     * @param email    The user's email address.
+     * @param password The user's password.
+     */
     public AuthUser(String email, String password) {
         this.email = email;
         this.password = password;
-        if (email != null && email.endsWith("@portaladmin.com")) {
-            this.role = "ADMIN";
-        } else {
-            this.role = "EMPLOYEE";
-        }
     }
 
+    /**
+     * Constructs a new AuthUser with all fields.
+     * This is used in the `AuthService` when registering a new employee or admin.
+     *
+     * @param employeeId The unique ID for the user.
+     * @param email      The user's email address.
+     * @param password   The user's password.
+     * @param role       The user's role.
+     */
     public AuthUser(Long employeeId,
             String email,
             String password,
@@ -43,7 +64,7 @@ public class AuthUser {
         this.role = role;
     }
 
-    // Getters and setters
+    // --- Getters and Setters ---
     public Long getEmployeeId() {
         return employeeId;
     }

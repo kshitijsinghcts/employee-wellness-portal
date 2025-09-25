@@ -2,8 +2,12 @@ package com.example.wellnessportal.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
+/**
+ * Represents a daily wellness metric log for an employee.
+ * This is a JPA entity that maps to the 'wellnessmetric' table.
+ * A unique constraint ensures that an employee can only have one entry per day.
+ */
 @Entity
 @Table(name = "wellnessmetric", uniqueConstraints = {
         @UniqueConstraint(columnNames = { "employeeId", "recordDate" })
@@ -26,23 +30,16 @@ public class WellnessMetric {
 
     private int waterIntake;
 
-    @ElementCollection
-    private List<Integer> scores;
-
-    // Constructors
     public WellnessMetric() {
-
+        // Default constructor required by JPA.
     }
 
-    // For first-time record creation
-    /*
-     * Default values for the fields are:
-     * Employee Id must be provided
-     * recordDate is registered date
-     * mood empty string
-     * sleepHours is 0
-     * dailySteps is 0
-     * waterIntake is 0
+    /**
+     * Constructor for creating a default WellnessMetric record, for example, upon
+     * user registration.
+     * Initializes metrics to zero or empty.
+     *
+     * @param employeeId The ID of the employee.
      */
     public WellnessMetric(Long employeeId) {
         this.employeeId = employeeId;
@@ -53,21 +50,17 @@ public class WellnessMetric {
         this.waterIntake = 0;
     }
 
-    // UI-specific
-    public WellnessMetric(Long employeeId,
-            String mood,
-            int sleepHours,
-            int dailySteps,
-            int waterIntake) {
-        this.employeeId = employeeId;
-        this.recordDate = LocalDate.now();
-        this.mood = mood;
-        this.sleepHours = sleepHours;
-        this.dailySteps = dailySteps;
-        this.waterIntake = waterIntake;
-
-    }
-
+    /**
+     * Constructs a new WellnessMetric with all fields.
+     * This is the primary constructor used when creating a new metric log.
+     *
+     * @param employeeId  The ID of the employee.
+     * @param recordDate  The date the metric was recorded.
+     * @param mood        The employee's reported mood.
+     * @param sleepHours  The number of hours slept.
+     * @param dailySteps  The number of steps taken.
+     * @param waterIntake The amount of water consumed.
+     */
     public WellnessMetric(Long employeeId,
             LocalDate recordDate,
             String mood,
@@ -83,7 +76,7 @@ public class WellnessMetric {
 
     }
 
-    // Getters and Setters
+    // --- Getters and Setters ---
     public Long getMetricId() {
         return metricId;
     }
@@ -136,11 +129,4 @@ public class WellnessMetric {
         this.waterIntake = waterIntake;
     }
 
-    public List<Integer> getScores() {
-        return scores;
-    }
-
-    public void setScores(List<Integer> scores) {
-        this.scores = scores;
-    }
 }
