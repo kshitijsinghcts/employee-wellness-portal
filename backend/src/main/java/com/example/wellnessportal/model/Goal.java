@@ -3,6 +3,10 @@ package com.example.wellnessportal.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * Represents a wellness goal set by an employee.
+ * This is a JPA entity that maps to the 'goal' table in the database.
+ */
 @Entity
 public class Goal {
 
@@ -20,20 +24,16 @@ public class Goal {
 
     private String description;
 
-    // Constructors of Goal:
     public Goal() {
-
+        // Default constructor required by JPA.
     }
 
-    // For first-time record creation
-    /*
-     * Default values for the fields are:
-     * Employee Id must be provided
-     * title is an empty string
-     * description empty string
-     * targetDate is registered date
-     * targetScores is 0
-     * targetValue is Bronze
+    /**
+     * Constructor for creating a default Goal record, for example, upon user
+     * registration.
+     * Initializes with default values.
+     *
+     * @param employeeId The ID of the employee.
      */
     public Goal(Long employeeId) {
         this.employeeId = employeeId;
@@ -46,6 +46,18 @@ public class Goal {
 
     }
 
+    /**
+     * Constructs a new Goal with all performance-related attributes.
+     * Used by the `GoalsController` when creating or updating a goal.
+     *
+     * @param employeeId   The ID of the employee.
+     * @param title        The title of the goal.
+     * @param description  A description of the goal.
+     * @param targetDate   The date by which the goal should be achieved.
+     * @param targetScores The target score or value for the goal.
+     * @param targetValue  A string representation of the target value (e.g.,
+     *                     "Bronze").
+     */
     public Goal(Long employeeId,
             String title,
             String description,
@@ -61,51 +73,26 @@ public class Goal {
         this.targetValue = targetValue;
     }
 
-    // we will use this in controller
-    public Goal(Long employeeId,
-            String title,
-            String description,
-            String targetDate) {
+    /**
+     * Constructs a new Goal with a subset of attributes.
+     * Used by the `DataInitializer` to seed the database with sample goals.
+     *
+     * @param employeeId  The ID of the employee.
+     * @param title       The title of the goal.
+     * @param description A description of the goal.
+     * @param targetDate  The date by which the goal should be achieved.
+     * @param targetValue A string representation of the target value.
+     */
+    public Goal(Long employeeId, String title, String description, LocalDate targetDate, String targetValue) {
         this.employeeId = employeeId;
         this.title = title;
         this.description = description;
-        this.targetDate = LocalDate.parse(targetDate);
-        this.targetScores = 0;
-        this.points = 0;
-        this.targetValue = "";
-    }
-
-    // Useful in Rewards Service where description is not necessary
-    public Goal(Long employeeId,
-            String title,
-            LocalDate targetDate,
-            int targetScores,
-            String targetValue) {
-        this.employeeId = employeeId;
-        this.title = title;
         this.targetDate = targetDate;
-        this.targetScores = targetScores;
-        this.points = 0; // Or some other default
+        this.status = -1; // Default to active
         this.targetValue = targetValue;
     }
 
-    // what is used in controller
-    public Goal(Long employeeId,
-            String goalType,
-            String description,
-            LocalDate targetDate,
-            String targetValue) {
-        this.employeeId = employeeId;
-        this.title = goalType; // also badly named this is title
-        this.description = description;
-        this.targetDate = targetDate;
-        this.status = -1; // -1 means going, 0 means submitted, 1 means completed
-        this.targetScores = 0;
-        this.points = 0;
-        this.targetValue = targetValue;
-    }
-
-    // Getters and setters
+    // --- Getters and Setters ---
     public Long getGoalId() {
         return this.goalId;
     }

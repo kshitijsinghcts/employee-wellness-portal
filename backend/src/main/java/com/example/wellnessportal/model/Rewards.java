@@ -7,6 +7,10 @@ import jakarta.persistence.Id;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a reward or achievement earned by an employee.
+ * This is a JPA entity that maps to the 'rewards' table in the database.
+ */
 @Entity
 public class Rewards {
 
@@ -23,8 +27,19 @@ public class Rewards {
     private LocalDate achievedDate;
 
     public Rewards() {
+        // Default constructor required by JPA.
     }
 
+    /**
+     * Constructs a new Reward.
+     * This is used by the `RewardsService` when a new achievement is granted to an
+     * employee.
+     *
+     * @param employeeId   The ID of the employee who earned the reward.
+     * @param title        The title of the reward (e.g., "10-Day Streak").
+     * @param description  A description of what was achieved.
+     * @param achievedDate The date the reward was earned.
+     */
     public Rewards(Long employeeId, String title, String description, LocalDate achievedDate) {
         this.employeeId = employeeId;
         this.title = title;
@@ -32,6 +47,7 @@ public class Rewards {
         this.achievedDate = achievedDate;
     }
 
+    // --- Getters and Setters ---
     public Long getId() {
         return id;
     }

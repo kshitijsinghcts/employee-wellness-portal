@@ -2,17 +2,19 @@ package com.example.wellnessportal.service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.wellnessportal.model.AuthUser;
-import com.example.wellnessportal.model.Goal;
 import com.example.wellnessportal.model.WellnessMetric;
 import com.example.wellnessportal.repository.AuthUserRepository;
 import com.example.wellnessportal.repository.WellnessMetricRepository;
 
+/**
+ * Service for managing employee wellness metrics.
+ * Handles saving, retrieving, and analyzing wellness data, including checking
+ * for rewards.
+ */
 @Service
 public class WellnessMetricService {
 
@@ -20,54 +22,22 @@ public class WellnessMetricService {
     private AuthUserRepository authUserRepository;
 
     @Autowired
-    private GoalService goalService;
-
-    @Autowired
     private RewardsService rewardsService;
 
     @Autowired
     private WellnessMetricRepository wellnessMetricRepository;
 
-    // User logs his health metrics. He should do this periodically for best results
-    // Daily steps in goal entity is named activityLevel here due to contextual
-    // differences.
-    public WellnessMetric saveWellnessMetric(Long employeeId,
-            LocalDate date,
-            String mood,
-            int sleepHours,
-            int dailySteps,
-            int waterIntake) {
-
-        AuthUser authUser = authUserRepository.findById(employeeId).orElse(null);
-
-        if (authUser == null) {
-            throw new IllegalArgumentException("Invalid employee ID");
-        }
-
-        // Check if a record for the current date already exists
-        WellnessMetric existing = wellnessMetricRepository.findByEmployeeIdAndRecordDate(employeeId, date);
-
-        if (existing != null) {
-            // Update the existing record
-            existing.setMood(mood);
-            existing.setSleepHours(sleepHours);
-            existing.setDailySteps(dailySteps);
-            existing.setWaterIntake(waterIntake);
-            return wellnessMetricRepository.save(existing);
-        } else {
-            // Create a new record
-            WellnessMetric wellnessMetric = new WellnessMetric(
-                    employeeId,
-                    date,
-                    mood,
-                    sleepHours,
-                    dailySteps,
-                    waterIntake);
-
-            return wellnessMetricRepository.save(wellnessMetric);
-        }
-    }
-
+    /**
+     * Saves or updates a wellness metric for an employee.
+     * If a metric for the given employee and date already exists, it's updated.
+     * Otherwise, a new metric is created. After saving, it checks for and grants
+     * any earned rewards.
+     *
+     * @param wellnessMetric The {@link WellnessMetric} object to save.
+     * @return The saved or updated WellnessMetric.
+     * @throws IllegalArgumentException if the metric or employee ID is null, or if
+     *                                  the employee does not exist.
+     */
     public WellnessMetric saveWellnessMetric(WellnessMetric wellnessMetric) {
         if (wellnessMetric == null || wellnessMetric.getEmployeeId() == null) {
             throw new IllegalArgumentException("WellnessMetric and Employee ID cannot be null.");
@@ -102,72 +72,27 @@ public class WellnessMetricService {
         }
     }
 
-    // List of metrics logged by the employee since his/her account creation
+    /**
+     * Retrieves all wellness metric logs for a specific employee.
+     *
+     * @param employeeId The ID of the employee.
+     * @return A list of all {@link WellnessMetric} objects for the employee.
+     */
     public List<WellnessMetric> getEmployeeLogs(Long employeeId) {
         return wellnessMetricRepository.findAllByEmployeeId(employeeId);
     }
 
-    // The following methods are for letting the user know how he/she is on par with
-    // his self-set goals
-    // They can also be used for analytics on UI:
-
-    // Getting overall wellness metric status for all metrics of the user
-    // Useful for dashboard and analytics
-    public String getOverallWellnessMetricsStatus(Long employeeId) {
-
-        WellnessMetric wellnessMetric = wellnessMetricRepository.findByEmployeeId(employeeId);
-        if (wellnessMetric == null)
-            return "Employee does not exist";
-        if (goalService.validateGoalCompletion(employeeId,
-                wellnessMetric,
-                LocalDate.now()))
-            return "On Track";
-        else
-            return "Behind Schedule";
-    }
-
-    // Getting overall wellness metric status individually for each goal
-    // Response to User Request
-    public String getOverallWellnessMetricsStatus(Long employeeId,
-            Goal goal) {
-
-        WellnessMetric wellnessMetric = wellnessMetricRepository.findByEmployeeId(employeeId);
-        if (wellnessMetric == null)
-            return "Employee does not exist";
-        if (goalService.validateGoalCompletion(employeeId,
-                wellnessMetric,
-                goal,
-                LocalDate.now()))
-            return "On Track";
-        else
-            return "Behind Schedule";
-    }
-
-    // To display on employee or admin analytics dashboard
-    public List<String> getLatestWellnessMetrics(Long employeeId) {
-        // This method from repository interface returns the latest row and is limited
-        // to one row
-        WellnessMetric wellnessMetric = wellnessMetricRepository.findByEmployeeId(employeeId);
-        if (wellnessMetric == null)
-            return List.of("Employee does not exist");
-        List<String> wmList = new ArrayList<>();
-        wmList.add(wellnessMetric.getMood());
-        wmList.add(String.valueOf(wellnessMetric.getDailySteps()));
-        wmList.add(String.valueOf(wellnessMetric.getSleepHours()));
-        wmList.add(String.valueOf(wellnessMetric.getWaterIntake()));
-
-        return wmList;
-    }
-
-    // We can use this method to rank the employees based on how they fare among
-    // health metrics. We can configure different weight vectors for this.
-    // This can be used for admin to track his/her employee health statistics
-    // The code run time will be optimized in further editions
+    /**
+     * Calculates an employee's rank based on a health score derived from their
+     * recent wellness metrics.
+     * The ranking is determined by a weighted sum of metrics from the last 10
+     * days, as calculated in the `findEmployeesRankedByHealthScore` native query.
+     *
+     * @param employeeId The ID of the employee to rank.
+     * @return The rank of the employee (1-based index), or -1 if the employee is
+     *         not found in the ranked list.
+     */
     public int getEmployeeRank(Long employeeId) {
-        // The employees are ranked by their metrics in this list
-        // The formula used is weighted sum of metrics
-        // The weights can be set by the user, allowing him to prioritize his/her
-        // metrics
         List<Long> rankedList = wellnessMetricRepository.findEmployeesRankedByHealthScore();
 
         for (int i = 0; i < rankedList.size(); i++) {
