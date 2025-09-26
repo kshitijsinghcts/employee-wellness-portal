@@ -8,10 +8,11 @@ import { WellnessService } from '../services/wellness.service';
 import { WellnessMetric } from '../models/wellness-metric.model';
 import { RewardsService, Reward as ApiReward } from '../services/rewards.service';
 import { GoalsService } from '../services/goals.service';
-
-// Mock data and types based on the provided dashboard.tsx
-// In a real app, these would be in separate models/services.
-
+/**
+ * @interface Metric
+ * @description Represents a single wellness metric for display on the dashboard.
+ * These are derived from the raw `WellnessMetric` data.
+ */
 interface Metric {
   label: string;
   value: number | string;
@@ -21,20 +22,31 @@ interface Metric {
   progress: number;
 }
 
+/**
+ * @interface DisplayAchievement
+ * @description Represents a formatted achievement for display in the UI.
+ */
 interface DisplayAchievement {
   title: string;
   description: string;
   icon: string;
   date: string;
 }
-
+/**
+ * @interface DisplayReward
+ * @description Represents a reward available in the points store.
+ */
 interface DisplayReward {
-    title: string;
-    cost: number;
-    icon: string;
-    available: boolean;
+  title: string;
+  cost: number;
+  icon: string;
+  available: boolean;
 }
-
+/**
+ * @interface WeeklyChartData
+ * @description Represents the data for a single day in the weekly progress chart.
+ * Values are percentages (0-100).
+ */
 interface WeeklyChartData {
   dateLabel: string;
   steps: number;
@@ -42,6 +54,12 @@ interface WeeklyChartData {
   sleep: number;
 }
 
+/**
+ * @Component
+ * @description
+ * The main dashboard component for employees. It displays wellness metrics,
+ * achievements, goals, and provides functionality to log daily progress.
+ */
 @Component({
   standalone: true,
   selector: 'app-dashboard',
@@ -50,54 +68,69 @@ interface WeeklyChartData {
   imports: [CommonModule, FormsModule, RouterModule]
 })
 export class DashboardComponent implements OnInit {
+  /** The currently logged-in user's data. */
   user: (Employee & { role?: string }) | null = null;
+  /** Metrics to be displayed for the `selectedDate`. */
   todaysMetrics: Metric[] = [];
+  /** Flag to control the visibility of the edit metrics modal. */
   isEditing = false;
+  /** Data model for the edit metrics form. */
   editMetricData: {
     mood: string;
-   sleepHours: number;
+    sleepHours: number;
     dailySteps: number;
     waterIntake: number;
   } = {
-    mood: 'Neutral',
-    sleepHours: 0,
-    dailySteps: 0,
-    waterIntake: 0
-  };
+      mood: 'Neutral',
+      sleepHours: 0,
+      dailySteps: 0,
+      waterIntake: 0
+    };
+  /** Options for the mood dropdown in the edit modal. */
   moodOptions = ['Happy', 'Neutral', 'Sad'];
 
+  /** Flag to control the visibility of the toast notification. */
   showToast = false;
+  /** The message to display in the toast notification. */
   toastMessage = '';
 
- // Mock data, can be replaced with real data from a service
+  /** Mock data for user points. */
   userPoints = { current: 250 };
 
- recentAchievements: DisplayAchievement[] = [];
+  /** A list of the user's most recent achievements. */
+  recentAchievements: DisplayAchievement[] = [];
 
+  /** A list of rewards available in the store. */
   pointRewards: DisplayReward[] = [
     { title: 'Coffee Voucher', cost: 500, icon: 'Gift', available: true },
-   { title: 'Gym Day Pass', cost: 1000, icon: 'Activity', available: true },
+    { title: 'Gym Day Pass', cost: 1000, icon: 'Activity', available: true },
     { title: 'Wellness Book', cost: 800, icon: 'Award', available: true },
     { title: 'Massage Session', cost: 2000, icon: 'Heart', available: false },
   ];
-
+  /** All wellness metrics fetched from the backend for the user. */
   allMetrics: WellnessMetric[] = [];
   selectedDate = new Date();
   greeting = '';
   weeklyChartData: WeeklyChartData[] = [];
   chartColors = { steps: '#22c55e', water: '#3b82f6', sleep: '#8b5cf6' };
- 
+
   constructor(
     private employeeService: EmployeeService,
     private wellnessService: WellnessService,
     private rewardsService: RewardsService,
     private goalsService: GoalsService
-  ) {}
+  ) { }
 
+  /**
+   * @description
+   * Angular lifecycle hook that runs on component initialization.
+   * Fetches all necessary data for the dashboard.
+   */
   ngOnInit(): void {
-   const employeeId = localStorage.getItem('employeeId');
+    const employeeId = localStorage.getItem('employeeId');
 
-    if (employeeId) { this.employeeService.getEmployeeById(employeeId).subscribe({
+    if (employeeId) {
+      this.employeeService.getEmployeeById(employeeId).subscribe({
         next: (employeeData) => {
           this.user = { ...employeeData, role: localStorage.getItem('userRole') || 'EMPLOYEE' };
           this.setGreeting();
@@ -122,15 +155,19 @@ export class DashboardComponent implements OnInit {
         },
         error: (err) => {
           console.error('Failed to fetch employee data', err);
-         // TODO: Handle error, e.g., navigate back to login
+          // TODO: Handle error, e.g., navigate back to login
         }
       });
     } else {
       // No employeeId found, maybe redirect to login
       console.error('No employeeId found in local storage.');
     }
- }
-   calculateTotalPoints(): void {
+  }
+  /**
+   * @description
+   * Calculates the total points earned by the user from completed goals.
+   */
+  calculateTotalPoints(): void {
     const employeeId = localStorage.getItem('employeeId');
     if (!employeeId) return;
 
@@ -140,39 +177,49 @@ export class DashboardComponent implements OnInit {
         this.totalPoints = goals.reduce((total, goal) => total + (goal.points || 0), 0);
       },
       error: (err) => {
-       console.error('Failed to fetch goals for points calculation', err);
+        console.error('Failed to fetch goals for points calculation', err);
       }
     });
   }
-  
-  totalPoints:number=0;
 
+  /** The total points accumulated by the user from goals. */
+  totalPoints: number = 0;
+
+  /**
+   * @description
+   * Fetches the user's achievements (rewards) from the backend.
+   * @param {boolean} [checkForNew=false] - If true, checks if new achievements were earned to show a toast.
+   */
   private fetchAchievements(checkForNew: boolean = false): void {
     const employeeId = localStorage.getItem('employeeId');
     if (!employeeId) return;
 
     this.rewardsService.getRewards(employeeId).subscribe({
-        next: (rewards) => {
-            const currentAchievementCount = this.recentAchievements.length;
-            
-          // Sort by date, most recent first
-            const sortedRewards = rewards.sort((a, b) => new Date(b.achievedDate).getTime() - new Date(a.achievedDate).getTime());
+      next: (rewards) => {
+        const currentAchievementCount = this.recentAchievements.length;
 
-            this.recentAchievements = sortedRewards.map(reward => ({
-                title: reward.title,
-                description: reward.description,
-                icon: this.getIconForAchievement(reward.title),
-                date: this.formatDateAsRelative(reward.achievedDate)
-            }));
+        // Sort by date, most recent first
+        const sortedRewards = rewards.sort((a, b) => new Date(b.achievedDate).getTime() - new Date(a.achievedDate).getTime());
 
-            if (checkForNew && this.recentAchievements.length > currentAchievementCount) {
-                this.showAchievementToast();
-            }
-        },
-        error: (err) => console.error('Failed to fetch achievements', err)
+        this.recentAchievements = sortedRewards.map(reward => ({
+          title: reward.title,
+          description: reward.description,
+          icon: this.getIconForAchievement(reward.title),
+          date: this.formatDateAsRelative(reward.achievedDate)
+        }));
+
+        if (checkForNew && this.recentAchievements.length > currentAchievementCount) {
+          this.showAchievementToast();
+        }
+      },
+      error: (err) => console.error('Failed to fetch achievements', err)
     });
   }
 
+  /**
+   * @description
+   * Displays a toast notification for a new achievement.
+   */
   private showAchievementToast(): void {
     this.toastMessage = 'Congrats! You just earned an achievement!';
     this.showToast = true;
@@ -181,6 +228,11 @@ export class DashboardComponent implements OnInit {
     }, 5000); // Hide after 5 seconds, matching the animation
   }
 
+  /**
+   * @description
+   * Returns an icon string based on the achievement title.
+   * @param {string} title - The title of the achievement.
+   */
   private getIconForAchievement(title: string): string {
     const lowerCaseTitle = title.toLowerCase();
     if (lowerCaseTitle.includes('step')) {
@@ -195,6 +247,11 @@ export class DashboardComponent implements OnInit {
     return 'Award'; // Default icon
   }
 
+  /**
+   * @description
+   * Formats a date string into a relative time string (e.g., "Today", "2 days ago").
+   * @param {string} dateString - The ISO date string to format.
+   */
   private formatDateAsRelative(dateString: string): string {
     const date = new Date(dateString);
     const now = new Date();
@@ -208,24 +265,37 @@ export class DashboardComponent implements OnInit {
     if (diffDays === 0) return 'Today';
     if (diffDays === 1) return 'Yesterday';
     if (diffDays < 7) return `${diffDays} days ago`;
-    
+
     const diffWeeks = Math.floor(diffDays / 7);
     if (diffWeeks < 5) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
 
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   }
 
+  /**
+   * @description
+   * Sets a time-appropriate greeting for the user.
+   */
   private setGreeting(): void {
     const currentHour = this.selectedDate.getHours();
     const timeOfDay = currentHour < 12 ? 'morning' : currentHour < 18 ? 'afternoon' : 'evening';
     const name = this.user ? `, ${this.user.name}` : '';
     this.greeting = `Good ${timeOfDay}${name}`;
   }
-
+  /**
+   * @description
+   * Checks if the user has enough points to afford a reward.
+   * @param {DisplayReward} reward - The reward to check.
+   */
   canAfford(reward: DisplayReward): boolean {
-      return this.userPoints.current >= reward.cost;
+    return this.userPoints.current >= reward.cost;
   }
 
+  /**
+   * @description
+   * Generates the SVG polyline points string for the weekly chart.
+   * @param {'steps' | 'water' | 'sleep'} metric - The metric to generate points for.
+   */
   getPolylinePoints(metric: 'steps' | 'water' | 'sleep'): string {
     return this.weeklyChartData
       .map((day, i) => {
@@ -236,6 +306,11 @@ export class DashboardComponent implements OnInit {
       .join(' ');
   }
 
+  /**
+   * @description
+   * Converts a Date object to a 'YYYY-MM-DD' string format.
+   * @param {Date} date - The date to convert.
+   */
   private toLocalDateString(date: Date): string {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -243,6 +318,10 @@ export class DashboardComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  /**
+   * @description
+   * Prepares the data for the weekly progress chart by processing the last 7 days of metrics.
+   */
   private prepareWeeklyChartData(): void {
     const today = new Date();
     const last7Days: WeeklyChartData[] = [];
@@ -273,6 +352,10 @@ export class DashboardComponent implements OnInit {
     this.weeklyChartData = last7Days;
   }
 
+  /**
+   * @description
+   * Updates the `todaysMetrics` array based on the `selectedDate`.
+   */
   private updateDisplayedMetrics(): void {
     const selectedDateString = this.toLocalDateString(this.selectedDate);
     const metricForDate = this.allMetrics.find(m => m.recordDate === selectedDateString);
@@ -296,6 +379,11 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  /**
+   * @description
+   * Converts a mood string to a numerical score.
+   * @param {string} mood - The mood string (e.g., "Happy").
+   */
   private getMoodScore(mood: string): number {
     switch (mood?.toLowerCase()) {
       case 'happy': return 5;
@@ -304,19 +392,30 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  /**
+   * @description
+   * Changes the `selectedDate` by a given offset and updates the displayed metrics.
+   * @param {number} offset - The number of days to add or subtract.
+   */
   changeDate(offset: number): void {
     this.selectedDate.setDate(this.selectedDate.getDate() + offset);
     this.selectedDate = new Date(this.selectedDate);
     this.updateDisplayedMetrics();
   }
 
+  /**
+   * @description
+   * Checks if the `selectedDate` is today.
+   */
   isToday(): boolean {
     const today = new Date();
     return this.selectedDate.getFullYear() === today.getFullYear() &&
-           this.selectedDate.getMonth() === today.getMonth() &&
-           this.selectedDate.getDate() === today.getDate();
+      this.selectedDate.getMonth() === today.getMonth() &&
+      this.selectedDate.getDate() === today.getDate();
   }
-
+  /**
+   * @description Opens the modal to edit or log today's metrics.
+   */
   openEditModal(): void {
     const todayString = this.toLocalDateString(new Date());
     const todaysMetric = this.allMetrics.find(m => m.recordDate === todayString);
@@ -340,11 +439,19 @@ export class DashboardComponent implements OnInit {
     this.isEditing = true;
   }
 
+  /**
+   * @description
+   * Closes the edit metrics modal.
+   */
   closeEditModal(): void {
     this.isEditing = false;
   }
 
- saveMetrics(): void {
+  /**
+   * @description
+   * Saves the metrics from the edit modal to the backend.
+   */
+  saveMetrics(): void {
     if (!this.user?.employeeId) {
       console.error("Cannot save metrics, user ID is missing.");
       return;
