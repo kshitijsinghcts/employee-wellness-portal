@@ -4,6 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 
+/**
+ * @Component
+ * @description
+ * The Login component handles both user login and registration.
+ * It provides a tabbed interface for switching between the two forms.
+ */
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -12,22 +18,40 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './login.css'
 })
 export class Login implements OnInit {
+  /** The currently active tab, either 'login' or 'register'. */
   activeTab: 'login' | 'register' = 'login';
+  /** A flag to indicate when an async operation (login/register) is in progress. */
   isLoading = false;
+  /** A flag to toggle password visibility in the form. */
   showPassword = false;
 
+  /** Holds the error message for a failed login attempt. */
   loginError: string | null = null;
+  /** Holds the error message for a failed registration attempt. */
   registerError: string | null = null;
 
+  /** The data model for the login form. */
   loginData = { email: '', password: '' };
+  /** The data model for the registration form. */
   registerData = { employeeId: null as number | null, password: '', name: '', email: '' };
 
+  /**
+   * @constructor
+   * @param {AuthService} authService - The service for handling authentication logic.
+   * @param {Router} router - The Angular router for navigation.
+   * @param {Object} platformId - An injection token to determine if the code is running on a browser platform.
+   */
   constructor(
     private authService: AuthService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
+  /**
+   * @description
+   * Angular lifecycle hook that runs on component initialization.
+   * Checks if a user is already logged in and redirects them if necessary.
+   */
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       // If user is already logged in, redirect them
@@ -38,6 +62,11 @@ export class Login implements OnInit {
     }
   }
 
+  /**
+   * @description
+   * Redirects the user to the appropriate dashboard based on their role.
+   * @param {string} role - The user's role ('ADMIN' or 'EMPLOYEE').
+   */
   private redirectUser(role: string): void {
     if (role === 'ADMIN') {
       this.router.navigate(['/admin-panel']);
@@ -46,6 +75,11 @@ export class Login implements OnInit {
     }
   }
 
+  /**
+   * @description
+   * Handles the login form submission. It calls the AuthService to log the user in
+   * and redirects upon success or displays an error on failure.
+   */
   handleLogin(): void {
     this.isLoading = true;
     this.loginError = null;
@@ -71,6 +105,11 @@ export class Login implements OnInit {
     });
   }
 
+  /**
+   * @description
+   * Handles the registration form submission. It calls the AuthService to register
+   * a new user and switches to the login tab on success or displays an error on failure.
+   */
   handleRegister(): void {
     this.isLoading = true;
     this.registerError = null;
