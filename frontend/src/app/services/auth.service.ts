@@ -107,4 +107,15 @@ export class AuthService {
         }
         this._isLoggedIn$.next(false);
     }
+
+    /**
+     * Retrieves the user's role from local storage.
+     * @returns {string | null} The user's role ('ADMIN', 'EMPLOYEE') or null if not found.
+     */
+    getUserRole(): string | null {
+        if (isPlatformBrowser(this.platformId)) {
+            return localStorage.getItem('userRole');
+        }
+        return null;
+    }
 }
