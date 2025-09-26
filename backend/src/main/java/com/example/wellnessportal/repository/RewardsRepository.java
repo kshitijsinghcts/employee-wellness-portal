@@ -4,6 +4,7 @@ import com.example.wellnessportal.model.Rewards;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -20,4 +21,10 @@ public interface RewardsRepository extends JpaRepository<Rewards, Long> {
      * @return A list of {@link Rewards} objects.
      */
     List<Rewards> findByEmployeeId(Long employeeId);
+
+    /**
+     * Checks if a specific reward has already been granted to an employee on a
+     * specific date.
+     */
+    boolean existsByEmployeeIdAndTitleAndAchievedDate(Long employeeId, String title, LocalDate achievedDate);
 }

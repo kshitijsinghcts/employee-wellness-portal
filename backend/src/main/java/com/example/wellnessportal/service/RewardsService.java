@@ -59,15 +59,11 @@ public class RewardsService {
      * @param date        The date the reward was achieved.
      */
     private void grantReward(Long employeeId, String title, String description, LocalDate date) {
-        // Check if this reward was already granted for this day to prevent duplicates
-        // Note: `existsBy...` would require a custom query in RewardsRepository.
-        // A simple check can be done by fetching and checking, though less performant.
-        // For now, we assume a simple save. A check should be added for production.
-        // if (!rewardsRepository.existsByEmployeeIdAndTitleAndAchievedDate(employeeId,
-        // title, date)) {
-        Rewards reward = new Rewards(employeeId, title, description, date);
-        rewardsRepository.save(reward);
-        // }
+        // Check if this reward was already granted for this day to prevent duplicates.
+        if (!rewardsRepository.existsByEmployeeIdAndTitleAndAchievedDate(employeeId, title, date)) {
+            Rewards reward = new Rewards(employeeId, title, description, date);
+            rewardsRepository.save(reward);
+        }
     }
 
     /**

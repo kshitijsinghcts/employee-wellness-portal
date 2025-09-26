@@ -114,6 +114,9 @@ export class DashboardComponent implements OnInit {
   weeklyChartData: WeeklyChartData[] = [];
   chartColors = { steps: '#22c55e', water: '#3b82f6', sleep: '#8b5cf6' };
 
+  /** The number of achievements last fetched. Used to detect new ones. */
+  private achievementCount = 0;
+
   constructor(
     private employeeService: EmployeeService,
     private wellnessService: WellnessService,
@@ -196,21 +199,19 @@ export class DashboardComponent implements OnInit {
 
     this.rewardsService.getRewards(employeeId).subscribe({
       next: (rewards) => {
-        const currentAchievementCount = this.recentAchievements.length;
-
         // Sort by date, most recent first
         const sortedRewards = rewards.sort((a, b) => new Date(b.achievedDate).getTime() - new Date(a.achievedDate).getTime());
 
+        if (checkForNew && sortedRewards.length > this.achievementCount) {
+          this.showAchievementToast();
+        }
+        this.achievementCount = sortedRewards.length;
         this.recentAchievements = sortedRewards.map(reward => ({
           title: reward.title,
           description: reward.description,
           icon: this.getIconForAchievement(reward.title),
           date: this.formatDateAsRelative(reward.achievedDate)
         }));
-
-        if (checkForNew && this.recentAchievements.length > currentAchievementCount) {
-          this.showAchievementToast();
-        }
       },
       error: (err) => console.error('Failed to fetch achievements', err)
     });
