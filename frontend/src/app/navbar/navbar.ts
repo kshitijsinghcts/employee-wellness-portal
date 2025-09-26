@@ -6,6 +6,13 @@ import { EmployeeService } from '../services/employee.service';
 import { Employee } from '../models/employee.model';
 import { AuthService } from '../services/auth.service';
 
+/**
+ * @Component
+ * @description
+ * The main application navigation bar. It is conditionally displayed based on user
+ * authentication status and route. It provides navigation links and a user profile
+ * menu with a logout option.
+ */
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -14,12 +21,25 @@ import { AuthService } from '../services/auth.service';
   styleUrl: './navbar.css'
 })
 export class Navbar implements OnInit, OnDestroy {
+  /** A flag to control the visibility of the user profile dropdown menu. */
   isProfileMenuOpen = false;
+  /** A flag that controls the overall visibility of the navbar. */
   showNavbar = false;
+  /** Holds the data for the currently logged-in user. */
   user: Employee | null = null;
+  /** The role of the currently logged-in user (e.g., 'ADMIN', 'EMPLOYEE'). */
   userRole: string | null = null;
+  /** Manages all component subscriptions to prevent memory leaks. */
   private subscriptions = new Subscription();
 
+  /**
+   * @constructor
+   * @param {ElementRef} elementRef - A reference to the component's host element, used for detecting outside clicks.
+   * @param {Router} router - The Angular router for tracking navigation events.
+   * @param {EmployeeService} employeeService - The service for fetching employee data.
+   * @param {AuthService} authService - The service for handling authentication status.
+   * @param {Object} platformId - An injection token to determine if the code is running on a browser platform.
+   */
   constructor(
     private elementRef: ElementRef,
     private router: Router,
@@ -28,6 +48,11 @@ export class Navbar implements OnInit, OnDestroy {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
+  /**
+   * @description
+   * Angular lifecycle hook that runs on component initialization.
+   * Subscribes to login status and route changes to determine navbar visibility and load user data.
+   */
   ngOnInit() {
     // Combine isLoggedIn status with router events to determine navbar visibility
     this.subscriptions.add(
@@ -53,6 +78,10 @@ export class Navbar implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * @description
+   * A private helper method to fetch the current user's data from the backend.
+   */
   private loadUser(): void {
     if (isPlatformBrowser(this.platformId)) {
       const employeeId = localStorage.getItem('employeeId');
@@ -64,16 +93,28 @@ export class Navbar implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @description
+   * Toggles the visibility of the user profile dropdown menu.
+   */
   toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
   
+  /**
+   * @description
+   * Logs the user out, closes the profile menu, and navigates to the login page.
+   */
   logout() {
     this.authService.logout();
     this.isProfileMenuOpen = false;
     this.router.navigate(['']);
   }
 
+  /**
+   * @description
+   * A host listener that detects clicks on the document to close the profile menu if the click is outside of it.
+   */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     // Check if the click is outside of the profile menu
@@ -85,6 +126,11 @@ export class Navbar implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @description
+   * Angular lifecycle hook that runs on component destruction.
+   * Unsubscribes from all active subscriptions to prevent memory leaks.
+   */
   ngOnDestroy() {
     // Clean up all subscriptions to prevent memory leaks
     this.subscriptions.unsubscribe();
