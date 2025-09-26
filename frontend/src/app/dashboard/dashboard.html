@@ -1,0 +1,270 @@
+<div class="container" *ngIf="user">
+  <!-- ======================= Welcome Section ======================= -->
+  <div class="welcome-banner">
+    <div>
+      <h1>{{ greeting }} 👋</h1>
+      <p>
+        <b>Your Points: {{totalPoints}}</b><br>
+        Welcome to your wellness dashboard. Track your progress, achieve your goals, and build healthier habits.
+      </p>
+    </div>
+    <div class="welcome-image-container">
+      <img src="https://www.sequencewellness.com/wp-content/uploads/2022/10/Untitled-design-41.png"
+        alt="Wellness illustration" class="welcome-image" />
+    </div>
+  </div>
+
+  <!-- ======================= Daily Progress Section ======================= -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Daily Progress</h2>
+      <div class="date-selector">
+        <button *ngIf="isToday()" class="btn btn-sm btn-edit" (click)="openEditModal()">
+          ✏️ Edit
+        </button>
+        <button class="btn btn-icon" (click)="changeDate(-1)">-</button>
+        <div class="badge badge-secondary">📅 {{ selectedDate | date: 'mediumDate' }}</div>
+        <button class="btn btn-icon" (click)="changeDate(1)" [disabled]="isToday()">+</button>
+      </div>
+    </div>
+    <div class="grid-4-col">
+      <div class="card" *ngFor="let metric of todaysMetrics">
+        <div class="card-header">
+          <div class="flex-between">
+            <div class="icon-wrapper-primary">
+              <!-- Placeholder for icon -->
+              <span class="icon-placeholder">{{ metric.icon }}</span>
+            </div>
+            <div *ngIf="metric.progress >= 100 && metric.label !== 'Mood'" class="badge badge-success">Complete!</div>
+          </div>
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="metric-value">
+              <!-- Display value as a string if it's not a number (for Mood) -->
+              <span [class.mood-value]="typeof metric.value === 'string'">{{ typeof metric.value === 'number' ?
+                metric.value.toLocaleString() : metric.value }}</span>
+              <!-- Only show target if it exists -->
+              <span *ngIf="metric.target" class="metric-target">/ {{ metric.target.toLocaleString() }} {{ metric.unit
+                }}</span>
+            </div>
+            <h4>{{ metric.label }}</h4>
+          </div>
+          <div *ngIf="metric.label !== 'Mood'" class="progress-bar-container">
+            <div class="progress-bar" [style.width.%]="metric.progress"></div>
+          </div>
+          <p *ngIf="metric.label !== 'Mood'" class="progress-label">{{ metric.progress }}% of daily goal</p>
+          <p *ngIf="metric.label === 'Mood'" class="progress-label">You can do this!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= Charts and Stats Grid ======================= -->
+  <div class="grid-3-col">
+    <!-- Card: Weekly Progress Chart -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">📈 Weekly Progress</h3>
+        <p class="card-description">Your wellness metrics over the past week</p>
+      </div>
+      <div class="card-content chart-container">
+        <svg *ngIf="weeklyChartData.length > 0" class="chart" viewBox="0 0 500 230">
+          <!-- Y-axis lines and labels -->
+          <g class="grid y-grid">
+            <line x1="40" x2="500" y1="210" y2="210"></line> <!-- 0% -->
+            <line x1="40" x2="500" y1="160" y2="160"></line> <!-- 25% -->
+            <line x1="40" x2="500" y1="110" y2="110"></line> <!-- 50% -->
+            <line x1="40" x2="500" y1="60" y2="60"></line> <!-- 75% -->
+            <line x1="40" x2="500" y1="10" y2="10"></line> <!-- 100% -->
+          </g>
+          <g class="labels y-labels">
+            <text x="30" y="215">0</text>
+            <text x="30" y="165">25</text>
+            <text x="30" y="115">50</text>
+            <text x="30" y="65">75</text>
+            <text x="30" y="15">100</text>
+          </g>
+
+          <!-- X-axis labels -->
+          <g class="labels x-labels">
+            <text *ngFor="let day of weeklyChartData; let i = index" [attr.x]="65 + (i * 65)" y="225">{{ day.dateLabel
+              }}</text>
+          </g>
+
+          <!-- Data lines -->
+          <g class="data-lines">
+            <polyline class="data-line" [attr.points]="getPolylinePoints('steps')" [style.stroke]="chartColors.steps">
+            </polyline>
+            <polyline class="data-line" [attr.points]="getPolylinePoints('water')" [style.stroke]="chartColors.water">
+            </polyline>
+            <polyline class="data-line" [attr.points]="getPolylinePoints('sleep')" [style.stroke]="chartColors.sleep">
+            </polyline>
+          </g>
+
+          <!-- Data points -->
+          <g class="data-points">
+            <g class="data" *ngFor="let day of weeklyChartData; let i = index">
+              <circle class="data-point" [attr.cx]="65 + (i * 65)" [attr.cy]="210 - (day.steps * 2)" r="5"
+                [style.fill]="chartColors.steps"></circle>
+              <circle class="data-point" [attr.cx]="65 + (i * 65)" [attr.cy]="210 - (day.water * 2)" r="5"
+                [style.fill]="chartColors.water"></circle>
+              <circle class="data-point" [attr.cx]="65 + (i * 65)" [attr.cy]="210 - (day.sleep * 2)" r="5"
+                [style.fill]="chartColors.sleep"></circle>
+            </g>
+          </g>
+        </svg>
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-color" [style.background-color]="chartColors.steps"></span>Steps
+          </div>
+          <div class="legend-item"><span class="legend-color" [style.background-color]="chartColors.water"></span>Water
+          </div>
+          <div class="legend-item"><span class="legend-color" [style.background-color]="chartColors.sleep"></span>Sleep
+          </div>
+        </div>
+        <div *ngIf="weeklyChartData.length === 0" class="chart-placeholder">
+          <p>No data available for the last 7 days.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card: Recent Achievements -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">🏆 Recent Achievements</h3>
+        <p class="card-description">Your latest wellness milestones</p>
+      </div>
+      <div class="card-content achievement-list">
+        <div *ngFor="let achievement of recentAchievements" class="achievement-item">
+          <div class="icon-wrapper-success">
+            <span class="icon-placeholder">{{ achievement.icon.charAt(0) }}</span>
+          </div>
+          <div class="achievement-details">
+            <h4>{{ achievement.title }}</h4>
+            <p>{{ achievement.description }}</p>
+          </div>
+          <span class="achievement-date">{{ achievement.date }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card: Rewards Store -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">🎁 Rewards Store</h3>
+        <p class="card-description">Redeem points for wellness rewards</p>
+      </div>
+      <div class="card-content reward-list">
+        <div *ngFor="let reward of pointRewards" class="reward-item"
+          [class.available]="reward.available && canAfford(reward)" [class.unavailable]="!reward.available">
+          <div class="reward-details">
+            <span class="icon-placeholder">{{ reward.icon.charAt(0) }}</span>
+            <div>
+              <p>{{ reward.title }}</p>
+              <p class="reward-cost">{{ reward.cost }} points</p>
+            </div>
+          </div>
+          <button class="btn btn-sm" [disabled]="!reward.available || !canAfford(reward)">
+            <span *ngIf="!reward.available">Sold Out</span>
+            <span *ngIf="reward.available && !canAfford(reward)">Need More</span>
+            <span *ngIf="reward.available && canAfford(reward)">Redeem</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= Quick Actions Section ======================= -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">🎯 Quick Actions</h3>
+      <p class="card-description">Common tasks to help you stay on track</p>
+    </div>
+    <div class="card-content">
+      <div class="grid-3-col">
+        <button class="quick-action-btn" (click)="openEditModal()">
+          <span class="icon-placeholder-large">🏃</span>
+          <h4>Log Activity</h4>
+          <p>Record your wellness metrics</p>
+        </button>
+        <button class="quick-action-btn" routerLink="/goals">
+          <span class="icon-placeholder-large">🏁</span>
+          <h4>Set New Goal</h4>
+          <p>Create a wellness objective</p>
+        </button>
+        <button class="quick-action-btn" routerLink="/surveys">
+          <span class="icon-placeholder-large">📝</span>
+          <h4>Take Survey</h4>
+          <p>Share your feedback</p>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= Company Stats (Admin only) ======================= -->
+  <div class="card" *ngIf="user?.role === 'ADMIN'">
+    <div class="card-header">
+      <h3 class="card-title">👥 Company Wellness Overview</h3>
+      <p class="card-description">Overall wellness program engagement</p>
+    </div>
+    <div class="card-content">
+      <div class="grid-4-col">
+        <div class="stat-item">
+          <p class="stat-value-blue">124</p>
+          <p class="stat-label">Active Users</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-value-green">78%</p>
+          <p class="stat-label">Engagement Rate</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-value-purple">156</p>
+          <p class="stat-label">Goals Completed</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-value-orange">89</p>
+          <p class="stat-label">Survey Responses</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= Edit Metrics Modal ======================= -->
+<div *ngIf="isEditing" class="modal-backdrop" (click)="closeEditModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Log Today's Metrics</h3>
+      <button class="btn-close" (click)="closeEditModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="steps">Daily Steps</label>
+        <input id="steps" type="number" [(ngModel)]="editMetricData.dailySteps" max="10000" placeholder="e.g., 8500">
+      </div>
+      <div class="form-group">
+        <label for="water">Water Intake (glasses)</label>
+        <input id="water" type="number" [(ngModel)]="editMetricData.waterIntake" max="8" placeholder="e.g., 6">
+      </div>
+      <div class="form-group">
+        <label for="sleep">Sleep (hours)</label>
+        <input id="sleep" type="number" [(ngModel)]="editMetricData.sleepHours" max="8" placeholder="e.g., 7.5">
+      </div>
+      <div class="form-group">
+        <label for="mood">Mood</label>
+        <select id="mood" [(ngModel)]="editMetricData.mood">
+          <option *ngFor="let mood of moodOptions" [value]="mood">{{ mood }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeEditModal()">Cancel</button>
+      <button class="btn btn-primary" (click)="saveMetrics()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= Toast Notification ======================= -->
+<div *ngIf="showToast" class="toast-notification">
+  🎉 {{ toastMessage }}
+</div>

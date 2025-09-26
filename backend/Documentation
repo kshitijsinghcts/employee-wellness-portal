@@ -1,0 +1,779 @@
+Models:
+Admin:
+employee Id long
+list of employee objects employees
+username
+email 
+password
+
+Authuser:
+employee Id
+username
+password 
+role
+
+employee:
+employee id
+password
+name
+email
+role
+
+Goal:
+employeeId
+goalType
+title 
+targetDate LocalDate
+status
+targetScores
+targetRewards List<Rewards>
+
+Resource:
+resourceId long autogen
+title String
+type String
+content String
+resourceTags List<String>
+resourceCategory String 
+
+Rewards:
+enum
+
+
+Survey:
+surveyId
+surveyTitle
+surveyQuestions List<String>
+
+SurveyResponse:
+responseId long
+surveyId long
+employeeId long
+answers Map<String,String>
+
+WellnessMetric:
+metricId long autogen
+employeeId long
+recordDate LocalDate
+mood String
+sleepHours int
+dailySteps int
+waterIntake int
+rewards List<Rewards> enum
+
+Repositories:
+Admin:
+findAdminByEmployeeId(long employeeId)
+findAdminByEmail(String email)
+
+AuthUser:
+findUserByEmployeeId(long employeeId)
+findUserByEmail(String email)
+
+Employee:
+findEmployeeByEmployeeId(long employeeId) Employee
+findEmployeeByEmail(String email) Employee
+findRewardsByEmployeeId(long employeeId) List<Rewards>
+findScoresByEmployeeId(long employeeId) int
+
+Goal:
+findGoalsByEmployeeId(long employeeId) List<Goal>
+
+Resource:
+findResourceByTitle(String title) Resource
+findResourceById(long resourceId) Resource
+findResourceByType(String type) Resource
+findResourceByResourceCategory(String category) List<Resource>
+
+Survey:
+   public Survey findSurveyBySurveyId(Long surveyId);
+   public Survey findSurveyBySurveyTitle(String title);
+   //For admin to delete by Survey Id
+   public Survey deleteSurveyBySurveyId(Long surveyId);
+   //For admin to update the survey status 
+   public void updateSurveyBySurveyIdOrSurveyTitle(Long surveyId, String surveyTitle);
+
+SurveyResponse:
+   SurveyResponse findSurveyResponseBySurveyResponseId(Long surveyResponseId);
+   SurveyResponse findSurveyResponseBySurveyIdAndEmployeeId(Long surveyId, Long employeeId);
+
+
+WellnessMetric:
+public Rewards findByRewardId(Rewards rewards);
+public List<WellnessMetric> findByEmployeeId(Long employeeId);
+public int rankByRewards(int scores, Long employeeId);
+public int getDailyStepsByEmployeeId(Long employeeId);
+public int getWaterIntakeByEmployeeId(Long employeeId);
+public List<Rewards> findRewardsByEmployeeId(Long employeeId);
+public String findLatestMoodByEmployeeId(Long employeeId);
+public int findLatestSleepHoursByEmployeeId(Long employeeId);
+
+ResourceService:
+//          List<Resource> resourceList = new java.util.ArrayList<>();
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         if(resource.getResourceCategory().equalsIgnoreCase(category))
+//         {
+//             resourceList.add(resource);
+//         }
+//        }
+//        return resourceList;
+//     }
+
+//          List<Resource> resourceList = new java.util.ArrayList<>();
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         for (String tag : resource.getResourceTags())
+//         {
+//             if(tag.equalsIgnoreCase(tags))
+//             {
+//                 resourceList.add(resource);
+//             }
+//         }
+//        }
+//        return resourceList;
+//     }
+
+//          List<Resource> resourceList = new java.util.ArrayList<>();
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         if(resource.getTitle().toLowerCase().contains(title.toLowerCase()))
+//         {
+//             resourceList.add(resource);
+//         }
+//        }
+//        return resourceList;
+//     }
+
+//        for(Resource resource : resourceRepository.findAll())
+//        {
+//         if(resource.getResourceId().equals(resourceId))
+//         {
+//             return resource;
+//         }
+//        }
+//        return null;
+//     }
+
+survey response:
+ for (SurveyResponse response : surveyResponseRepository.findAll()) {
+            if (response.getSurveyId().equals(surveyId) && response.getEmployeeId().equals(employeeId)) 
+            {
+                return response;
+            }
+        }
+        return null;
+
+         List<SurveyResponse> responses = new java.util.ArrayList<>();
+        for (SurveyResponse response : surveyResponseRepository.findAll()) {
+            if (response.getSurveyId().equals(surveyId)) {
+                responses.add(response);
+            }
+        }
+        return responses;
+
+         for (SurveyResponse response : surveyResponseRepository.findAll()) {
+            if (response.getEmployeeId().equals(employeeId)) {
+                return response;
+            }
+        }
+        return null;
+
+// // Edit as of 17 Sept
+    // @Override
+    // protected void configure(HttpSecurity http) throws Exception 
+    // {
+    //     http.csrf().disable()
+    //         .authorizeRequests()
+    //             .antMatchers("/api/auth/**").permitAll()
+    //             .anyRequest().authenticated()
+    //         .and()
+    //         .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil))
+    //         .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
+    // }
+
+//   private final UserDetailsService userDetailsService;
+//     private final JwtUtil jwtUtil;
+//     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+//     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+
+//     public SecurityConfig(UserDetailsService userDetailsService,
+//                           JwtUtil jwtUtil,
+//                           JwtAuthenticationFilter jwtAuthenticationFilter,
+//                           JwtAuthorizationFilter jwtAuthorizationFilter) {
+//         this.userDetailsService = userDetailsService;
+//         this.jwtUtil = jwtUtil;
+//         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+//         this.jwtAuthorizationFilter = jwtAuthorizationFilter;
+//     }
+
+//     @Bean
+//     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//         http
+//             .csrf(csrf -> csrf.disable())
+//             .authorizeHttpRequests(auth -> auth
+//                 .requestMatchers("/api/auth/**").permitAll()
+//                 .anyRequest().authenticated()
+//             )
+//             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//             .addFilterAfter(jwtAuthorizationFilter, JwtAuthenticationFilter.class);
+
+//         return http.build();
+//     }
+
+//     @Bean
+//     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+//         return config.getAuthenticationManager();
+//     }
+//import com.example.wellnessportal.util.JwtUtil;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationManagerResolver;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+//import com.example.wellnessportal.util.JwtUtil;
+// package com.example.wellnessportal.service;
+
+// import org.springframework.security.core.userdetails.UserDetails;
+// import org.springframework.security.core.userdetails.UserDetailsService;
+
+// import com.example.wellnessportal.model.AuthUser;
+
+// public interface UserService extends UserDetailsService 
+// {
+//     UserDetails loadUserByUsername(String username);
+//     void saveUser(AuthUser user);
+// }
+// package com.example.wellnessportal.util;
+
+// import io.jsonwebtoken.Claims;
+// import io.jsonwebtoken.Jwts;
+// import io.jsonwebtoken.SignatureAlgorithm;
+// import org.springframework.stereotype.Component;
+// import org.springframework.security.core.userdetails.UserDetails;
+
+// import java.util.Date;
+// import java.util.HashMap;
+// import java.util.Map;
+// import java.util.function.Function;
+
+// @Component
+// public class JwtUtil 
+// {
+//     private final String SECRET = "your-secret-key"; // Replace with a secure secret key
+//     private final long EXPIRATION_TIME = 900_000; // 15 minutes
+
+//     public String extractUsername(String token) 
+//     {
+//         return extractClaim(token, Claims::getSubject);
+//     }
+
+//     public Date extractExpiration(String token) 
+//     {
+//         return extractClaim(token, Claims::getExpiration);
+//     }
+
+//     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+//         final Claims claims = extractAllClaims(token);
+//         return claimsResolver.apply(claims);
+//     }
+
+//     private Claims extractAllClaims(String token) {
+//         return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+//     }
+
+//     public String generateToken(String username) {
+//         Map<String, Object> claims = new HashMap<>();
+//         return createToken(claims, username);
+//     }
+
+//     private String createToken(Map<String, Object> claims, String subject) {
+//         return Jwts.builder()
+//                 .setClaims(claims)
+//                 .setSubject(subject)
+//                 .setIssuedAt(new Date(System.currentTimeMillis()))
+//                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+//                 .signWith(SignatureAlgorithm.HS256, SECRET)
+//                 .compact();
+//     }
+
+//     public boolean isTokenExpired(String token) {
+//         return extractExpiration(token).before(new Date());
+//     }
+
+//     public boolean validateToken(String token, UserDetails userDetails) {
+//         final String username = extractUsername(token);
+//         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+//     }
+
+//     // Additional utility methods...
+// }
+
+
+//     //  JWT Part for encrypting passwords for more security:
+
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 
+//    {
+//     long employeeId;
+
+//     try 
+//     {
+//         employeeId = Long.parseLong(username);
+//     } 
+//     catch (NumberFormatException e) 
+//     {
+//         throw new UsernameNotFoundException("Invalid employee ID format: " + username);
+//     }
+
+//     AuthUser user = authUserRepository.findById(employeeId).orElse(null);
+//     if (user == null) 
+//     {
+//         throw new UsernameNotFoundException("User not found with ID: " + employeeId);
+//     }
+
+//     return new org.springframework.security.core.userdetails.User
+//     (
+//         String.valueOf(user.getEmployeeId()),
+//         user.getPassword(),
+//         new ArrayList<>() // You can add roles/authorities here if needed
+//     );
+// }
+
+//   @Override
+// public void saveUser(AuthUser user) 
+// {
+//     authUserRepository.save(user);
+// }
+
+// package com.example.wellnessportal.api;
+
+// import com.example.wellnessportal.model.WellnessMetric;
+// import com.example.wellnessportal.service.WellnessMetricService;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.web.bind.annotation.*;
+
+// import java.time.LocalDate;
+// import java.util.List;
+
+// @RestController
+// @RequestMapping("/api/wellness")
+// public class WellnessMetricController {
+
+//     @Autowired
+//     private WellnessMetricService wellnessMetricService;
+
+//     // POST: Log a wellness metric using request body
+//     @PostMapping("/log")
+//     public WellnessMetric logMetric(@RequestBody WellnessMetric wellnessMetric) {
+//         return wellnessMetricService.saveWellnessMetric(
+//                 wellnessMetric.getEmployeeId(),
+//                 LocalDate.now(),
+//                 wellnessMetric.getMood(),
+//                 wellnessMetric.getSleepHours(),
+//                 wellnessMetric.getDailySteps(),
+//                 wellnessMetric.getWaterIntake()
+//         );
+//     }
+
+//     // GET: Get all logs for employeeId = 1 (hardcoded for testing)
+//     @GetMapping("/logs")
+//     public List<WellnessMetric> getLogs() {
+//         return wellnessMetricService.getEmployeeLogs(1L);
+//     }
+
+//     // GET: Get overall status for employeeId = 1
+//     @GetMapping("/status")
+//     public String getStatus() {
+//         return wellnessMetricService.getOverallWellnessMetricsStatus(1L);
+//     }
+
+//     // GET: Get latest metrics for employeeId = 1
+//     @GetMapping("/latest")
+//     public List<String> getLatestMetrics() {
+//         return wellnessMetricService.getLatestWellnessMetrics(1L);
+//     }
+
+//     // GET: Get rank for employeeId = 1
+//     @GetMapping("/rank")
+//     public int getRank() {
+//         return wellnessMetricService.getEmployeeRank(1L);
+//     }
+// }
+
+// package com.example.wellnessportal.api;
+
+// import com.example.wellnessportal.model.WellnessMetric;
+// import com.example.wellnessportal.service.WellnessMetricService;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.web.bind.annotation.*;
+
+// import java.time.LocalDate;
+// import java.util.List;
+
+// @RestController
+// @RequestMapping("/api/wellness")
+// public class WellnessMetricController {
+
+//     @Autowired
+//     private WellnessMetricService wellnessMetricService;
+
+//     // POST: Log a wellness metric
+//     @PostMapping("/log")
+//     public WellnessMetric logMetric(@RequestBody WellnessMetric wellnessMetric) {
+//         return wellnessMetricService.saveWellnessMetric(
+//                 wellnessMetric.getEmployeeId(),
+//                 LocalDate.now(),
+//                 wellnessMetric.getMood(),
+//                 wellnessMetric.getSleepHours(),
+//                 wellnessMetric.getDailySteps(),
+//                 wellnessMetric.getWaterIntake()
+//         );
+//     }
+
+//     // POST: Get all logs for an employee
+//     @PostMapping("/logs")
+//     public List<WellnessMetric> getLogs(@RequestBody WellnessMetric wellnessMetric) {
+//         return wellnessMetricService.getEmployeeLogs(wellnessMetric.getEmployeeId());
+//     }
+
+//     // POST: Get overall status
+//     @PostMapping("/status")
+//     public String getStatus(@RequestBody WellnessMetric wellnessMetric) {
+//         return wellnessMetricService.getOverallWellnessMetricsStatus(wellnessMetric.getEmployeeId());
+//     }
+
+//     // POST: Get latest metrics
+//     @PostMapping("/latest")
+//     public List<String> getLatestMetrics(@RequestBody WellnessMetric wellnessMetric) {
+//         return wellnessMetricService.getLatestWellnessMetrics(wellnessMetric.getEmployeeId());
+//     }
+
+//     // POST: Get employee rank
+//     @PostMapping("/rank")
+//     public int getRank(@RequestBody WellnessMetric wellnessMetric) {
+//         return wellnessMetricService.getEmployeeRank(wellnessMetric.getEmployeeId());
+//     }
+// }
+
+// package com.example.wellnessportal.service;
+
+// import com.example.wellnessportal.model.Employee;
+// import com.example.wellnessportal.model.Admin;
+// import com.example.wellnessportal.model.AuthUser;
+// import com.example.wellnessportal.repository.EmployeeRepository;
+// import com.example.wellnessportal.repository.AdminRepository;
+
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
+
+// import java.util.List;
+// import java.util.Optional;
+
+// // Since admins are also employees, their operations are also performed here
+// @Service
+// public class EmployeeService 
+// {
+//     @Autowired
+//     private EmployeeRepository employeeRepository;
+
+//     @Autowired
+//     private AdminRepository adminRepository;
+
+//     // The following methods can be used by adminfor analytics:
+
+//     public List<Employee> getAllEmployees() 
+//     {
+//         return employeeRepository.findAll();
+//     }
+
+//     public Optional<Employee> getEmployeeById(Long id) 
+//     {
+//         return employeeRepository.findById(id);
+//     }
+
+//     /* The following methods can be invoked by employee to search for admins:
+//        1. Employee Id
+//        2. Email
+//     */
+    
+//     public Admin getAdminByEmployeeId(Long employeeId)
+//     {
+//         return adminRepository.findAdminByEmployeeId(employeeId);
+//     }
+
+//     public Admin getAdminByEmail(String email)
+//     {
+         
+//     Admin original= adminRepository.findAdminByEmail(email);
+        
+//     Admin safe = new Admin();
+//     safe.setEmployeeId(original.getEmployeeId());
+//     safe.setEmail(original.getEmail());
+//     safe.setname(original.getName());
+//     // Do not set password
+//     return safe;
+
+//     }
+    
+
+//     // Handle exception in controller
+//     public Employee updateEmployee(Long id, Employee updatedEmployee) {
+//         return employeeRepository.findById(id)
+//                 .map(employee -> {
+//                     employee.setName(updatedEmployee.getName());
+//                     employee.setEmail(updatedEmployee.getEmail());
+//                     return employeeRepository.save(employee);
+//                 })
+//                 .orElseThrow(() -> new RuntimeException("Employee not found"));
+//     }
+// }
+
+
+
+package com.example.wellnessportal.api;
+
+import com.example.wellnessportal.model.WellnessMetric;
+import com.example.wellnessportal.service.WellnessMetricService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/wellness")
+public class WellnessMetricController {
+
+    @Autowired
+    private WellnessMetricService wellnessMetricService;
+
+    // POST: Log a wellness metric
+    @PostMapping("/log")
+    public WellnessMetric logMetric(@RequestBody WellnessMetric wellnessMetric) {
+        return wellnessMetricService.saveWellnessMetric(
+                wellnessMetric.getEmployeeId(),
+                LocalDate.now(),
+                wellnessMetric.getMood(),
+                wellnessMetric.getSleepHours(),
+                wellnessMetric.getDailySteps(),
+                wellnessMetric.getWaterIntake()
+        );
+    }
+
+    // POST: Get all logs for an employee
+    @PostMapping("/logs")
+    public List<WellnessMetric> getLogs(@RequestBody WellnessMetric wellnessMetric) {
+        return wellnessMetricService.getEmployeeLogs(wellnessMetric.getEmployeeId());
+    }
+
+    // POST: Get overall status
+    @PostMapping("/status")
+    public String getStatus(@RequestBody WellnessMetric wellnessMetric) {
+        return wellnessMetricService.getOverallWellnessMetricsStatus(wellnessMetric.getEmployeeId());
+    }
+
+    // POST: Get latest metrics
+    @PostMapping("/latest")
+    public List<String> getLatestMetrics(@RequestBody WellnessMetric wellnessMetric) {
+        return wellnessMetricService.getLatestWellnessMetrics(wellnessMetric.getEmployeeId());
+    }
+
+    // POST: Get employee rank
+    @PostMapping("/rank")
+    public int getRank(@RequestBody WellnessMetric wellnessMetric) {
+        return wellnessMetricService.getEmployeeRank(wellnessMetric.getEmployeeId());
+    }
+}
+
+package com.example.wellnessportal.api;
+
+import com.example.wellnessportal.model.SurveyResponse;
+import com.example.wellnessportal.service.SurveyResponsesService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/survey-responses")
+public class SurveyResponsesController {
+
+    @Autowired
+    private SurveyResponsesService surveyResponsesService;
+
+    // Employee: Save a survey response
+    @PostMapping("/submit")
+    public SurveyResponse submitSurveyResponse(@RequestParam Long surveyId,
+                                               @RequestParam Long employeeId,
+                                               @RequestBody Map<String, String> answers) {
+        return surveyResponsesService.saveSurveyResponse(surveyId, employeeId, answers);
+    }
+
+    // Admin: Get a specific survey response by surveyId and employeeId
+    @GetMapping("/by-survey-and-employee")
+    public SurveyResponse getSurveyResponseBySurveyAndEmployee(@RequestParam Long surveyId,
+                                                               @RequestParam Long employeeId) {
+        return surveyResponsesService.getSurveyResponseBySurveyId(surveyId, employeeId);
+    }
+
+    // Admin: Get all responses for a survey
+    @GetMapping("/by-survey")
+    public List<SurveyResponse> getResponsesBySurvey(@RequestParam Long surveyId) {
+        return surveyResponsesService.getSurveyResponseBySurveyId(surveyId);
+    }
+
+    // Admin: Get a specific response by employee
+    @GetMapping("/by-employee")
+    public SurveyResponse getResponseByEmployee(@RequestParam Long surveyId,
+                                                @RequestParam Long employeeId) {
+        return surveyResponsesService.getSurveyResponseByEmployeeId(surveyId, employeeId);
+    }
+
+    // Employee/Admin: Delete a survey response
+    @DeleteMapping("/delete")
+    public void deleteSurveyResponse(@RequestParam Long surveyId,
+                                     @RequestParam Long employeeId) {
+        surveyResponsesService.deleteSurveyResponse(surveyId, employeeId);
+    }
+
+    // Employee/Admin: Edit a survey response
+    @PutMapping("/edit")
+    public void editSurveyResponse(@RequestParam Long surveyId,
+                                   @RequestParam Long employeeId,
+                                   @RequestBody Map<String, String> newAnswers) {
+        surveyResponsesService.editSurveyResponse(surveyId, employeeId, newAnswers);
+    }
+}
+
+
+package com.example.wellnessportal.api;
+
+import com.example.wellnessportal.model.Survey;
+import com.example.wellnessportal.service.SurveyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/surveys")
+public class SurveyController {
+
+    @Autowired
+    private SurveyService surveyService;
+
+    // Create a new survey
+    @PostMapping("/create")
+    public Survey createSurvey(@RequestBody Map<String, Object> request) {
+        String surveyTitle = (String) request.get("surveyTitle");
+        @SuppressWarnings("unchecked")
+        List<String> questions = (List<String>) request.get("questions");
+        return surveyService.createSurvey(surveyTitle, questions);
+    }
+
+    // Delete a survey
+    @DeleteMapping("/delete")
+    public Survey deleteSurvey(@RequestBody Map<String, Long> request) {
+        Long surveyId = request.get("surveyId");
+        return surveyService.deleteSurvey(surveyId);
+    }
+
+    // Get survey by ID
+    @PostMapping("/getById")
+    public Survey getSurveyById(@RequestBody Map<String, Long> request) {
+        Long surveyId = request.get("surveyId");
+        return surveyService.getSurveyBySurveyId(surveyId);
+    }
+
+    // Get survey by title
+    @PostMapping("/getByTitle")
+    public Survey getSurveyByTitle(@RequestBody Map<String, String> request) {
+        String surveyTitle = request.get("surveyTitle");
+        return surveyService.getSurveyBySurveyTitle(surveyTitle);
+    }
+}
+
+package com.example.wellnessportal.api;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.wellnessportal.model.Resource;
+import com.example.wellnessportal.service.ResourceService;
+
+@RestController
+@RequestMapping("/api/resources")
+public class ResourceController {
+
+    @Autowired
+    private ResourceService resourceService;
+
+    // Get all resources
+    @PostMapping("/getAll")
+    public List<Resource> getAllResources() {
+        return resourceService.getAllResources();
+    }
+
+    // Search by category
+    @PostMapping("/searchByCategory")
+    public List<Resource> getResourcesByCategory(@RequestBody Resource request) {
+        return resourceService.getResourcesByCategory(request.getResourceCategory());
+    }
+
+    // Search by tags
+    @PostMapping("/searchByTags")
+    public List<Resource> getResourcesByTags(@RequestBody Resource request) {
+        return resourceService.getResourcesByTags(request.getResourceTags());
+    }
+
+    // Search by title
+    @PostMapping("/searchByTitle")
+    public List<Resource> getResourcesByTitle(@RequestBody Resource request) {
+        return resourceService.getResourcesByTitle(request.getTitle());
+    }
+
+    // Get resource by ID
+    @PostMapping("/getById")
+    public ResponseEntity<Resource> getResourceById(@RequestBody Resource request) {
+        Long id = request.getResourceId();
+        if (id == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Resource resource = resourceService.getResourceById(id);
+        return resource != null ? ResponseEntity.ok(resource) : ResponseEntity.notFound().build();
+    }
+
+    // Admin: Add new resource
+    @PostMapping("/add")
+    public ResponseEntity<String> addResource(@RequestBody Resource resource) {
+        resourceService.addResource(resource);
+        return ResponseEntity.ok("Resource added successfully.");
+    }
+
+    // Admin: Delete resource
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteResource(@RequestBody Resource request) {
+        Long id = request.getResourceId();
+        if (id == null) {
+            return ResponseEntity.badRequest().body("Resource ID is required.");
+        }
+        try {
+            resourceService.deleteResource(id);
+            return ResponseEntity.ok("Resource deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+}
