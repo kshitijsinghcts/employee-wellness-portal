@@ -1,24 +1,23 @@
 package com.example.wellnessportal.model;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Represents an Administrator in the system.
+ * This is a JPA entity that maps to the 'admin' table in the database.
+ */
 @Entity
 public class Admin {
 
-    // Employee ID as Primary Key for the admin
+    /** The employee ID, which serves as the primary key. */
     @Id
     private Long employeeId;
-    // List of Employees falling under the current HR
 
-    // Attributes for Authentication
-
+    /** The admin's password. It is write-only for security purposes. */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String name;
@@ -26,30 +25,27 @@ public class Admin {
     private String email;
 
     public Admin() {
-
+        // Default constructor required by JPA.
     }
 
+    /**
+     * Constructs a new Admin with all required fields.
+     * This constructor is typically used when creating a new admin instance, for
+     * example during registration.
+     *
+     * @param employeeId The employee ID for the admin.
+     * @param password   The admin's password.
+     * @param name       The admin's name.
+     * @param email      The admin's email address.
+     */
     public Admin(Long employeeId,
             String password,
             String name,
             String email) {
         this.employeeId = employeeId;
+        this.password = password;
         this.name = name;
         this.email = email;
-        this.password = password;
-    }
-
-    // Constructor for Login. Fetch other details from repository.
-    public Admin(String email,
-            String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    public Admin(Long employeeId,
-            String password) {
-        this.employeeId = employeeId;
-        this.password = password;
     }
 
     public Long getEmployeeId() {
@@ -64,7 +60,7 @@ public class Admin {
         return this.name;
     }
 
-    public void setname(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 

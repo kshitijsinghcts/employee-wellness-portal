@@ -12,7 +12,6 @@
   flex-direction: column;
   gap: 24px;
   font-family: 'Hanuman', sans-serif;
-  /* As seen in figma code */
   background-color: var(--background);
   color: var(--foreground);
 }

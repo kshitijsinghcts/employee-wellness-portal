@@ -1,199 +1,126 @@
-# Employee Wellness Portal
+<div align="center">
 
-FRONT END FOR DEV REFERENCE: [Credentials: admin@company.com, admin access](https://speck-twice-43718343.figma.site/)
+  <h1 align="center">Employee Wellness Portal</h1>
 
-This README serves as a conceptual model of the project for reference.
+  <p align="center">
+    A comprehensive platform designed to promote and track employee well-being through health metrics, goal setting, and engagement.
+    <br />
+    <a href="#about-the-project"><strong>Explore the docs »</strong></a>
+    <br />
+  </p>
+</div>
 
-## Concept Overview
-
-An **Employee Wellness Portal** will include:
-
--   Health tracking (physical, emotional)
-
--   Wellness resources (articles, videos, AI-generated tips)
-
--   Surveys and feedback
-
--   Goal setting and progress tracking
-
--   Admin dashboard for HR
-
--   Authentication and role-based access
-
--   GenAI-powered suggestions and chat (optional)
+<!-- Badges -->
+<div align="center">
+  <img src="https://img.shields.io/badge/Java-17-blue.svg?style=for-the-badge&logo=java" alt="Java 17">
+  <img src="https://img.shields.io/badge/Spring_Boot-3.x-6DB33F.svg?style=for-the-badge&logo=spring-boot" alt="Spring Boot 3.x">
+  <img src="https://img.shields.io/badge/Angular-17-DD0031.svg?style=for-the-badge&logo=angular" alt="Angular 17">
+  <img src="https://img.shields.io/badge/MySQL-8.0-4479A1.svg?style=for-the-badge&logo=mysql" alt="MySQL 8.0">
+</div>
 
 ---
 
-## Backend: Spring Boot + MySQL
+## About The Project
 
-### Models (Entities)
+The Employee Wellness Portal is a full-stack web application built to empower organizations in fostering a healthier and more engaged workforce. Employees can track daily wellness metrics, set personal goals, and earn achievements, while administrators gain insights through a dedicated dashboard.
 
-Define JPA entities for:
-
--   `Employee`: ID, name, email, designation
-
--   `WellnessMetric`: employeeId, date, mood, sleepHours, activityLevel
-
--   `Goal`: employeeId, goalType, title, targetDate, status
-
--   `Survey`: surveyId, surveyTitle, questions
-
--   `SurveyResponse`: employeeId, surveyId, answers(mapped to separate table containing question and answer as fields)
-
--   `Resource`: title, type (video/article), content, tags (optional), category
-
--   `Admin`: for HR/admin access
-
--   `AuthUser`: for login credentials and roles
-
--   `Rewards` : for award of medals and ranks based on user-logged scores from wellnessmetric model
-
-### Repositories
-
-Use Spring Data JPA:
-
-```java
-
-public  interface  EmployeeRepository  extends  JpaRepository<Employee, Long> {}
-
-public  interface  WellnessMetricRepository  extends  JpaRepository<WellnessMetric, Long> {}
-
-```
-
-### Services
-
-Business logic:
-AdminService: 
-A package with exclusive access to admins to promote access control
- `AccountCreationService`: account creation and can only be accessed by the admin
-
- `SurveyResponseService`: Access user responses to the survey
-
-Generic Services:
-
-    `WellnessService`: CRUD for metrics, goals, and rewards. Reward assignment based on calculated scores.
-
--   `SurveyService`: create surveys, collect responses
-
--   `ResourceService`: manage wellness content
-
--   `GenAIService`: interface with Gemini API
-
--   `AuthService`: login, registration(request to admin. Admin adds from AuthUserRepository. This is optional at the current stage.), JWT token handling
-
-   
-
-### REST APIs
-
-Organize by feature:
-
--   `/api/auth/login`: login
-    `/api/auth/register`: register, refresh token
-
-    # Will be updated along the cycle based on incrementally built code base
--   `/api/employees`: get/update employee info
-
--   `/api/wellness`: submit/view metrics
-
--   `/api/goals`: create/update/view goals
-
-    `/api/employeeRewards`: assign new rewards with milestones
-
--   `/api/surveys`: get surveys, submit responses
-
--   `/api/resources`: fetch wellness content
-
--   `/api/genai`: get AI-generated tips, summaries
-
-Utilities:
-util package:
-    ` JWTUtil` : configuring JWT Tokens for login and register functionality
-
-Frontend dependencies:
-    - User can login using employee id irrespective of his/her role. Same is reflected in each page.
-    - Each survey, corresponding response and user's wellness metric has its own id
-    - Admin has control over creating surveys and seeing responses. His/her functionality to add new users is optional and will be added in the future editions. 
-    - Analytics of employees in admin panel and their logic will be communicated in future commits.
----
-
-## Frontend: AngularJS
-
-### Pages/Views
-
--   **Login/Register**
-
--   **Dashboard** (personalized wellness overview)
-
--   **Track Wellness** (form for daily metrics)
-
--   **Goals** (set/view progress)
-
--   **Surveys** (take surveys, view results)
-
--   **Resources** (browse articles/videos)
-
--   **Admin Panel** (HR tools, analytics)
-
--   **AI Assistant** (Gemini-powered chat)
-
-### Components
-
--   `navbar`, `footer`, `card`, `modal`, `form-group`, etc.
-
--   `wellness-form`, `goal-tracker`, `survey-viewer`, `resource-browser`, `ai-widget`
-
-### Auth Integration
-
--   JWT-based auth interceptor
-
--   Role-based routing guards
-
--   Secure token storage (localStorage/sessionStorage)
-
-### Gemini GenAI Integration (optional)
-
-We can use Gemini to:
-
--   Generate personalized wellness tips
-
--   Summarize articles
-
--   Chatbot for wellness Q&A
-
--   Suggest goals based on user data
-
-We’ll call Gemini via a backend proxy (Spring Boot) to keep API keys secure. Alternatively, we can always use a simple client side API to call the Gemini chat if necessary.
+This project leverages a modern tech stack to deliver a robust, scalable, and user-friendly experience.
 
 ---
 
-## Authentication & Authorization
+## ✨ Key Features
 
-### Backend
+-   **👤 Role-Based Authentication:** Secure login and registration for Employees and Administrators.
+-   **📊 Daily Wellness Tracking:** Log daily metrics for mood, sleep, steps, and water intake.
+-   **🎯 Personalized Goal Setting:** Create, update, and track progress on personal wellness goals.
+-   **🏆 Automated Rewards System:** Earn badges and achievements for meeting health milestones.
+-   **🎛️ Admin Dashboard:** View and manage users and their activities.
+-   **📝 Survey Management:** Admins can create surveys and view employee responses.
+-   **🤖 GenAI Ready:** Designed with future integration for AI-powered wellness tips in mind.
 
--   Spring Security with JWT
-
--   Role-based access (`ROLE_EMPLOYEE`, `ROLE_ADMIN`)
-
--   Password hashing (maybe BCrypt?)
-
-### Frontend
-
--   Login form → token → store in browser
-
--   AuthGuard for protected routes
-
--   Logout and token refresh logic
 
 ---
 
-## Other Optional Enhancements
+## 🛠️ Tech Stack
 
--   Charts for wellness trends (Chart.js or D3.js)
+This project is built with a modern and powerful set of technologies:
 
--   Calendar integration for goal deadlines (Google Calendar is easier, we can look into Outlook)
+| Backend                                                                                                                                        | Frontend                                                                                                                        | Database                                                                                                         |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" alt="Spring Boot">             | <img src="https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular">          | <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL"> |
+| <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white" alt="Java">                                  | <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"> |                                                                                                                  |
+| <img src="https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white" alt="Spring Security"> | <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">                |                                                                                                                  |
+| <img src="https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=hibernate&logoColor=white" alt="Hibernate">                   | <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">                   |                                                                                                                  |
+| <img src="https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white" alt="Maven">                        |                                                                                                                                 |                                                                                                                  |
 
--   Email notifications (Spring Mail)
+---
 
--   Mobile responsiveness (shadCN or Angular Material)
+## 🚀 Getting Started
 
--   AI feedback loop: Gemini suggests goals → user accepts → tracked
+To get a local copy up and running, follow these simple steps.
+
+### Prerequisites
+
+-   **Java (JDK)**: Version 17 or higher
+-   **Maven**: Version 3.8 or higher
+-   **Node.js**: Version 18.x or higher
+-   **Angular CLI**: Version 17 or higher
+-   **MySQL Server**: Version 8.0 or higher
+
+### Installation
+
+1.  **Clone the repository**
+
+    ```sh
+    git clone https://github.com/kshitijsinghcts/wellness-portal.git
+    cd wellness-portal
+    ```
+
+2.  **Backend Setup (Spring Boot)**
+
+    -   Navigate to the `backend` directory.
+    -   Create a MySQL database named `wellness_portal`.
+    -   Update the database credentials in `src/main/resources/application.properties`:
+        ```properties
+        spring.datasource.url=jdbc:mysql://localhost:3306/wellness_portal
+        spring.datasource.username=your_mysql_username
+        spring.datasource.password=your_mysql_password
+        ```
+    -   Run the application. The `DataInitializer` will automatically seed the database on the first run.
+        ```sh
+        mvn spring-boot:run
+        ```
+    -   The backend will be running on `http://localhost:8080`.
+
+3.  **Frontend Setup (Angular)**
+    -   Navigate to the `frontend` directory.
+    -   Install NPM packages:
+        ```sh
+        npm install
+        ```
+    -   Start the development server:
+        ```sh
+        ng serve
+        ```
+    -   The frontend will be running on `http://localhost:4200`.
+
+---
+
+## 📋 API Endpoints
+
+Here is a summary of the core API endpoints available:
+
+| Endpoint                       | Method | Description                                  |
+| ------------------------------ | ------ | -------------------------------------------- |
+| `/api/auth/login`              | `POST` | Authenticates a user and returns a token.    |
+| `/api/auth/register`           | `POST` | Registers a new employee.                    |
+| `/api/auth/register-admin`     | `POST` | Registers a new administrator.               |
+| `/api/employees`               | `GET`  | Retrieves a list of all employees.           |
+| `/api/employees/{id}`          | `GET`  | Retrieves a single employee by ID.           |
+| `/api/wellness/submit-metrics` | `POST` | Submits daily wellness metrics.              |
+| `/api/wellness/{employeeId}`   | `GET`  | Retrieves all wellness logs for an employee. |
+| `/api/goals/create`            | `POST` | Creates a new wellness goal.                 |
+| `/api/goals/update`            | `PUT`  | Updates an existing goal.                    |
+| `/api/goals/{employeeId}`      | `GET`  | Retrieves all goals for an employee.         |
+| `/api/employeeRewards/{id}`    | `GET`  | Retrieves all rewards for an employee.       |
+

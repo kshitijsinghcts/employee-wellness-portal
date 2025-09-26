@@ -1,5 +1,5 @@
 <div class="container" *ngIf="user">
-  <!-- Welcome Section -->
+  <!-- ======================= Welcome Section ======================= -->
   <div class="welcome-banner">
     <div>
       <h1>{{ greeting }} 👋</h1>
@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <!-- Today's Progress -->
+  <!-- ======================= Daily Progress Section ======================= -->
   <div class="section">
     <div class="section-header">
       <h2>Daily Progress</h2>
@@ -60,9 +60,9 @@
     </div>
   </div>
 
-  <!-- Charts and Stats -->
+  <!-- ======================= Charts and Stats Grid ======================= -->
   <div class="grid-3-col">
-    <!-- Weekly Progress Chart -->
+    <!-- Card: Weekly Progress Chart -->
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">📈 Weekly Progress</h3>
@@ -128,7 +128,7 @@
       </div>
     </div>
 
-    <!-- Recent Achievements -->
+    <!-- Card: Recent Achievements -->
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">🏆 Recent Achievements</h3>
@@ -148,7 +148,7 @@
       </div>
     </div>
 
-    <!-- Rewards Store -->
+    <!-- Card: Rewards Store -->
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">🎁 Rewards Store</h3>
@@ -174,7 +174,7 @@
     </div>
   </div>
 
-  <!-- Quick Actions -->
+  <!-- ======================= Quick Actions Section ======================= -->
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">🎯 Quick Actions</h3>
@@ -187,12 +187,12 @@
           <h4>Log Activity</h4>
           <p>Record your wellness metrics</p>
         </button>
-        <button class="quick-action-btn" routerLink="/goals">
+        <button class="quick-action-btn" routerLink="/goals" fragment="top">
           <span class="icon-placeholder-large">🏁</span>
           <h4>Set New Goal</h4>
           <p>Create a wellness objective</p>
         </button>
-        <button class="quick-action-btn" routerLink="/surveys">
+        <button class="quick-action-btn" routerLink="/surveys" fragment="top">
           <span class="icon-placeholder-large">📝</span>
           <h4>Take Survey</h4>
           <p>Share your feedback</p>
@@ -200,37 +200,9 @@
       </div>
     </div>
   </div>
-
-  <!-- Company Stats (Admin only) -->
-  <div class="card" *ngIf="user?.role === 'ADMIN'">
-    <div class="card-header">
-      <h3 class="card-title">👥 Company Wellness Overview</h3>
-      <p class="card-description">Overall wellness program engagement</p>
-    </div>
-    <div class="card-content">
-      <div class="grid-4-col">
-        <div class="stat-item">
-          <p class="stat-value-blue">124</p>
-          <p class="stat-label">Active Users</p>
-        </div>
-        <div class="stat-item">
-          <p class="stat-value-green">78%</p>
-          <p class="stat-label">Engagement Rate</p>
-        </div>
-        <div class="stat-item">
-          <p class="stat-value-purple">156</p>
-          <p class="stat-label">Goals Completed</p>
-        </div>
-        <div class="stat-item">
-          <p class="stat-value-orange">89</p>
-          <p class="stat-label">Survey Responses</p>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
-<!-- Edit Metrics Modal -->
+<!-- ======================= Edit Metrics Modal ======================= -->
 <div *ngIf="isEditing" class="modal-backdrop" (click)="closeEditModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -264,7 +236,7 @@
   </div>
 </div>
 
-<!-- Toast Notification -->
+<!-- ======================= Toast Notification ======================= -->
 <div *ngIf="showToast" class="toast-notification">
   🎉 {{ toastMessage }}
 </div>
