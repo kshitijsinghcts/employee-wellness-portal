@@ -76,6 +76,9 @@
                     </button>
                   </div>
                 </div>
+                <div *ngIf="loginError" class="error-message">
+                  {{ loginError }}
+                </div>
                 <button type="submit" class="submit-button" [disabled]="isLoading">
                   {{ isLoading ? 'Signing in...' : 'Sign In' }}
                 </button>
@@ -130,6 +133,9 @@
                       </svg>
                     </button>
                   </div>
+                </div>
+                <div *ngIf="registerError" class="error-message">
+                  {{ registerError }}
                 </div>
                 <button type="submit" class="submit-button" [disabled]="isLoading">
                   {{ isLoading ? 'Creating account...' : 'Create Account' }}

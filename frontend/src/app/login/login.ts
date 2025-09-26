@@ -16,6 +16,9 @@ export class Login implements OnInit {
   isLoading = false;
   showPassword = false;
 
+  loginError: string | null = null;
+  registerError: string | null = null;
+
   loginData = { email: '', password: '' };
   registerData = { employeeId: null as number | null, password: '', name: '', email: '' };
 
@@ -45,6 +48,7 @@ export class Login implements OnInit {
 
   handleLogin(): void {
     this.isLoading = true;
+    this.loginError = null;
     this.authService.login(this.loginData).subscribe({
       next: (response) => {
         this.isLoading = false;        
@@ -60,8 +64,8 @@ export class Login implements OnInit {
         }
       },
       error: (error) => {
-        console.error('Login failed', error);
-        // TODO: Show an error message to the user
+        this.loginError = error.error || 'An unknown login error occurred.';
+        console.error('Login failed', this.loginError);
         this.isLoading = false;
       }
     });
@@ -69,7 +73,7 @@ export class Login implements OnInit {
 
   handleRegister(): void {
     this.isLoading = true;
-    console.log('Registering with:', this.registerData);
+    this.registerError = null;
     this.authService.register(this.registerData).subscribe({
       next: (response) => {
         console.log('Registration successful', response);
@@ -78,8 +82,8 @@ export class Login implements OnInit {
         this.activeTab = 'login';
       },
       error: (error) => {
-        console.error('Registration failed', error);
-        // TODO: Show an error message to the user
+        this.registerError = error.error || 'An unknown registration error occurred.';
+        console.error('Registration failed', this.registerError);
         this.isLoading = false;
       }
     });
