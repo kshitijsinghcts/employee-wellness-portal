@@ -4,23 +4,45 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 
+/**
+ * @interface LoginCredentials
+ * @description Represents the credentials required for a user to log in.
+ */
 export interface LoginCredentials {
     email: string;
     password?: string;
 }
 
+/**
+ * @interface AuthResponse
+ * @description Represents the response from the authentication API, containing a token.
+ */
 export interface AuthResponse {
     token: string;
 }
 
+/**
+ * @Injectable
+ * @description
+ * Service for handling user authentication, including login, registration, and logout.
+ * It manages the user's login state and stores authentication tokens.
+ */
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
+    /** The base URL for the authentication API endpoints. */
     private apiUrl = 'http://localhost:9999/api/auth';
+    /** BehaviorSubject to hold the current login status. */
     private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
+    /** Observable to subscribe to for login status changes. */
     isLoggedIn$ = this._isLoggedIn$.asObservable();
 
+    /**
+     * @constructor
+     * @param {HttpClient} http - The Angular HttpClient for making HTTP requests.
+     * @param {Object} platformId - An injection token to determine if the code is running on a browser platform.
+     */
     constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
         if (isPlatformBrowser(this.platformId)) {
             // On service initialization, check if a token exists and update the login status.
@@ -30,6 +52,11 @@ export class AuthService {
         }
     }
 
+    /**
+     * Logs in a user with the given credentials.
+     * @param {LoginCredentials} credentials - The user's email and password.
+     * @returns {Observable<string>} An observable of the authentication token string.
+     */
     login(credentials: LoginCredentials): Observable<string> {
         return this.http.post(`${this.apiUrl}/login`, credentials, { responseType: 'text' }).pipe(
             tap(response => {
@@ -51,15 +78,27 @@ export class AuthService {
         );
     }
     
+    /**
+     * Registers a new user.
+     * @param {any} userData - The data for the new user.
+     * @returns {Observable<any>} An observable of the registration response.
+     */
     register(userData: any): Observable<any> {
         return this.http.post(`${this.apiUrl}/register`, userData, { responseType: 'text' });
     }
 
-    // This method is now the single source of truth for the login status.
+    /**
+     * Checks if the user is currently logged in.
+     * This method is the single source of truth for the login status.
+     * @returns {boolean} True if the user is logged in, false otherwise.
+     */
     isLoggedIn(): boolean {
         return this._isLoggedIn$.getValue();
     }
 
+    /**
+     * Logs out the current user by clearing authentication data from local storage.
+     */
     logout(): void {
         if (isPlatformBrowser(this.platformId)) {
             localStorage.removeItem('token');
