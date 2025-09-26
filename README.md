@@ -1,7 +1,4 @@
 <div align="center">
-  <br />
-  <img src="https://user-images.githubusercontent.com/28642392/209335378-162789e8-0f58-4568-9359-2d155a085573.png" alt="Project Banner" width="600"/>
-  <br />
 
   <h1 align="center">Employee Wellness Portal</h1>
 
@@ -10,12 +7,6 @@
     <br />
     <a href="#about-the-project"><strong>Explore the docs »</strong></a>
     <br />
-    <br />
-    <a href="#key-features">View Features</a>
-    ·
-    <a href="https://github.com/your-username/wellness-portal/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/your-username/wellness-portal/issues">Request Feature</a>
   </p>
 </div>
 
@@ -25,7 +16,6 @@
   <img src="https://img.shields.io/badge/Spring_Boot-3.x-6DB33F.svg?style=for-the-badge&logo=spring-boot" alt="Spring Boot 3.x">
   <img src="https://img.shields.io/badge/Angular-17-DD0031.svg?style=for-the-badge&logo=angular" alt="Angular 17">
   <img src="https://img.shields.io/badge/MySQL-8.0-4479A1.svg?style=for-the-badge&logo=mysql" alt="MySQL 8.0">
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT">
 </div>
 
 ---
@@ -47,6 +37,7 @@ This project leverages a modern tech stack to deliver a robust, scalable, and us
 -   **🎛️ Admin Dashboard:** View and manage users and their activities.
 -   **📝 Survey Management:** Admins can create surveys and view employee responses.
 -   **🤖 GenAI Ready:** Designed with future integration for AI-powered wellness tips in mind.
+
 
 ---
 
@@ -81,7 +72,7 @@ To get a local copy up and running, follow these simple steps.
 1.  **Clone the repository**
 
     ```sh
-    git clone https://github.com/your-username/wellness-portal.git
+    git clone https://github.com/kshitijsinghcts/wellness-portal.git
     cd wellness-portal
     ```
 
@@ -133,8 +124,3 @@ Here is a summary of the core API endpoints available:
 | `/api/goals/{employeeId}`      | `GET`  | Retrieves all goals for an employee.         |
 | `/api/employeeRewards/{id}`    | `GET`  | Retrieves all rewards for an employee.       |
 
----
-
-## 📜 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
