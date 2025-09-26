@@ -35,8 +35,9 @@ This project leverages a modern tech stack to deliver a robust, scalable, and us
 -   **🎯 Personalized Goal Setting:** Create, update, and track progress on personal wellness goals.
 -   **🏆 Automated Rewards System:** Earn badges and achievements for meeting health milestones.
 -   **🎛️ Admin Dashboard:** View and manage users and their activities.
--   **📝 Survey Management:** Admins can create surveys and view employee responses. (To be added)
--   **🤖 GenAI Ready:** Designed with future integration for AI-powered wellness tips in mind. (To be added)
+-   **📝 Survey Management:** Admins can create surveys and view employee responses.
+-   **🤖 GenAI Ready:** Designed with future integration for AI-powered wellness tips in mind.
+
 
 ---
 
