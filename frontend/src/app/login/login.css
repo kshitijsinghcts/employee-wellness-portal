@@ -67,7 +67,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1rem;
+  /* Reduced padding for mobile */
 }
 
 .form-wrapper {
@@ -295,5 +296,10 @@ input::placeholder {
 
   .mobile-header {
     display: none;
+  }
+
+  .form-container {
+    padding: 2rem;
+    /* Restore larger padding for desktop */
   }
 }
